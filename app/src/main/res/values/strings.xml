@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Restaurant</string>
+    <string name="version">version</string>
+    <string name="loading">loading...</string>
+    <string name="company">NguyenThacTung.utc</string>
+    <string name="email">Email</string>
+    <string name="MatKhau">Mật khẩu</string>
+    <string name="DangNhap">Đăng nhập</string>
+    <string name="Hoac">hoặc</string>
+    <string name="facebook_app_id">1589721984440429</string>
+    <string name="quenMatKhau">Quên mật khẩu?</string>
+    <string name="DangKy"><u>Đăng ký</u></string>
+    <string name="NhapLaiPass">Nhập lại mật khẩu</string>
+    <string name="VuiLongNhap">Vui lòng nhập</string>
+    <string name="KhongHopLe">Không hợp lệ</string>
+    <string name="success">success</string>
+    <string name="VuiLongCho">Vui lòng chờ</string>
+    <string name="TaiKhoanKhongHopLe">Tài khoản không hợp lệ</string>
+    <string name="EmailKhongHopLe">Email không hợp lệ</string>
+    <string name="KhoiPhucMatKhau">Khôi phục mật khẩu</string>
+    <string name="ChuoiKhoiPhucMatKhau">Bạn vui lòng nhập email bên dưới để khôi phục mật khẩu</string>
+    <string name="GuiEmail">Gửi Email</string>
+    <string name="BanKhongPhaiLaThanhVien">Bạn không phải là thành viên?</string>
+    <string name="VuiLongKiemTraEmail">vui lòng kiểm tra email để đổi mật khẩu</string>
+    <string name="ODau">Ở đâu</string>
+    <string name="AnGi">Ăn gì</string>
+    <string name="MoiNhat">Mới nhất</string>
+    <string name="DanhMuc">Danh mục</string>
+    <string name="KhuVuc">Khu vực</string>
+    <string name="Gantoi">Gần tôi</string>
+    <string name="Blog">Blogs</string>
+    <string name="GiaoHang">Giao hàng</string>
+    <string name="GameandFun">Game and fun</string>
+    <string name="DanhGia">Đánh giá</string>
+    <string name="TopThanhVien">Top thành viên</string>
+    <string name="Datmon">Đặt món</string>
+
+</resources>

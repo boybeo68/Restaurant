@@ -1,0 +1,155 @@
+package vn.myclass.restaurant.Adapter;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.BitSet;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import vn.myclass.restaurant.Model.BinhLuanModel;
+import vn.myclass.restaurant.Model.QuanAnModel;
+import vn.myclass.restaurant.R;
+import vn.myclass.restaurant.View.Trangchu_Activity;
+
+/**
+ * Created by boybe on 10/29/2017.
+ */
+
+public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_Odau.ViewHodel> {
+
+    List<QuanAnModel> quanAnModelList;
+    int resource;
+    public AdapterRecycler_Odau(List<QuanAnModel> quanAnModelList,int resource){
+            this.quanAnModelList=quanAnModelList;
+            this.resource=resource;
+    }
+
+    public class ViewHodel extends RecyclerView.ViewHolder {
+        TextView txtTenQuananOdau,txtTieudebinhluan2,txtTieudebinhluan,txtNodungbinhluan2,txtNodungbinhluan;
+        TextView txtChamDiemBinhLuan,txtChamDiemBinhLuan2,txtTongBinhLuan,txtTongHinhBinhLuan,txtDiemTrungBinhQuanAn,txtDiaChiQuanAnODau,txtKhoanCachQuanAnODau;
+        Button btnDatMonOdau;
+        ImageView imageHinhQuanAnODau;
+        CircleImageView cicleImageUser2,cicleImageUser;
+        LinearLayout containerBinhLuan,containerBinhLuan2;
+        CardView cardView;
+        public ViewHodel(View itemView) {
+            super(itemView);
+            txtTenQuananOdau= (TextView) itemView.findViewById(R.id.txtTenquananOdau);
+            btnDatMonOdau= (Button) itemView.findViewById(R.id.btnDatmonOdau);
+            imageHinhQuanAnODau= (ImageView) itemView.findViewById(R.id.imgHinhQuananOdau);
+            txtTieudebinhluan= (TextView) itemView.findViewById(R.id.txtTieudebinhluan);
+            txtTieudebinhluan2= (TextView) itemView.findViewById(R.id.txtTieudebinhluan2);
+            txtNodungbinhluan= (TextView) itemView.findViewById(R.id.txtNoiDungbinhluan);
+            txtNodungbinhluan2= (TextView) itemView.findViewById(R.id.txtNoiDungbinhluan2);
+            txtChamDiemBinhLuan= (TextView) itemView.findViewById(R.id.txtChamdiembinhluan);
+            txtChamDiemBinhLuan2= (TextView) itemView.findViewById(R.id.txtChamdiembinhluan2);
+            txtTongBinhLuan= (TextView) itemView.findViewById(R.id.txtTongbl);
+            txtTongHinhBinhLuan= (TextView) itemView.findViewById(R.id.txtTonghinhanhbl);
+            txtDiemTrungBinhQuanAn= (TextView) itemView.findViewById(R.id.txtDiemtrungbinhQuanAn);
+            containerBinhLuan= (LinearLayout) itemView.findViewById(R.id.containerBinhluan);
+            containerBinhLuan2= (LinearLayout) itemView.findViewById(R.id.containerBinhluan2);
+        }
+    }
+    @Override
+    public AdapterRecycler_Odau.ViewHodel onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(parent.getContext()).inflate(resource,parent,false);
+        ViewHodel viewHodel=new ViewHodel(view);
+        return viewHodel;
+    }
+
+    @Override
+    public void onBindViewHolder(final AdapterRecycler_Odau.ViewHodel holder, int position) {
+        QuanAnModel quanAnModel=quanAnModelList.get(position);
+        holder.txtTenQuananOdau.setText(quanAnModel.getTenquanan());
+
+        if (quanAnModel.isGiaohang()){
+            holder.btnDatMonOdau.setVisibility(View.VISIBLE);
+        }
+        Log.d("SizeHinh",quanAnModel.getHinhanhquanan().size()+"");
+        if (quanAnModel.getHinhanhquanan().size()>0){
+
+            StorageReference storageHinhanh= FirebaseStorage.getInstance().getReference().child("hinhanh").child(quanAnModel.getHinhanhquanan().get(0));
+            long ONE_MEGABYTE=1024*1024;
+            storageHinhanh.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                    holder.imageHinhQuanAnODau.setImageBitmap(bitmap);
+                }
+            });
+
+        }
+        //Lấy danh sách bình luận của quán ăn
+        if(quanAnModel.getBinhLuanModelList().size() > 0){
+
+            BinhLuanModel binhLuanModel = quanAnModel.getBinhLuanModelList().get(0);
+            holder.txtTieudebinhluan.setText(binhLuanModel.getTieude());
+            holder.txtNodungbinhluan.setText(binhLuanModel.getNoidung());
+//            holder.txtChamDiemBinhLuan.setText(binhLuanModel.getChamdiem() + "");
+//            setHinhAnhBinhLuan(holder.cicleImageUser,binhLuanModel.getThanhVienModel().getHinhanh());
+            if(quanAnModel.getBinhLuanModelList().size() > 2){
+                BinhLuanModel binhLuanModel2 = quanAnModel.getBinhLuanModelList().get(1);
+                holder.txtTieudebinhluan2.setText(binhLuanModel2.getTieude());
+                holder.txtNodungbinhluan2.setText(binhLuanModel2.getNoidung());
+//                holder.txtChamDiemBinhLuan2.setText(binhLuanModel2.getChamdiem() + "");
+//                setHinhAnhBinhLuan(holder.cicleImageUser2,binhLuanModel2.getThanhVienModel().getHinhanh());
+            }
+//            holder.txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size() + "");
+
+//            int tongsohinhbinhluan = 0;
+//            double tongdiem = 0;
+//            //Tính tổng điểm trung bình của bình luận và đếm tổng số hình của bình luận
+//            for (BinhLuanModel binhLuanModel1 : quanAnModel.getBinhLuanModelList()){
+//                tongsohinhbinhluan += binhLuanModel1.getHinhanhBinhLuanList().size();
+//                tongdiem += binhLuanModel1.getChamdiem();
+//            }
+//
+//            double diemtrungbinh = tongdiem/quanAnModel.getBinhLuanModelList().size();
+//            holder.txtDiemTrungBinhQuanAn.setText(String.format("%.1f",diemtrungbinh));
+//
+//            if(tongsohinhbinhluan > 0){
+//                holder.txtTongHinhBinhLuan.setText(tongsohinhbinhluan + "");
+//            }
+
+        }else{
+            holder.containerBinhLuan.setVisibility(View.GONE);
+            holder.containerBinhLuan2.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void setHinhAnhBinhLuan(final CircleImageView circleImageView, String linkhinh){
+        StorageReference storageHinhUser = FirebaseStorage.getInstance().getReference().child("thanhvien").child(linkhinh);
+        long ONE_MEGABYTE = 1024 * 1024;
+        storageHinhUser.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                circleImageView.setImageBitmap(bitmap);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return quanAnModelList.size();
+    }
+
+
+}

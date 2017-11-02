@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "269583663327",
+    "firebase_url": "https://ung-dung-restaurant.firebaseio.com",
+    "project_id": "ung-dung-restaurant",
+    "storage_bucket": "ung-dung-restaurant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269583663327:android:90aae1195c4b4aed",
+        "android_client_info": {
+          "package_name": "vn.myclass.restaurant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269583663327-7iva16g24r7e15hdr2mspplmcpe2prft.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.myclass.restaurant",
+            "certificate_hash": "400ee86e05e9e1a21457d7382cd3e169ef30277e"
+          }
+        },
+        {
+          "client_id": "269583663327-ssci5m291vpjrbfj1718jvv73jqg5ga1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.myclass.restaurant",
+            "certificate_hash": "2ea5eaee5cc74f26e2c14fa3b01a7a4bfc0f6ab9"
+          }
+        },
+        {
+          "client_id": "269583663327-mj785hgii3v3p3v60pcchfq9t7c9lpe8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIw6O5fWU4BHtpc3kM00PKmHFWMbOq3Rg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269583663327-mj785hgii3v3p3v60pcchfq9t7c9lpe8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
