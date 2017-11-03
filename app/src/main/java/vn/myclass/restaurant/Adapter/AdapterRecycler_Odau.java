@@ -64,6 +64,8 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             txtDiemTrungBinhQuanAn= (TextView) itemView.findViewById(R.id.txtDiemtrungbinhQuanAn);
             containerBinhLuan= (LinearLayout) itemView.findViewById(R.id.containerBinhluan);
             containerBinhLuan2= (LinearLayout) itemView.findViewById(R.id.containerBinhluan2);
+            cicleImageUser = (CircleImageView) itemView.findViewById(R.id.circleimageviewUser);
+            cicleImageUser2 = (CircleImageView) itemView.findViewById(R.id.circleimageviewUser2);
         }
     }
     @Override
@@ -101,31 +103,13 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             BinhLuanModel binhLuanModel = quanAnModel.getBinhLuanModelList().get(0);
             holder.txtTieudebinhluan.setText(binhLuanModel.getTieude());
             holder.txtNodungbinhluan.setText(binhLuanModel.getNoidung());
-//            holder.txtChamDiemBinhLuan.setText(binhLuanModel.getChamdiem() + "");
-//            setHinhAnhBinhLuan(holder.cicleImageUser,binhLuanModel.getThanhVienModel().getHinhanh());
+            setHinhAnhBinhLuan(holder.cicleImageUser,binhLuanModel.getThanhVienModel().getHinhanh());
             if(quanAnModel.getBinhLuanModelList().size() > 2){
                 BinhLuanModel binhLuanModel2 = quanAnModel.getBinhLuanModelList().get(1);
                 holder.txtTieudebinhluan2.setText(binhLuanModel2.getTieude());
                 holder.txtNodungbinhluan2.setText(binhLuanModel2.getNoidung());
-//                holder.txtChamDiemBinhLuan2.setText(binhLuanModel2.getChamdiem() + "");
-//                setHinhAnhBinhLuan(holder.cicleImageUser2,binhLuanModel2.getThanhVienModel().getHinhanh());
+                setHinhAnhBinhLuan(holder.cicleImageUser2,binhLuanModel2.getThanhVienModel().getHinhanh());
             }
-//            holder.txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size() + "");
-
-//            int tongsohinhbinhluan = 0;
-//            double tongdiem = 0;
-//            //Tính tổng điểm trung bình của bình luận và đếm tổng số hình của bình luận
-//            for (BinhLuanModel binhLuanModel1 : quanAnModel.getBinhLuanModelList()){
-//                tongsohinhbinhluan += binhLuanModel1.getHinhanhBinhLuanList().size();
-//                tongdiem += binhLuanModel1.getChamdiem();
-//            }
-//
-//            double diemtrungbinh = tongdiem/quanAnModel.getBinhLuanModelList().size();
-//            holder.txtDiemTrungBinhQuanAn.setText(String.format("%.1f",diemtrungbinh));
-//
-//            if(tongsohinhbinhluan > 0){
-//                holder.txtTongHinhBinhLuan.setText(tongsohinhbinhluan + "");
-//            }
 
         }else{
             holder.containerBinhLuan.setVisibility(View.GONE);

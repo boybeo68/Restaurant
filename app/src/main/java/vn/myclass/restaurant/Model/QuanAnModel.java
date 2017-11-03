@@ -190,17 +190,8 @@ public class QuanAnModel {
 
                         for (DataSnapshot valueBinhLuan : snapshotBinhLuan.getChildren()){
                             BinhLuanModel binhLuanModel = valueBinhLuan.getValue(BinhLuanModel.class);
-                            binhLuanModel.setManbinhluan(valueBinhLuan.getKey());
                             ThanhVienModel thanhVienModel = dataSnapshot.child("thanhviens").child(binhLuanModel.getMauser()).getValue(ThanhVienModel.class);
                             binhLuanModel.setThanhVienModel(thanhVienModel);
-
-                            List<String> hinhanhBinhLuanList = new ArrayList<>();
-                            DataSnapshot snapshotNodeHinhAnhBL = dataSnapshot.child("hinhanhbinhluans").child(binhLuanModel.getManbinhluan());
-                            for (DataSnapshot valueHinhBinhLuan : snapshotNodeHinhAnhBL.getChildren()){
-                                hinhanhBinhLuanList.add(valueHinhBinhLuan.getValue(String.class));
-                            }
-                            binhLuanModel.setHinhanhBinhLuanList(hinhanhBinhLuanList);
-
                             binhLuanModels.add(binhLuanModel);
                         }
                         quanAnModel.setBinhLuanModelList(binhLuanModels);

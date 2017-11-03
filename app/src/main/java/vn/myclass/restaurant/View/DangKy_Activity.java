@@ -1,10 +1,12 @@
 package vn.myclass.restaurant.View;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -92,11 +94,14 @@ public class DangKy_Activity extends AppCompatActivity {
                     ThanhVienModel thanhVienModel=new ThanhVienModel();
                     thanhVienModel.setHoten(email);
                     thanhVienModel.setHinhanh("user.png");
+                    Log.d("xemhinhanh",thanhVienModel.getHinhanh());
                     String uid=task.getResult().getUser().getUid();
                     dangki_controller=new Dangki_Controller();
                     dangki_controller.ThemThongTinThanVienController(thanhVienModel,uid);
                     Toast.makeText(DangKy_Activity.this, "Đăng kí thành công",
                             Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(DangKy_Activity.this,DangNhapActivity.class);
+                    startActivity(intent);
 
                 }
             }
