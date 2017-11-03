@@ -99,8 +99,6 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
         }
         //Lấy danh sách bình luận của quán ăn
         if(quanAnModel.getBinhLuanModelList().size() > 0){
-            Log.d("dembinhluan",quanAnModel.getBinhLuanModelList().size()+"");
-
             BinhLuanModel binhLuanModel = quanAnModel.getBinhLuanModelList().get(0);
             holder.txtTieudebinhluan.setText(binhLuanModel.getTieude());
             holder.txtNodungbinhluan.setText(binhLuanModel.getNoidung());
@@ -114,6 +112,11 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
                 setHinhAnhBinhLuan(holder.cicleImageUser2,binhLuanModel2.getThanhVienModel().getHinhanh());
             }
             holder.txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size()+"");
+            int tonghinhbinhluan=0;
+            for (BinhLuanModel binhLuanModel1:quanAnModel.getBinhLuanModelList()){
+                tonghinhbinhluan+=binhLuanModel1.getHinhanhBinhLuanList().size();
+            }
+            holder.txtTongHinhBinhLuan.setText(tonghinhbinhluan+"");
         }else{
             holder.containerBinhLuan.setVisibility(View.GONE);
             holder.containerBinhLuan2.setVisibility(View.GONE);
