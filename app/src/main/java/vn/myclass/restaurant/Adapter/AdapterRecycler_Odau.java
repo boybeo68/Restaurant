@@ -113,9 +113,14 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             }
             holder.txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size()+"");
             int tonghinhbinhluan=0;
+            double tongdiemquanan=0;
+            //tổng điểm trung bình của bình luận và tổng số hình bình luận
             for (BinhLuanModel binhLuanModel1:quanAnModel.getBinhLuanModelList()){
                 tonghinhbinhluan+=binhLuanModel1.getHinhanhBinhLuanList().size();
+                tongdiemquanan+=binhLuanModel1.getChamdiem();
             }
+            double diemtrungbinhquanan=tongdiemquanan/(quanAnModel.getBinhLuanModelList().size());
+            holder.txtDiemTrungBinhQuanAn.setText(String.format("%.1f",diemtrungbinhquanan));
             if (tonghinhbinhluan>0){
                 holder.txtTongHinhBinhLuan.setText(tonghinhbinhluan+"");
             }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ public class Odau_Controller {
         quanAnModel = new QuanAnModel();
     }
 
-    public void getDanhsachquananController(RecyclerView recyclerViewOdau) {
+    public void getDanhsachquananController(RecyclerView recyclerViewOdau, final ProgressBar progressBar) {
 
         final List<QuanAnModel> quanAnModelList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
@@ -43,6 +45,7 @@ public class Odau_Controller {
 //                Log.d("kiemtralist", quanAnModel.getTenquanan() + "");
                 quanAnModelList.add(quanAnModel);
                 adapterRecycler_odau.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
             }
         };
 

@@ -22,7 +22,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/background_cycle"
-                android:text="6.6"
+                android:text="0"
                 android:gravity="center"
                 android:layout_margin="5dp"
                 android:textColor="@color/colorAccent"/>
@@ -123,7 +123,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/txtChamdiembinhluan"
                 android:gravity="bottom"
-                android:text="6.6"/>
+                android:text="6.6"
+                android:textColor="#0ae239"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -171,6 +172,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/txtChamdiembinhluan2"
                 android:gravity="bottom"
+                android:textColor="#0ae239"
                 android:text="6.6"/>
         </LinearLayout>
         <LinearLayout

@@ -72,7 +72,6 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
     TextView txtHoac,txtDangKy,txtQuenPass;
     EditText edEmailDN,edPassDN;
     Button btnDangNhap;
-    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -251,6 +250,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
 
     private void dangNhapEmail() {
 
+
         String email = edEmailDN.getText().toString();
         String pass = edPassDN.getText().toString();
         String thongbao="";
@@ -267,7 +267,8 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
                     if (!task.isSuccessful()) {
                         Toast.makeText(DangNhapActivity.this,getString(R.string.TaiKhoanKhongHopLe),Toast.LENGTH_SHORT).show();
                     }else {
-//                        progressDialog.dismiss();
+
+
                     }
                 }
             });

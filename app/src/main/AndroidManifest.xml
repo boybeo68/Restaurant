@@ -17,7 +17,11 @@
         <!-- android:value="@string/facebook_app_id" /> -->
 
         <activity android:name=".View.SlashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -31,11 +35,7 @@
         <activity android:name=".View.DangNhapActivity" />
         <activity android:name=".View.Trangchu_Activity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".View.DangKy_Activity" />
         <activity android:name=".View.Resetpass_Activity"></activity>
