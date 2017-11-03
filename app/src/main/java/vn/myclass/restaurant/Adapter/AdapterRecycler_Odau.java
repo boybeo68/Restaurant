@@ -116,11 +116,13 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             for (BinhLuanModel binhLuanModel1:quanAnModel.getBinhLuanModelList()){
                 tonghinhbinhluan+=binhLuanModel1.getHinhanhBinhLuanList().size();
             }
-            holder.txtTongHinhBinhLuan.setText(tonghinhbinhluan+"");
+            if (tonghinhbinhluan>0){
+                holder.txtTongHinhBinhLuan.setText(tonghinhbinhluan+"");
+            }
+
         }else{
             holder.containerBinhLuan.setVisibility(View.GONE);
             holder.containerBinhLuan2.setVisibility(View.GONE);
-            holder.txtTongBinhLuan.setText("0");
         }
 
     }

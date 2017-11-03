@@ -188,15 +188,16 @@ public class QuanAnModel {
                     quanAnModel.setHinhanhquanan(hinhanhList);
                     //Lấy danh sách bình luân của quán ăn
                     DataSnapshot snapshotBinhLuan = dataSnapshot.child("binhluans").child(quanAnModel.getMaquanan());
+                    //do 1 quán ăn có nhiều bình luận ==>tạo list
                     List<BinhLuanModel> binhLuanModels = new ArrayList<>();
 
                     for (DataSnapshot valueBinhLuan : snapshotBinhLuan.getChildren()) {
                         BinhLuanModel binhLuanModel = valueBinhLuan.getValue(BinhLuanModel.class);
 
                         ThanhVienModel thanhVienModel = dataSnapshot.child("thanhviens").child(binhLuanModel.getMauser()).getValue(ThanhVienModel.class);
-                        binhLuanModel.setThanhVienModel(thanhVienModel);
+                        binhLuanModel.setThanhVienModel(thanhVienModel);// có được dữ liệu về thành viên của bình luận đó
                         binhLuanModel.setManbinhluan(valueBinhLuan.getKey());
-                        List<String> hinhbinhluanList = new ArrayList<>();
+                        List<String> hinhbinhluanList = new ArrayList<>();//1 bình luận có nhiều tấm hinh
                         DataSnapshot snapshotnodeHinhanhBL = dataSnapshot.child("hinhanhbinhluans").child(binhLuanModel.getManbinhluan());
                         for (DataSnapshot valuehinhanhbinhluan : snapshotnodeHinhanhBL.getChildren()) {
                             hinhbinhluanList.add(valuehinhanhbinhluan.getValue(String.class));
