@@ -7,7 +7,7 @@ import java.util.List;
  */
 
 public class BinhLuanModel {
-    long chamdiem;
+    double chamdiem;
     long luotthich;
     ThanhVienModel thanhVienModel;
     String noidung;
@@ -20,11 +20,11 @@ public class BinhLuanModel {
     public BinhLuanModel() {
     }
 
-    public long getChamdiem() {
+    public double getChamdiem() {
         return chamdiem;
     }
 
-    public void setChamdiem(long chamdiem) {
+    public void setChamdiem(double chamdiem) {
         this.chamdiem = chamdiem;
     }
 

@@ -99,21 +99,25 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
         }
         //Lấy danh sách bình luận của quán ăn
         if(quanAnModel.getBinhLuanModelList().size() > 0){
+            Log.d("dembinhluan",quanAnModel.getBinhLuanModelList().size()+"");
 
             BinhLuanModel binhLuanModel = quanAnModel.getBinhLuanModelList().get(0);
             holder.txtTieudebinhluan.setText(binhLuanModel.getTieude());
             holder.txtNodungbinhluan.setText(binhLuanModel.getNoidung());
+            holder.txtChamDiemBinhLuan.setText(binhLuanModel.getChamdiem()+"");
             setHinhAnhBinhLuan(holder.cicleImageUser,binhLuanModel.getThanhVienModel().getHinhanh());
             if(quanAnModel.getBinhLuanModelList().size() > 2){
                 BinhLuanModel binhLuanModel2 = quanAnModel.getBinhLuanModelList().get(1);
                 holder.txtTieudebinhluan2.setText(binhLuanModel2.getTieude());
                 holder.txtNodungbinhluan2.setText(binhLuanModel2.getNoidung());
+                holder.txtChamDiemBinhLuan2.setText(binhLuanModel2.getChamdiem()+"");
                 setHinhAnhBinhLuan(holder.cicleImageUser2,binhLuanModel2.getThanhVienModel().getHinhanh());
             }
-
+            holder.txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size()+"");
         }else{
             holder.containerBinhLuan.setVisibility(View.GONE);
             holder.containerBinhLuan2.setVisibility(View.GONE);
+            holder.txtTongBinhLuan.setText("0");
         }
 
     }
