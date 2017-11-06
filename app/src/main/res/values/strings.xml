@@ -34,5 +34,6 @@
     <string name="DanhGia">Đánh giá</string>
     <string name="TopThanhVien">Top thành viên</string>
     <string name="Datmon">Đặt món</string>
+    <string name="batGPS">Bạn hãy mở GPS </string>
 
 </resources>
