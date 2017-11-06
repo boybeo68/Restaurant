@@ -23,6 +23,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import vn.myclass.restaurant.Model.BinhLuanModel;
+import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.QuanAnModel;
 import vn.myclass.restaurant.R;
 import vn.myclass.restaurant.View.Trangchu_Activity;
@@ -66,6 +67,8 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             containerBinhLuan2= (LinearLayout) itemView.findViewById(R.id.containerBinhluan2);
             cicleImageUser = (CircleImageView) itemView.findViewById(R.id.circleimageviewUser);
             cicleImageUser2 = (CircleImageView) itemView.findViewById(R.id.circleimageviewUser2);
+            txtDiaChiQuanAnODau= (TextView) itemView.findViewById(R.id.txtDiachiquananOdau);
+            txtKhoanCachQuanAnODau= (TextView) itemView.findViewById(R.id.txtKhoangcachquananODau);
         }
     }
     @Override
@@ -128,6 +131,19 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
         }else{
             holder.containerBinhLuan.setVisibility(View.GONE);
             holder.containerBinhLuan2.setVisibility(View.GONE);
+        }
+        //Lấy địa chỉ quán ăn và hiển thị địa chỉ và km
+        if (quanAnModel.getChiNhanhQuanAnModelList().size()>0){
+            // lấy thằng đầu tiên làm đối tượng so sánh
+            ChiNhanhQuanAnModel chiNhanhQuanAnModelTam=quanAnModel.getChiNhanhQuanAnModelList().get(0);
+            for (ChiNhanhQuanAnModel chiNhanhQuanAnModel:quanAnModel.getChiNhanhQuanAnModelList()){
+                if (chiNhanhQuanAnModelTam.getKhoangcach()>chiNhanhQuanAnModel.getKhoangcach()){
+                    chiNhanhQuanAnModelTam=chiNhanhQuanAnModel;
+                }
+            }
+            holder.txtDiaChiQuanAnODau.setText(chiNhanhQuanAnModelTam.getDiachi());
+            holder.txtKhoanCachQuanAnODau.setText(String.format("%.1f",chiNhanhQuanAnModelTam.getKhoangcach())+"km" );
+
         }
 
     }

@@ -1,6 +1,7 @@
 package vn.myclass.restaurant.Model;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.util.Log;
 
 //import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,15 @@ public class QuanAnModel {
     List<String> tienich;
     List<String> hinhanhquanan;
     List<BinhLuanModel> binhLuanModelList;
+    List<ChiNhanhQuanAnModel>chiNhanhQuanAnModelList;
+
+    public List<ChiNhanhQuanAnModel> getChiNhanhQuanAnModelList() {
+        return chiNhanhQuanAnModelList;
+    }
+
+    public void setChiNhanhQuanAnModelList(List<ChiNhanhQuanAnModel> chiNhanhQuanAnModelList) {
+        this.chiNhanhQuanAnModelList = chiNhanhQuanAnModelList;
+    }
 
     public List<BinhLuanModel> getBinhLuanModelList() {
         return binhLuanModelList;
@@ -165,7 +175,7 @@ public class QuanAnModel {
         this.luotthich = luotthich;
     }
 
-    public void getDanhsachQuanAn(final Odau_interface odau_interface) {
+    public void getDanhsachQuanAn(final Odau_interface odau_interface, final Location vitrihientai) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             //datasnapshot chính là dữ liệu của noderoot
@@ -206,6 +216,22 @@ public class QuanAnModel {
                         binhLuanModels.add(binhLuanModel);
                     }
                     quanAnModel.setBinhLuanModelList(binhLuanModels);
+                    // lấy chi nhánh quán ăn
+                        List<ChiNhanhQuanAnModel>chiNhanhQuanAnModels =new ArrayList<>();
+                        DataSnapshot snapshotChiNhanh=dataSnapshot.child("chinhanhquanans").child(quanAnModel.getMaquanan());
+                        for (DataSnapshot valueChinhanhquanan : snapshotChiNhanh.getChildren()){
+                            ChiNhanhQuanAnModel chiNhanhQuanAnModel=valueChinhanhquanan.getValue(ChiNhanhQuanAnModel.class);
+                            Location vitriquanan=new Location("");
+                            vitriquanan.setLongitude(chiNhanhQuanAnModel.getLongitude());
+                            vitriquanan.setLatitude(chiNhanhQuanAnModel.getLatitude());
+                           double khoangcach= vitrihientai.distanceTo(vitriquanan)/1000;
+                           Log.d("toado",khoangcach+"=="+chiNhanhQuanAnModel.getDiachi());
+                           chiNhanhQuanAnModel.setKhoangcach(khoangcach);
+                           chiNhanhQuanAnModels.add(chiNhanhQuanAnModel);
+                        }
+                        quanAnModel.setChiNhanhQuanAnModelList(chiNhanhQuanAnModels);
+
+
                     odau_interface.getDanhsachQuananModel(quanAnModel);
                 }
             }

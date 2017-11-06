@@ -1,6 +1,7 @@
 package vn.myclass.restaurant.Controller;
 
 import android.content.Context;
+import android.location.Location;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,7 +30,7 @@ public class Odau_Controller {
         quanAnModel = new QuanAnModel();
     }
 
-    public void getDanhsachquananController(RecyclerView recyclerViewOdau, final ProgressBar progressBar) {
+    public void getDanhsachquananController(RecyclerView recyclerViewOdau, final ProgressBar progressBar, Location vitrihientai) {
 
         final List<QuanAnModel> quanAnModelList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
@@ -49,6 +50,6 @@ public class Odau_Controller {
             }
         };
 
-        quanAnModel.getDanhsachQuanAn(odau_interface);
+        quanAnModel.getDanhsachQuanAn(odau_interface,vitrihientai);
     }
 }

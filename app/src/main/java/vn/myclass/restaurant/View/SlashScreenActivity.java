@@ -38,7 +38,7 @@ public class SlashScreenActivity extends AppCompatActivity implements GoogleApiC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_flashscreen);
         txtVersion = (TextView) findViewById(R.id.txtVer);
-        sharedPreferences=getSharedPreferences("toando",MODE_PRIVATE);
+        sharedPreferences=getSharedPreferences("toado",MODE_PRIVATE);
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -89,10 +89,11 @@ public class SlashScreenActivity extends AppCompatActivity implements GoogleApiC
         Location vitriHienTai = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
 
         if (vitriHienTai != null) {
-            Log.d("toado", vitriHienTai.getLatitude() + "==" + vitriHienTai.getLongitude());
+            Log.d("toado", vitriHienTai.getLatitude() + "" );
             SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putFloat("longitude", (float) vitriHienTai.getLongitude());
-            editor.putFloat("latitude", (float) vitriHienTai.getLatitude());
+            //put về kiểu string để tọa độ được chính xác
+            editor.putString("longitude", String.valueOf(vitriHienTai.getLongitude()));
+            editor.putString("latitude", String.valueOf(vitriHienTai.getLatitude()));
             editor.commit();
             try {
                 // Lấy ra version app
