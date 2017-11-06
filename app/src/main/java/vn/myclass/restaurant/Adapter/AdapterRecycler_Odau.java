@@ -69,6 +69,7 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             cicleImageUser2 = (CircleImageView) itemView.findViewById(R.id.circleimageviewUser2);
             txtDiaChiQuanAnODau= (TextView) itemView.findViewById(R.id.txtDiachiquananOdau);
             txtKhoanCachQuanAnODau= (TextView) itemView.findViewById(R.id.txtKhoangcachquananODau);
+            cardView= (CardView) itemView.findViewById(R.id.cardViewOdau);
         }
     }
     @Override
@@ -80,6 +81,105 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
 
     @Override
     public void onBindViewHolder(final AdapterRecycler_Odau.ViewHodel holder, int position) {
+//        QuanAnModel quanAnModel=quanAnModelList.get(position);
+//        holder.txtTenQuananOdau.setText(quanAnModel.getTenquanan());
+//
+//        if (quanAnModel.isGiaohang()){
+//            holder.btnDatMonOdau.setVisibility(View.VISIBLE);
+//        }
+//        Log.d("SizeHinh",quanAnModel.getHinhanhquanan().size()+"");
+//        if (quanAnModel.getHinhanhquanan().size()>0){
+//
+//            StorageReference storageHinhanh= FirebaseStorage.getInstance().getReference().child("hinhanh").child(quanAnModel.getHinhanhquanan().get(0));
+//            long ONE_MEGABYTE=1024*1024;
+//            storageHinhanh.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//                @Override
+//                public void onSuccess(byte[] bytes) {
+//                    Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+//                    holder.imageHinhQuanAnODau.setImageBitmap(bitmap);
+//                }
+//            });
+//
+//        }
+//        //Lấy danh sách bình luận của quán ăn
+//        if(quanAnModel.getBinhLuanModelList().size() > 0){
+//            BinhLuanModel binhLuanModel = quanAnModel.getBinhLuanModelList().get(0);
+//            holder.txtTieudebinhluan.setText(binhLuanModel.getTieude());
+//            holder.txtNodungbinhluan.setText(binhLuanModel.getNoidung());
+//            holder.txtChamDiemBinhLuan.setText(binhLuanModel.getChamdiem()+"");
+//            setHinhAnhBinhLuan(holder.cicleImageUser,binhLuanModel.getThanhVienModel().getHinhanh());
+//            if(quanAnModel.getBinhLuanModelList().size() > 2){
+//                BinhLuanModel binhLuanModel2 = quanAnModel.getBinhLuanModelList().get(1);
+//                holder.txtTieudebinhluan2.setText(binhLuanModel2.getTieude());
+//                holder.txtNodungbinhluan2.setText(binhLuanModel2.getNoidung());
+//                holder.txtChamDiemBinhLuan2.setText(binhLuanModel2.getChamdiem()+"");
+//                setHinhAnhBinhLuan(holder.cicleImageUser2,binhLuanModel2.getThanhVienModel().getHinhanh());
+//            }
+//            holder.txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size()+"");
+//            int tonghinhbinhluan=0;
+//            double tongdiemquanan=0;
+//            //tổng điểm trung bình của bình luận và tổng số hình bình luận
+//            for (BinhLuanModel binhLuanModel1:quanAnModel.getBinhLuanModelList()){
+//                tonghinhbinhluan+=binhLuanModel1.getHinhanhBinhLuanList().size();
+//                tongdiemquanan+=binhLuanModel1.getChamdiem();
+//            }
+//            double diemtrungbinhquanan=tongdiemquanan/(quanAnModel.getBinhLuanModelList().size());
+//            holder.txtDiemTrungBinhQuanAn.setText(String.format("%.1f",diemtrungbinhquanan));
+//            if (tonghinhbinhluan>0){
+//                holder.txtTongHinhBinhLuan.setText(tonghinhbinhluan+"");
+//            }
+//
+//        }else{
+//            holder.containerBinhLuan.setVisibility(View.GONE);
+//            holder.containerBinhLuan2.setVisibility(View.GONE);
+//        }
+//        //Lấy địa chỉ quán ăn và hiển thị địa chỉ và km
+//        if (quanAnModel.getChiNhanhQuanAnModelList().size()>0){
+//            // lấy thằng đầu tiên làm đối tượng so sánh
+//            ChiNhanhQuanAnModel chiNhanhQuanAnModelTam=quanAnModel.getChiNhanhQuanAnModelList().get(0);
+//            for (ChiNhanhQuanAnModel chiNhanhQuanAnModel:quanAnModel.getChiNhanhQuanAnModelList()){
+//                if (chiNhanhQuanAnModelTam.getKhoangcach()>chiNhanhQuanAnModel.getKhoangcach()){
+//                    chiNhanhQuanAnModelTam=chiNhanhQuanAnModel;
+//                }
+//            }
+//            holder.txtDiaChiQuanAnODau.setText(chiNhanhQuanAnModelTam.getDiachi());
+//            holder.txtKhoanCachQuanAnODau.setText(String.format("%.1f",chiNhanhQuanAnModelTam.getKhoangcach())+"km" );
+//
+//        }
+
+        QuanAnModel quanAnModel=quanAnModelList.get(position);
+        if (quanAnModel.getChiNhanhQuanAnModelList().size()>0){
+            ChiNhanhQuanAnModel chiNhanhQuanAnModelTam=quanAnModel.getChiNhanhQuanAnModelList().get(0);
+            for (ChiNhanhQuanAnModel chiNhanhQuanAnModel:quanAnModel.getChiNhanhQuanAnModelList()){
+                if (chiNhanhQuanAnModelTam.getKhoangcach()>chiNhanhQuanAnModel.getKhoangcach()){
+                    chiNhanhQuanAnModelTam=chiNhanhQuanAnModel;
+                }
+            }
+            //lấy các quán trong phạm vi 10km
+            if (chiNhanhQuanAnModelTam.getKhoangcach()<10.0){
+                layQuanAnOgan(holder,position);
+            }
+        }
+
+    }
+
+    private void setHinhAnhBinhLuan(final CircleImageView circleImageView, String linkhinh){
+        StorageReference storageHinhUser = FirebaseStorage.getInstance().getReference().child("thanhvien").child(linkhinh);
+        long ONE_MEGABYTE = 1024 * 1024;
+        storageHinhUser.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                circleImageView.setImageBitmap(bitmap);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return quanAnModelList.size();
+    }
+    public  void layQuanAnOgan(final AdapterRecycler_Odau.ViewHodel holder, int position){
         QuanAnModel quanAnModel=quanAnModelList.get(position);
         holder.txtTenQuananOdau.setText(quanAnModel.getTenquanan());
 
@@ -145,25 +245,6 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             holder.txtKhoanCachQuanAnODau.setText(String.format("%.1f",chiNhanhQuanAnModelTam.getKhoangcach())+"km" );
 
         }
-
     }
-
-    private void setHinhAnhBinhLuan(final CircleImageView circleImageView, String linkhinh){
-        StorageReference storageHinhUser = FirebaseStorage.getInstance().getReference().child("thanhvien").child(linkhinh);
-        long ONE_MEGABYTE = 1024 * 1024;
-        storageHinhUser.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                circleImageView.setImageBitmap(bitmap);
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return quanAnModelList.size();
-    }
-
 
 }
