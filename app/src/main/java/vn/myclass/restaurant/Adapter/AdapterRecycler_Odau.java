@@ -1,5 +1,7 @@
 package vn.myclass.restaurant.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.CardView;
@@ -26,6 +28,7 @@ import vn.myclass.restaurant.Model.BinhLuanModel;
 import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.QuanAnModel;
 import vn.myclass.restaurant.R;
+import vn.myclass.restaurant.View.ChiTietQuanAn_Activity;
 import vn.myclass.restaurant.View.Trangchu_Activity;
 
 /**
@@ -36,9 +39,13 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
 
     List<QuanAnModel> quanAnModelList;
     int resource;
-    public AdapterRecycler_Odau(List<QuanAnModel> quanAnModelList,int resource){
+    Context context;
+
+
+    public AdapterRecycler_Odau(Context context,List<QuanAnModel> quanAnModelList,int resource){
             this.quanAnModelList=quanAnModelList;
             this.resource=resource;
+            this.context=context;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {
@@ -180,7 +187,7 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
         return quanAnModelList.size();
     }
     public  void layQuanAnOgan(final AdapterRecycler_Odau.ViewHodel holder, int position){
-        QuanAnModel quanAnModel=quanAnModelList.get(position);
+        final QuanAnModel quanAnModel=quanAnModelList.get(position);
         holder.txtTenQuananOdau.setText(quanAnModel.getTenquanan());
 
         if (quanAnModel.isGiaohang()){
@@ -236,6 +243,16 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             holder.txtKhoanCachQuanAnODau.setText(String.format("%.1f",chiNhanhQuanAnModelTam.getKhoangcach())+"km" );
 
         }
+        holder.txtTenQuananOdau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent ichitietQuanAn=new Intent(context, ChiTietQuanAn_Activity.class);
+
+                ichitietQuanAn.putExtra("quanan",quanAnModel);
+                context.startActivity(ichitietQuanAn);
+
+            }
+        });
     }
 
 }

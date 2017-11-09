@@ -3,8 +3,8 @@
     package="vn.myclass.restaurant">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -35,12 +35,10 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".View.DangNhapActivity" />
-        <activity android:name=".View.Trangchu_Activity">
-
-
-        </activity>
+        <activity android:name=".View.Trangchu_Activity"></activity>
         <activity android:name=".View.DangKy_Activity" />
-        <activity android:name=".View.Resetpass_Activity"></activity>
+        <activity android:name=".View.Resetpass_Activity" />
+        <activity android:name=".View.ChiTietQuanAn_Activity"></activity>
     </application>
 
 </manifest>

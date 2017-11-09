@@ -50,7 +50,7 @@ public class Odau_Fragment extends Fragment {
 
         odau_controller =new Odau_Controller(getContext());
         Log.d("kiemtratoado",sharedPreferences.getString("latitude","0") + "");
-        odau_controller.getDanhsachquananController(nestedScrollView,recyclerOdau,progressBar,vitrihientai);
+        odau_controller.getDanhsachquananController(getContext(),nestedScrollView,recyclerOdau,progressBar,vitrihientai);
 
     }
 }

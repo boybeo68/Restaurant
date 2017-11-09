@@ -2,6 +2,8 @@ package vn.myclass.restaurant.Model;
 
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.util.Log;
 
@@ -27,7 +29,7 @@ import vn.myclass.restaurant.Controller.Interface.Odau_interface;
  * Created by boybe on 10/25/2017.
  */
 
-public class QuanAnModel {
+public class QuanAnModel implements Parcelable{
     boolean giaohang;
     String giodongcua, giomocua, tenquanan, videogioithieu, maquanan;
     List<String> tienich;
@@ -35,6 +37,33 @@ public class QuanAnModel {
     List<BinhLuanModel> binhLuanModelList;
     List<ChiNhanhQuanAnModel>chiNhanhQuanAnModelList;
     List<Bitmap> bitmapList;
+
+    protected QuanAnModel(Parcel in) {
+        giaohang = in.readByte() != 0;
+        giodongcua = in.readString();
+        giomocua = in.readString();
+        tenquanan = in.readString();
+        videogioithieu = in.readString();
+        maquanan = in.readString();
+        tienich = in.createStringArrayList();
+        hinhanhquanan = in.createStringArrayList();
+        bitmapList = in.createTypedArrayList(Bitmap.CREATOR);
+        giatoida = in.readLong();
+        giatoithieu = in.readLong();
+        luotthich = in.readLong();
+    }
+
+    public static final Creator<QuanAnModel> CREATOR = new Creator<QuanAnModel>() {
+        @Override
+        public QuanAnModel createFromParcel(Parcel in) {
+            return new QuanAnModel(in);
+        }
+
+        @Override
+        public QuanAnModel[] newArray(int size) {
+            return new QuanAnModel[size];
+        }
+    };
 
     public List<ChiNhanhQuanAnModel> getChiNhanhQuanAnModelList() {
         return chiNhanhQuanAnModelList;
@@ -268,5 +297,25 @@ public class QuanAnModel {
 
             odau_interface.getDanhsachQuananModel(quanAnModel);
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (giaohang ? 1 : 0));
+        dest.writeString(giodongcua);
+        dest.writeString(giomocua);
+        dest.writeString(tenquanan);
+        dest.writeString(videogioithieu);
+        dest.writeString(maquanan);
+        dest.writeStringList(tienich);
+        dest.writeStringList(hinhanhquanan);
+        dest.writeLong(giatoida);
+        dest.writeLong(giatoithieu);
+        dest.writeLong(luotthich);
     }
 }
