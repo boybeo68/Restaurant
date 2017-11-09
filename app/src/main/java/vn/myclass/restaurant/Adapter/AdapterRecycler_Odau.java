@@ -156,7 +156,7 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
                 }
             }
             //lấy các quán trong phạm vi 10km
-            if (chiNhanhQuanAnModelTam.getKhoangcach()<10.0){
+            if (chiNhanhQuanAnModelTam.getKhoangcach()<10000.0){
                 layQuanAnOgan(holder,position);
             }
         }
@@ -187,17 +187,8 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             holder.btnDatMonOdau.setVisibility(View.VISIBLE);
         }
         Log.d("SizeHinh",quanAnModel.getHinhanhquanan().size()+"");
-        if (quanAnModel.getHinhanhquanan().size()>0){
-
-            StorageReference storageHinhanh= FirebaseStorage.getInstance().getReference().child("hinhanh").child(quanAnModel.getHinhanhquanan().get(0));
-            long ONE_MEGABYTE=1024*1024;
-            storageHinhanh.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                    holder.imageHinhQuanAnODau.setImageBitmap(bitmap);
-                }
-            });
+        if (quanAnModel.getBitmapList().size()>0){
+            holder.imageHinhQuanAnODau.setImageBitmap(quanAnModel.getBitmapList().get(0));
 
         }
         //Lấy danh sách bình luận của quán ăn

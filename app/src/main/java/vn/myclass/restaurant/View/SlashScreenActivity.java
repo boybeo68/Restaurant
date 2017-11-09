@@ -29,7 +29,6 @@ import vn.myclass.restaurant.R;
 public class SlashScreenActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     TextView txtVersion;
     GoogleApiClient googleApiClient;
-    LocationManager locationManager;
     public static final int REQUEST_PERMISSION_LOCATION = 1;
     SharedPreferences sharedPreferences;
 

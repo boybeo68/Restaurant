@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class Odau_Fragment extends Fragment {
     RecyclerView recyclerOdau;
     ProgressBar progressBar;
     SharedPreferences sharedPreferences;
+    NestedScrollView nestedScrollView;
 
     @Nullable
     @Override
@@ -33,6 +35,7 @@ public class Odau_Fragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_odau,container,false);
         recyclerOdau= (RecyclerView) view.findViewById(R.id.rycyclerOdau);
         progressBar= (ProgressBar) view.findViewById(R.id.progress_barOdau);
+        nestedScrollView= (NestedScrollView) view.findViewById(R.id.NestedScrollViewOdau);
         return view;
     }
 
@@ -47,7 +50,7 @@ public class Odau_Fragment extends Fragment {
 
         odau_controller =new Odau_Controller(getContext());
         Log.d("kiemtratoado",sharedPreferences.getString("latitude","0") + "");
-        odau_controller.getDanhsachquananController(recyclerOdau,progressBar,vitrihientai);
+        odau_controller.getDanhsachquananController(nestedScrollView,recyclerOdau,progressBar,vitrihientai);
 
     }
 }
