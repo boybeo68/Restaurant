@@ -1,15 +1,49 @@
 package vn.myclass.restaurant.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by boybe on 11/6/2017.
  */
 
-public class ChiNhanhQuanAnModel {
+public class ChiNhanhQuanAnModel implements Parcelable {
     String diachi;
     Double latitude,longitude,khoangcach;
 
     public ChiNhanhQuanAnModel() {
     }
+
+    protected ChiNhanhQuanAnModel(Parcel in) {
+        diachi = in.readString();
+        if (in.readByte() == 0) {
+            latitude = null;
+        } else {
+            latitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            longitude = null;
+        } else {
+            longitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            khoangcach = null;
+        } else {
+            khoangcach = in.readDouble();
+        }
+    }
+
+    public static final Creator<ChiNhanhQuanAnModel> CREATOR = new Creator<ChiNhanhQuanAnModel>() {
+        @Override
+        public ChiNhanhQuanAnModel createFromParcel(Parcel in) {
+            return new ChiNhanhQuanAnModel(in);
+        }
+
+        @Override
+        public ChiNhanhQuanAnModel[] newArray(int size) {
+            return new ChiNhanhQuanAnModel[size];
+        }
+    };
 
     public String getDiachi() {
         return diachi;
@@ -41,5 +75,33 @@ public class ChiNhanhQuanAnModel {
 
     public void setKhoangcach(Double khoangcach) {
         this.khoangcach = khoangcach;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(diachi);
+        if (latitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(latitude);
+        }
+        if (longitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(longitude);
+        }
+        if (khoangcach == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(khoangcach);
+        }
     }
 }

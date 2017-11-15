@@ -243,11 +243,10 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             holder.txtKhoanCachQuanAnODau.setText(String.format("%.1f",chiNhanhQuanAnModelTam.getKhoangcach())+"km" );
 
         }
-        holder.txtTenQuananOdau.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent ichitietQuanAn=new Intent(context, ChiTietQuanAn_Activity.class);
-
                 ichitietQuanAn.putExtra("quanan",quanAnModel);
                 context.startActivity(ichitietQuanAn);
 

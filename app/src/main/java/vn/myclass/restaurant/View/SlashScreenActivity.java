@@ -87,6 +87,7 @@ public class SlashScreenActivity extends AppCompatActivity implements GoogleApiC
         }
         Location vitriHienTai = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
 
+
         if (vitriHienTai != null) {
             Log.d("toado", vitriHienTai.getLatitude() + "" );
             SharedPreferences.Editor editor=sharedPreferences.edit();
@@ -111,6 +112,7 @@ public class SlashScreenActivity extends AppCompatActivity implements GoogleApiC
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
+
         }else {
             Log.d("toado", "không lấy được tọa độ ");
         }

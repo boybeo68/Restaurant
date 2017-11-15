@@ -47,10 +47,13 @@ public class QuanAnModel implements Parcelable{
         maquanan = in.readString();
         tienich = in.createStringArrayList();
         hinhanhquanan = in.createStringArrayList();
-        bitmapList = in.createTypedArrayList(Bitmap.CREATOR);
         giatoida = in.readLong();
         giatoithieu = in.readLong();
         luotthich = in.readLong();
+        chiNhanhQuanAnModelList = new ArrayList<ChiNhanhQuanAnModel>();
+        in.readTypedList(chiNhanhQuanAnModelList,ChiNhanhQuanAnModel.CREATOR);
+        binhLuanModelList = new ArrayList<BinhLuanModel>();
+        in.readTypedList(binhLuanModelList,BinhLuanModel.CREATOR);
     }
 
     public static final Creator<QuanAnModel> CREATOR = new Creator<QuanAnModel>() {
@@ -317,5 +320,7 @@ public class QuanAnModel implements Parcelable{
         dest.writeLong(giatoida);
         dest.writeLong(giatoithieu);
         dest.writeLong(luotthich);
+        dest.writeTypedList(chiNhanhQuanAnModelList);
+        dest.writeTypedList(binhLuanModelList);
     }
 }

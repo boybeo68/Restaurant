@@ -1,6 +1,7 @@
 package vn.myclass.restaurant.View;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -72,6 +73,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
     TextView txtHoac,txtDangKy,txtQuenPass;
     EditText edEmailDN,edPassDN;
     Button btnDangNhap;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -131,7 +133,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
-
+        ThemprogressDialog();
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -208,9 +210,11 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
     //Lây tokenId đã đăng nhập bằng google để đăng nhập trên Firebase
     private void chungThucFireBase(String tokenId) {
         if (CHECK_PROVIDER_DANGNHAP == 1) {
+            ThemprogressDialog();
             AuthCredential authCredential = GoogleAuthProvider.getCredential(tokenId, null);
             mAuth.signInWithCredential(authCredential);
         } else if (CHECK_PROVIDER_DANGNHAP == 2) {
+            ThemprogressDialog();
             AuthCredential authCredential = FacebookAuthProvider.getCredential(tokenId);
             mAuth.signInWithCredential(authCredential);
         }
@@ -239,6 +243,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
                 startActivity(intent);
                 break;
             case R.id.btnDangNhap:
+
                 dangNhapEmail();
                 break;
             case R.id.txtQuenPass:
@@ -261,6 +266,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
             thongbao = getString(R.string.VuiLongNhap) + " " + getString(R.string.MatKhau);
             Toast.makeText(DangNhapActivity.this, thongbao, Toast.LENGTH_SHORT).show();
         }else {
+            ThemprogressDialog();
             mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -291,6 +297,15 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
         } else {
 
         }
+    }
+    public void ThemprogressDialog(){
+        progressDialog=ProgressDialog.show(DangNhapActivity.this, getString(R.string.ThongBao), getString(R.string.VuiLongCho), false, true, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
+            }
+        });
+        progressDialog.show();
     }
 }
 //end

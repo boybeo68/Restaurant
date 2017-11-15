@@ -35,5 +35,11 @@
     <string name="TopThanhVien">Top thành viên</string>
     <string name="Datmon">Đặt món</string>
     <string name="batGPS">Bạn hãy mở GPS </string>
+    <string name="TaiAnh">Tải ảnh </string>
+    <string name="LuuLai">Lưu lại</string>
+    <string name="BinhLuan">Bình luận</string>
+    <string name="Checkin">Check-in</string>
+    <string name="ChiaSe">Chia sẻ</string>
+    <string name="ThongBao">Thông báo</string>
 
 </resources>
