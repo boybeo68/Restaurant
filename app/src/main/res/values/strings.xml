@@ -41,5 +41,7 @@
     <string name="Checkin">Check-in</string>
     <string name="ChiaSe">Chia sẻ</string>
     <string name="ThongBao">Thông báo</string>
+    <string name="DangMoCua">Đang Mở Cửa</string>
+    <string name="DaDongCua">Đã Đóng cửa</string>
 
 </resources>
