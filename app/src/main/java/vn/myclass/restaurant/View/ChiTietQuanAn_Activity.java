@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,9 +38,9 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
         setContentView(R.layout.layout_main_chitietquanan);
 
         quanAnModel=getIntent().getParcelableExtra("quanan");
-        Log.d("kiemtraintent",quanAnModel.getTenquanan());
+//        Log.d("kiemtraintent",quanAnModel.getTenquanan());
         txtTenQuanAn= (TextView) findViewById(R.id.txtTenQuanAn_chitetQA);
-        txtDiachiQuanAn= (TextView) findViewById(R.id.txtTenDiachi_chitetQA);
+//        txtDiachiQuanAn= (TextView) findViewById(R.id.txtTenDiachi_chitetQA);
         txtGioHoatDong= (TextView) findViewById(R.id.txtGioHoatDong_chitietQA);
         txtTrangThai= (TextView) findViewById(R.id.txtTrangThai_chitietQA);
         txtTongCheckin= (TextView) findViewById(R.id.txtSoCheckin_chitetQA);
@@ -50,6 +53,20 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        //Chi nhánh quán ăn
+        LinearLayout linearLayout= (LinearLayout)findViewById(R.id.linear);      //find the linear layout
+        linearLayout.removeAllViews();                              //add this too
+        for(int i=0; i<quanAnModel.getChiNhanhQuanAnModelList().size();i++){          //looping to create 5 textviews
+
+            TextView chiNhanh= new TextView(this);              //dynamically create textview
+            chiNhanh.setLayoutParams(new LinearLayout.LayoutParams(             //select linearlayoutparam- set the width & height
+                    ViewGroup.LayoutParams.MATCH_PARENT, 48));
+            chiNhanh.setGravity(Gravity.CENTER_VERTICAL);                       //set the gravity too
+            chiNhanh.setText(i+1+": "+quanAnModel.getChiNhanhQuanAnModelList().get(i).getDiachi());//adding text
+            chiNhanh.setPadding(0,2,0,2);
+            linearLayout.addView(chiNhanh);                                     //inflating :)
+        }
 
     }
     @Override
@@ -83,7 +100,8 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
 
 
         txtTenQuanAn.setText(quanAnModel.getTenquanan());
-        txtDiachiQuanAn.setText(quanAnModel.getChiNhanhQuanAnModelList().get(0).getDiachi());
+//        txtDiachiQuanAn.setText(quanAnModel.getChiNhanhQuanAnModelList().get(0).getDiachi());
+        Log.d("kiemtraCN",quanAnModel.getChiNhanhQuanAnModelList().size()+"");
         txtGioHoatDong.setText(quanAnModel.getGiomocua()+"-"+quanAnModel.getGiodongcua());
         txtTongAnh.setText(quanAnModel.getHinhanhquanan().size()+"");
         txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size()+"");

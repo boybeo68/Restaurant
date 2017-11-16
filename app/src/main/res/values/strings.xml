@@ -43,5 +43,6 @@
     <string name="ThongBao">Thông báo</string>
     <string name="DangMoCua">Đang Mở Cửa</string>
     <string name="DaDongCua">Đã Đóng cửa</string>
+    <string name="ChiNhanh">Chi Nhánh</string>
 
 </resources>
