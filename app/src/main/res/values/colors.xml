@@ -7,4 +7,5 @@
     <color name="opacityBackground">#B3cd2027</color>
     <color name="colorBlack">#000</color>
     <color name="bacground_TrangChu">#CCC</color>
+    <color name="transparentBackgroundDangnhap">#33000000</color>
 </resources>

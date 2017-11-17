@@ -1,0 +1,80 @@
+package vn.myclass.restaurant.Adapter;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import vn.myclass.restaurant.R;
+
+/**
+ * Created by boybe on 11/17/2017.
+ */
+
+public class AdapterRecyclerHinhBinhLuan extends RecyclerView.Adapter<AdapterRecyclerHinhBinhLuan.ViewHolderHinhBinhLuan> {
+
+    Context context;
+    int resource;
+    List<Bitmap> listhinh;
+
+
+    public  AdapterRecyclerHinhBinhLuan(Context context, int resource, List<Bitmap> listhinh){
+        this.context=context;
+        this.resource=resource;
+        this.listhinh=listhinh;
+
+
+    }
+    public class ViewHolderHinhBinhLuan extends RecyclerView.ViewHolder {
+        ImageView imghinhBinhluan;
+        TextView txtSoHinhbinhluan;
+        FrameLayout khungsoHinhbinhluan;
+
+        public ViewHolderHinhBinhLuan(View itemView) {
+            super(itemView);
+            imghinhBinhluan= (ImageView) itemView.findViewById(R.id.imghinhBinhluan);
+            txtSoHinhbinhluan= (TextView) itemView.findViewById(R.id.txtSoHinhBinhLuan);
+            khungsoHinhbinhluan= (FrameLayout) itemView.findViewById(R.id.khungSoHinhBinhLuan);
+        }
+    }
+    @Override
+    public AdapterRecyclerHinhBinhLuan.ViewHolderHinhBinhLuan onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(parent.getContext()).inflate(resource,parent,false);
+        ViewHolderHinhBinhLuan viewHolderHinhBinhLuan=new ViewHolderHinhBinhLuan(view);
+        return viewHolderHinhBinhLuan;
+    }
+
+    @Override
+    public void onBindViewHolder(final AdapterRecyclerHinhBinhLuan.ViewHolderHinhBinhLuan holder, final int position) {
+        holder.imghinhBinhluan.setImageBitmap(listhinh.get(position));
+        if (position==3){
+
+            int sohinhconlai=listhinh.size()-4;
+            if (sohinhconlai>0){
+                holder.khungsoHinhbinhluan.setVisibility(View.VISIBLE);
+                holder.txtSoHinhbinhluan.setText("+"+sohinhconlai);
+            }
+
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return 4;
+    }
+
+
+}
