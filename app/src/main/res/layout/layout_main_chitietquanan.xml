@@ -4,251 +4,269 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bacground_TrangChu"
     tools:context="vn.myclass.restaurant.View.ChiTietQuanAn_Activity">
 
     <include layout="@layout/layout_toolbar" />
-
-    <android.support.v4.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
+        android:orientation="vertical"
+        android:layout_marginTop="?attr/actionBarSize"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/colorBlack"
-                    android:drawableTop="@drawable/ic_camera"
-                    android:padding="5dp"
-                    android:text="@string/TaiAnh"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorAccent" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/colorBlack"
-                    android:drawableTop="@drawable/ic_location"
-                    android:padding="5dp"
-                    android:text="@string/Checkin"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorAccent" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/colorBlack"
-                    android:drawableTop="@drawable/ic_comment"
-                    android:padding="5dp"
-                    android:text="@string/BinhLuan"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorAccent" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/colorBlack"
-                    android:drawableTop="@drawable/ic_bookmark"
-                    android:padding="5dp"
-                    android:text="@string/LuuLai"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorAccent" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/colorBlack"
-                    android:drawableTop="@drawable/ic_share"
-                    android:padding="5dp"
-                    android:text="@string/ChiaSe"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorAccent" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/imgAnhQuaAn_chitetQA"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/background"
-                />
-
-            <TextView
-                android:id="@+id/txtTenQuanAn_chitetQA"
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="Gogi house"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                />
+                android:layout_weight="1"
+                android:background="@color/colorBlack"
+                android:drawableTop="@drawable/ic_camera"
+                android:padding="5dp"
+                android:text="@string/TaiAnh"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent" />
 
-            <TextView
-                android:id="@+id/txtTenDiachi_chitetQA"
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:textStyle="bold"
-                android:text="@string/ChiNhanh" />
-            <LinearLayout
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:orientation="vertical"
-                android:id="@+id/linear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </LinearLayout>
+                android:layout_weight="1"
+                android:background="@color/colorBlack"
+                android:drawableTop="@drawable/ic_location"
+                android:padding="5dp"
+                android:text="@string/Checkin"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/bacground_TrangChu" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <Button
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:background="@color/colorBlack"
+                android:drawableTop="@drawable/ic_comment"
+                android:padding="5dp"
+                android:text="@string/BinhLuan"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txtSoHinhAnh_chitietQA"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/TaiAnh" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txtSoCheckin_chitetQA"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Checkin" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txtSoBinhLuan_chitietQA"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/BinhLuan" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txtSoLuuLai_chitietQA"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/LuuLai" />
-
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/bacground_TrangChu" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <Button
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:background="@color/colorBlack"
+                android:drawableTop="@drawable/ic_bookmark"
+                android:padding="5dp"
+                android:text="@string/LuuLai"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent" />
 
-                <TextView
-                    android:id="@+id/txtGioHoatDong_chitietQA"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="7:00 - 20:00"
-                    android:layout_marginLeft="10dp"/>
-
-                <TextView
-                    android:id="@+id/txtTrangThai_chitietQA"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chưa mỏ cửa"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginRight="10dp"/>
-            </LinearLayout>
-
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorBlack"
+                android:drawableTop="@drawable/ic_share"
+                android:padding="5dp"
+                android:text="@string/ChiaSe"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent" />
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedScrollvieChitiet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/colorAccent">
+                    <ImageView
+                        android:id="@+id/imgAnhQuaAn_chitetQA"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/background" />
+
+                    <TextView
+                        android:id="@+id/txtTenQuanAn_chitetQA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Gogi house"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtTenDiachi_chitetQA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="@string/ChiNhanh"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/bacground_TrangChu" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtSoHinhAnh_chitietQA"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="123"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/TaiAnh" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtSoCheckin_chitetQA"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="123"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Checkin" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtSoBinhLuan_chitietQA"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="123"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/BinhLuan" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtSoLuuLai_chitietQA"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="123"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/LuuLai" />
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/bacground_TrangChu" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtGioHoatDong_chitietQA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:text="7:00 - 20:00" />
+
+                        <TextView
+                            android:id="@+id/txtTrangThai_chitietQA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="Chưa mỏ cửa"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+
+                <include layout="@layout/layout_binhluan_chitetquanan" />
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

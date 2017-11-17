@@ -3,8 +3,11 @@ package vn.myclass.restaurant.View;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import vn.myclass.restaurant.Adapter.Adapter_BinhLuan;
 import vn.myclass.restaurant.Model.QuanAnModel;
 import vn.myclass.restaurant.R;
 
@@ -31,12 +35,16 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
     TextView txtTieudeToolbar;
     ImageView imgHinhQuanAn;
     Toolbar toolbar;
+    RecyclerView recyclerViewBinhluan;
+    Adapter_BinhLuan adapter_binhLuan;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main_chitietquanan);
 
+        recyclerViewBinhluan= (RecyclerView) findViewById(R.id.recycle_BinhLuan_ChitetQuanAn);
         quanAnModel=getIntent().getParcelableExtra("quanan");
 //        Log.d("kiemtraintent",quanAnModel.getTenquanan());
         txtTenQuanAn= (TextView) findViewById(R.id.txtTenQuanAn_chitetQA);
@@ -57,7 +65,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
         //Chi nhánh quán ăn
         LinearLayout linearLayout= (LinearLayout)findViewById(R.id.linear);      //find the linear layout
         linearLayout.removeAllViews();                              //add this too
-        for(int i=0; i<quanAnModel.getChiNhanhQuanAnModelList().size();i++){          //looping to create 5 textviews
+        for(int i=0; i<quanAnModel.getChiNhanhQuanAnModelList().size();i++){          //looping to create size textviews
 
             TextView chiNhanh= new TextView(this);              //dynamically create textview
             chiNhanh.setLayoutParams(new LinearLayout.LayoutParams(             //select linearlayoutparam- set the width & height
@@ -115,5 +123,14 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
                 imgHinhQuanAn.setImageBitmap(bitmap);
             }
         });
+        //Load danh sách bình luận
+        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(this);
+        recyclerViewBinhluan.setLayoutManager(layoutManager);
+        adapter_binhLuan=new Adapter_BinhLuan(this,quanAnModel.getBinhLuanModelList(),R.layout.custom_layout_binhluan_chitiet);
+        recyclerViewBinhluan.setAdapter(adapter_binhLuan);
+        adapter_binhLuan.notifyDataSetChanged();
+        NestedScrollView nestedScrollView= (NestedScrollView) findViewById(R.id.nestedScrollvieChitiet);
+        nestedScrollView.smoothScrollTo(0,0);
+
     }
 }
