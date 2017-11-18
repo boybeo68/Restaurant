@@ -54,6 +54,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/txtKhoangcachquananODau"
                 android:gravity="bottom"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="6km"/>
         </LinearLayout>
         <ImageView

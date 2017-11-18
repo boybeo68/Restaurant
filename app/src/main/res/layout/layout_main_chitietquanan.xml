@@ -108,34 +108,21 @@
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:text="@string/DanhSachChiNhanh"
-                        android:textStyle="bold" />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:paddingLeft="10dp"-->
+                        <!--android:text="@string/DanhSachChiNhanh"-->
+                        <!--android:textStyle="bold" />-->
 
-                    <LinearLayout
-                        android:id="@+id/linear"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="vertical"></LinearLayout>
+                    <!--<LinearLayout-->
+                        <!--android:id="@+id/linear"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_marginRight="10dp"-->
+                        <!--android:orientation="vertical"></LinearLayout>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:text="@string/ChiNhanhGanNhat"
-                        android:textStyle="bold"
-                        android:layout_marginTop="5dp"/>
-                    <TextView
-                        android:id="@+id/txtTenDiachi_chitetQA"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:text="test" />
 
                     <View
                         android:layout_width="match_parent"
@@ -267,7 +254,15 @@
                             android:text="Chưa mỏ cửa"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
                     </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="@string/ChiNhanhGanNhat"
+                        android:textStyle="bold"
+                        android:layout_marginTop="5dp"/>
 
                 </LinearLayout>
 

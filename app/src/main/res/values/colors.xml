@@ -9,4 +9,6 @@
     <color name="bacground_TrangChu">#CCC</color>
     <color name="transparentBackgroundDangnhap">#33000000</color>
     <color name="danghoatDong">#0bbe2c</color>
+    <color name="tranparentWhite">#B3FFFFFF</color>
+    <color name="colorWhite">#FFF</color>
 </resources>

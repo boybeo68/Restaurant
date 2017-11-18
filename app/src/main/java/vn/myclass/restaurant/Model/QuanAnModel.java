@@ -37,6 +37,9 @@ public class QuanAnModel implements Parcelable{
     List<BinhLuanModel> binhLuanModelList;
     List<ChiNhanhQuanAnModel>chiNhanhQuanAnModelList;
     List<Bitmap> bitmapList;
+    long giatoida;
+    long giatoithieu;
+    long luotthich;
 
     protected QuanAnModel(Parcel in) {
         giaohang = in.readByte() != 0;
@@ -86,12 +89,10 @@ public class QuanAnModel implements Parcelable{
 
 
 
-    long giatoida;
-    long giatoithieu;
-    long luotthich;
+
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference noderoot;
+   private DatabaseReference noderoot;
 
     public QuanAnModel() {
 
