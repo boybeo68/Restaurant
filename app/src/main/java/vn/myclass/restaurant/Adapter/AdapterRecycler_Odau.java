@@ -162,29 +162,12 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
                     chiNhanhQuanAnModelTam=chiNhanhQuanAnModel;
                 }
             }
-            //lấy các quán trong phạm vi 10km
+            //lấy các quán trong phạm vi 10000km
             if (chiNhanhQuanAnModelTam.getKhoangcach()<10000.0){
                 layQuanAnOgan(holder,position);
             }
         }
 
-    }
-
-    private void setHinhAnhBinhLuan(final CircleImageView circleImageView, String linkhinh){
-        StorageReference storageHinhUser = FirebaseStorage.getInstance().getReference().child("thanhvien").child(linkhinh);
-        long ONE_MEGABYTE = 1024 * 1024;
-        storageHinhUser.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                circleImageView.setImageBitmap(bitmap);
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return quanAnModelList.size();
     }
     public  void layQuanAnOgan(final AdapterRecycler_Odau.ViewHodel holder, int position){
         final QuanAnModel quanAnModel=quanAnModelList.get(position);
@@ -253,5 +236,23 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             }
         });
     }
+
+    private void setHinhAnhBinhLuan(final CircleImageView circleImageView, String linkhinh){
+        StorageReference storageHinhUser = FirebaseStorage.getInstance().getReference().child("thanhvien").child(linkhinh);
+        long ONE_MEGABYTE = 1024 * 1024;
+        storageHinhUser.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                circleImageView.setImageBitmap(bitmap);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return quanAnModelList.size();
+    }
+
 
 }

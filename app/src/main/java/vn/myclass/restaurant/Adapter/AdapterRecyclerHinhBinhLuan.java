@@ -1,6 +1,7 @@
 package vn.myclass.restaurant.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,9 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.myclass.restaurant.Model.BinhLuanModel;
 import vn.myclass.restaurant.R;
+import vn.myclass.restaurant.View.HienThiChiTietBinhLuan_Activity;
 
 /**
  * Created by boybe on 11/17/2017.
@@ -29,12 +32,15 @@ public class AdapterRecyclerHinhBinhLuan extends RecyclerView.Adapter<AdapterRec
     Context context;
     int resource;
     List<Bitmap> listhinh;
+    BinhLuanModel binhLuanModel;
+    boolean ichitietBinhluan;
 
-
-    public  AdapterRecyclerHinhBinhLuan(Context context, int resource, List<Bitmap> listhinh){
+    public  AdapterRecyclerHinhBinhLuan(Context context, int resource, List<Bitmap> listhinh, BinhLuanModel binhLuanModel,boolean ichitietBinhluan){
         this.context=context;
         this.resource=resource;
         this.listhinh=listhinh;
+        this.binhLuanModel=binhLuanModel;
+        this.ichitietBinhluan=ichitietBinhluan;
 
 
     }
@@ -60,20 +66,36 @@ public class AdapterRecyclerHinhBinhLuan extends RecyclerView.Adapter<AdapterRec
     @Override
     public void onBindViewHolder(final AdapterRecyclerHinhBinhLuan.ViewHolderHinhBinhLuan holder, final int position) {
         holder.imghinhBinhluan.setImageBitmap(listhinh.get(position));
-        if (position==3){
+        if (!ichitietBinhluan){
+            if (position==3){
 
-            int sohinhconlai=listhinh.size()-4;
-            if (sohinhconlai>0){
-                holder.khungsoHinhbinhluan.setVisibility(View.VISIBLE);
-                holder.txtSoHinhbinhluan.setText("+"+sohinhconlai);
+                int sohinhconlai=listhinh.size()-4;
+                if (sohinhconlai>0){
+                    holder.khungsoHinhbinhluan.setVisibility(View.VISIBLE);
+                    holder.txtSoHinhbinhluan.setText("+"+sohinhconlai);
+                    holder.imghinhBinhluan.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent ichitietBinhLuan=new Intent(context, HienThiChiTietBinhLuan_Activity.class);
+                            ichitietBinhLuan.putExtra("binhluanmodel",binhLuanModel);
+                            context.startActivity(ichitietBinhLuan);
+                        }
+                    });
+                }
+
             }
-
         }
+
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        if (!ichitietBinhluan){
+            return 4;
+        }else {
+            return listhinh.size();
+        }
+
     }
 
 

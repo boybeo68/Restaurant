@@ -109,11 +109,10 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/txtTenDiachi_chitetQA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="@string/ChiNhanh"
+                        android:text="@string/DanhSachChiNhanh"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -123,6 +122,20 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:orientation="vertical"></LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="@string/ChiNhanhGanNhat"
+                        android:textStyle="bold"
+                        android:layout_marginTop="5dp"/>
+                    <TextView
+                        android:id="@+id/txtTenDiachi_chitetQA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="test" />
 
                     <View
                         android:layout_width="match_parent"
@@ -260,7 +273,7 @@
 
 
 
-
+                <include layout="@layout/layout_tinhnang_chitietquanan" />
                 <include layout="@layout/layout_binhluan_chitetquanan" />
             </LinearLayout>
 

@@ -13,6 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDgujYQDYYXGBfKdCJB9MK0HmfsCssAmWY"/>
 
         <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
@@ -35,10 +38,12 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".View.DangNhapActivity" />
-        <activity android:name=".View.Trangchu_Activity"></activity>
+        <activity android:name=".View.Trangchu_Activity" />
         <activity android:name=".View.DangKy_Activity" />
         <activity android:name=".View.Resetpass_Activity" />
-        <activity android:name=".View.ChiTietQuanAn_Activity"></activity>
+        <activity android:name=".View.ChiTietQuanAn_Activity" />
+        <activity android:name=".View.HienThiChiTietBinhLuan_Activity" />
+        <activity android:name=".View.HinhBinhLuan_fullscreen_Activity"></activity>
     </application>
 
 </manifest>

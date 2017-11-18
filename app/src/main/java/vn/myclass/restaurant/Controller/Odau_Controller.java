@@ -65,11 +65,11 @@ public class Odau_Controller {
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             bitmaps.add(bitmap);
                             quanAnModel.setBitmapList(bitmaps);
-//                            if (quanAnModel.getBitmapList().size() == quanAnModel.getHinhanhquanan().size()) {
+                            if (quanAnModel.getBitmapList().size() == quanAnModel.getHinhanhquanan().size()) {
                                 quanAnModelList.add(quanAnModel);
                                 adapterRecycler_odau.notifyDataSetChanged();
                                 progressBar.setVisibility(View.GONE);
-//                            }
+                            }
 
 
                         }

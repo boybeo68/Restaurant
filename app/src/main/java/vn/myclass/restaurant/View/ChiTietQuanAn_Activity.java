@@ -2,6 +2,7 @@ package vn.myclass.restaurant.View;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -26,10 +34,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import vn.myclass.restaurant.Adapter.Adapter_BinhLuan;
+import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.QuanAnModel;
 import vn.myclass.restaurant.R;
 
-public class ChiTietQuanAn_Activity extends AppCompatActivity {
+public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapReadyCallback {
     QuanAnModel quanAnModel;
     TextView txtTenQuanAn,txtDiachiQuanAn,txtGioHoatDong,txtTrangThai,txtTongCheckin,txtTongBinhLuan,txtTongAnh;
     TextView txtTieudeToolbar;
@@ -37,6 +46,10 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerViewBinhluan;
     Adapter_BinhLuan adapter_binhLuan;
+    GoogleMap googleMap;
+    MapFragment mapFragment;
+    ChiNhanhQuanAnModel chiNhanhQuanAnModelTam,chiNhanhQuanAnModel;
+    int posstion=0;
 
 
     @Override
@@ -48,7 +61,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
         quanAnModel=getIntent().getParcelableExtra("quanan");
 //        Log.d("kiemtraintent",quanAnModel.getTenquanan());
         txtTenQuanAn= (TextView) findViewById(R.id.txtTenQuanAn_chitetQA);
-//        txtDiachiQuanAn= (TextView) findViewById(R.id.txtTenDiachi_chitetQA);
+        txtDiachiQuanAn= (TextView) findViewById(R.id.txtTenDiachi_chitetQA);
         txtGioHoatDong= (TextView) findViewById(R.id.txtGioHoatDong_chitietQA);
         txtTrangThai= (TextView) findViewById(R.id.txtTrangThai_chitietQA);
         txtTongCheckin= (TextView) findViewById(R.id.txtSoCheckin_chitetQA);
@@ -57,12 +70,15 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
         txtTieudeToolbar= (TextView) findViewById(R.id.txtTieudeToolbar);
         imgHinhQuanAn= (ImageView) findViewById(R.id.imgAnhQuaAn_chitetQA);
         toolbar= (Toolbar) findViewById(R.id.toolbar);
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        //Chi nhánh quán ăn
+        //Danh sách Chi nhánh quán ăn
         LinearLayout linearLayout= (LinearLayout)findViewById(R.id.linear);      //find the linear layout
         linearLayout.removeAllViews();                              //add this too
         for(int i=0; i<quanAnModel.getChiNhanhQuanAnModelList().size();i++){          //looping to create size textviews
@@ -75,6 +91,16 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
             chiNhanh.setPadding(0,2,0,2);
             linearLayout.addView(chiNhanh);                                     //inflating :)
         }
+//        Chi nhánh gần nhất
+        chiNhanhQuanAnModelTam=quanAnModel.getChiNhanhQuanAnModelList().get(0);
+        for (ChiNhanhQuanAnModel chiNhanhQuanAnModel:quanAnModel.getChiNhanhQuanAnModelList()){
+            if (chiNhanhQuanAnModelTam.getKhoangcach()>chiNhanhQuanAnModel.getKhoangcach()){
+                chiNhanhQuanAnModelTam=chiNhanhQuanAnModel;
+                posstion++;
+            }
+
+        }
+        txtDiachiQuanAn.setText(chiNhanhQuanAnModelTam.getDiachi());
 
     }
     @Override
@@ -98,6 +124,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
             Date dateDongCua=simpleDateFormat.parse(gioDongCua);
             if (dateHienTai.after(dateMoCua)&& dateHienTai.before(dateDongCua)){
                 txtTrangThai.setText(getString(R.string.DangMoCua));
+                txtTrangThai.setTextColor(Color.parseColor("#0bbe2c"));
             }else {
                 txtTrangThai.setText(getString(R.string.DaDongCua));
             }
@@ -133,4 +160,21 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity {
         nestedScrollView.smoothScrollTo(0,0);
 
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap=googleMap;
+        double latitude=quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getLatitude();
+        Log.d("testkc",posstion+"");
+        double longitude=quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getLongitude();
+
+        LatLng latLng=new LatLng(latitude,longitude);
+        MarkerOptions markerOptions=new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title(quanAnModel.getTenquanan());
+        googleMap.addMarker(markerOptions);
+        CameraUpdate cameraUpdate= CameraUpdateFactory.newLatLngZoom(latLng,14);
+        googleMap.moveCamera(cameraUpdate);
+    }
+
 }

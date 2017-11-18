@@ -79,7 +79,7 @@ public class Adapter_BinhLuan extends RecyclerView.Adapter<Adapter_BinhLuan.View
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                     bitmapList.add(bitmap);
                     if (bitmapList.size()==binhLuanModel.getHinhanhBinhLuanList().size()){
-                        AdapterRecyclerHinhBinhLuan adapterRecyclerHinhBinhLuan=new AdapterRecyclerHinhBinhLuan(context,R.layout.custom_layout_hinhbinhluan,bitmapList);
+                        AdapterRecyclerHinhBinhLuan adapterRecyclerHinhBinhLuan=new AdapterRecyclerHinhBinhLuan(context,R.layout.custom_layout_hinhbinhluan,bitmapList,binhLuanModel,false);
                         RecyclerView.LayoutManager layoutManager=new GridLayoutManager(context,2);
                         holder.recyclerViewHinhBinhluan.setLayoutManager(layoutManager);
                         holder.recyclerViewHinhBinhluan.setAdapter(adapterRecyclerHinhBinhLuan);
