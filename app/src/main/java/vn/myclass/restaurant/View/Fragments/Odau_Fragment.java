@@ -36,12 +36,6 @@ public class Odau_Fragment extends Fragment {
         recyclerOdau= (RecyclerView) view.findViewById(R.id.rycyclerOdau);
         progressBar= (ProgressBar) view.findViewById(R.id.progress_barOdau);
         nestedScrollView= (NestedScrollView) view.findViewById(R.id.NestedScrollViewOdau);
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         //lấy sharepreferences từ màn hình slashscreen : tọa độ
         sharedPreferences=getContext().getSharedPreferences("toado", Context.MODE_PRIVATE);
         Location vitrihientai=new Location("");
@@ -51,6 +45,13 @@ public class Odau_Fragment extends Fragment {
         odau_controller =new Odau_Controller(getContext());
         Log.d("kiemtratoado",sharedPreferences.getString("latitude","0") + "");
         odau_controller.getDanhsachquananController(getContext(),nestedScrollView,recyclerOdau,progressBar,vitrihientai);
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
 
     }
 }

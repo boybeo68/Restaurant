@@ -42,6 +42,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import vn.myclass.restaurant.Adapter.Adapter_BinhLuan;
+import vn.myclass.restaurant.Controller.ChitietQuanAnController;
 import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.QuanAnModel;
 import vn.myclass.restaurant.Model.TienIchModel;
@@ -50,7 +51,7 @@ import vn.myclass.restaurant.R;
 public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapReadyCallback {
     QuanAnModel quanAnModel;
     TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongCheckin, txtTongBinhLuan, txtTongAnh;
-    TextView txtTieudeToolbar, txtGioiHanGia;
+    TextView txtTieudeToolbar, txtGioiHanGia,txtTenWifi,txtMatkhauWifi,txtNgaydangWifi;
     ImageView imgHinhQuanAn;
     Toolbar toolbar;
     RecyclerView recyclerViewBinhluan;
@@ -58,7 +59,8 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     GoogleMap googleMap;
     MapFragment mapFragment;
     ChiNhanhQuanAnModel chiNhanhQuanAnModelTam, chiNhanhQuanAnModel;
-    LinearLayout lnkhungtienich;
+    LinearLayout lnkhungtienich,khungWifi;
+    ChitietQuanAnController chitietQuanAnController;
     int posstion = 0;
 
 
@@ -83,6 +85,10 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         txtGioiHanGia = (TextView) findViewById(R.id.txtGioihanGia);
         lnkhungtienich = (LinearLayout) findViewById(R.id.khungtienich);
+        txtTenWifi= (TextView) findViewById(R.id.txtTenWifi);
+        txtMatkhauWifi= (TextView) findViewById(R.id.txtMatkhauWifi);
+        khungWifi= (LinearLayout) findViewById(R.id.khungWifi);
+        txtNgaydangWifi= (TextView) findViewById(R.id.txtNgayDangWifi);
         mapFragment.getMapAsync(this);
 
         toolbar.setTitle("");
@@ -113,6 +119,8 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
         }
         txtDiachiQuanAn.setText(chiNhanhQuanAnModelTam.getDiachi());
+        chitietQuanAnController=new ChitietQuanAnController();
+        hienThiChiTietQuanan();
 
     }
 
@@ -121,11 +129,8 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         onBackPressed();
         return true;
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-//        Log.d("kiemtrabinhluan",quanAnModel.getBinhLuanModelList().size()+"-"+quanAnModel.getBinhLuanModelList().get(0).getThanhVienModel().getHoten());
+    private void   hienThiChiTietQuanan(){
+        //        Log.d("kiemtrabinhluan",quanAnModel.getBinhLuanModelList().size()+"-"+quanAnModel.getBinhLuanModelList().get(0).getThanhVienModel().getHoten());
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         String giohientai = simpleDateFormat.format(calendar.getTime());
@@ -186,6 +191,17 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         adapter_binhLuan.notifyDataSetChanged();
         NestedScrollView nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollvieChitiet);
         nestedScrollView.smoothScrollTo(0, 0);
+
+        //lấy dữ liệu từ controller wifi
+        // cần lấy thằng nào thì truyền nó vào
+        chitietQuanAnController.HienThiDanhSachWifiQuanAn(quanAnModel.getMaquanan(),txtTenWifi,txtMatkhauWifi,txtNgaydangWifi);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
 
     }
 
