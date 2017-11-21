@@ -1,6 +1,8 @@
 package vn.myclass.restaurant.Model;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import vn.myclass.restaurant.Controller.Interface.ChitietQuanAn_Interface;
+import vn.myclass.restaurant.R;
 
 /**
  * Created by boybe on 11/20/2017.
@@ -63,5 +66,15 @@ public class WifiQuanAnModel {
             }
         });
 
+
+    }
+    public void  ThemWifiQuanAn(final Context context, WifiQuanAnModel wifiQuanAnModel,String maquanan){
+        DatabaseReference datanodeWifiQuanan=FirebaseDatabase.getInstance().getReference().child("wifiquanans").child(maquanan);
+        datanodeWifiQuanan.push().setValue(wifiQuanAnModel, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                Toast.makeText(context,context.getResources().getString(R.string.success), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

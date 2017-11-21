@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDgujYQDYYXGBfKdCJB9MK0HmfsCssAmWY"/>
+            android:value="AIzaSyDgujYQDYYXGBfKdCJB9MK0HmfsCssAmWY" />
 
         <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
@@ -43,7 +43,12 @@
         <activity android:name=".View.Resetpass_Activity" />
         <activity android:name=".View.ChiTietQuanAn_Activity" />
         <activity android:name=".View.HienThiChiTietBinhLuan_Activity" />
-        <activity android:name=".View.HinhBinhLuan_fullscreen_Activity"></activity>
+        <activity android:name=".View.HinhBinhLuan_fullscreen_Activity" />
+        <activity android:name=".View.CapNhatDanhSachWifi" />
+        <activity android:name=".View.PopupCapNhatWifi"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
+
+        </activity>
     </application>
 
 </manifest>

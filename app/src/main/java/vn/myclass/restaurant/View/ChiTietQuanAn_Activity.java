@@ -1,5 +1,6 @@
 package vn.myclass.restaurant.View;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -48,7 +49,7 @@ import vn.myclass.restaurant.Model.QuanAnModel;
 import vn.myclass.restaurant.Model.TienIchModel;
 import vn.myclass.restaurant.R;
 
-public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapReadyCallback {
+public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapReadyCallback,View.OnClickListener {
     QuanAnModel quanAnModel;
     TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongCheckin, txtTongBinhLuan, txtTongAnh;
     TextView txtTieudeToolbar, txtGioiHanGia,txtTenWifi,txtMatkhauWifi,txtNgaydangWifi;
@@ -195,6 +196,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         //lấy dữ liệu từ controller wifi
         // cần lấy thằng nào thì truyền nó vào
         chitietQuanAnController.HienThiDanhSachWifiQuanAn(quanAnModel.getMaquanan(),txtTenWifi,txtMatkhauWifi,txtNgaydangWifi);
+        khungWifi.setOnClickListener(this);
 
     }
 
@@ -259,4 +261,14 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     }
 
 
+    @Override
+    public void onClick(View v) {
+        int id=v.getId();
+        switch (id){
+            case R.id.khungWifi:
+                Intent iDanhSachWifi = new Intent(ChiTietQuanAn_Activity.this,CapNhatDanhSachWifi.class);
+                iDanhSachWifi.putExtra("maquanan",quanAnModel.getMaquanan());
+                startActivity(iDanhSachWifi);
+        }
+    }
 }

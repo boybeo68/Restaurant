@@ -45,5 +45,11 @@
     <string name="DaDongCua">Đã Đóng cửa</string>
     <string name="DanhSachChiNhanh">Danh sách chi nhánh:</string>
     <string name="ChiNhanhGanNhat">Chi nhánh gần nhất:</string>
+    <string name="CapNhatWifi">Cập nhật wifi</string>
+    <string name="NhapTenWifi">Nhập tên wif</string>
+    <string name="NhapMatKhauWifi">Nhập mật khẩu wifi</string>
+    <string name="CapNhat">Cập nhật</string>
+    <string name="LoiCapNhatWifi">Vui lòng nhập đầy đủ thông tin </string>
+
 
 </resources>
