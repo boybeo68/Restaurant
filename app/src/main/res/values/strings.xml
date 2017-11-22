@@ -50,6 +50,7 @@
     <string name="NhapMatKhauWifi">Nhập mật khẩu wifi</string>
     <string name="CapNhat">Cập nhật</string>
     <string name="LoiCapNhatWifi">Vui lòng nhập đầy đủ thông tin </string>
+    <string name="ViTriHienTai">Vị trí hiện tại</string>
 
 
 </resources>

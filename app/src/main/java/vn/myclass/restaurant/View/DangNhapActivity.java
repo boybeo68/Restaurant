@@ -210,7 +210,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
     //Lây tokenId đã đăng nhập bằng google để đăng nhập trên Firebase
     private void chungThucFireBase(String tokenId) {
         if (CHECK_PROVIDER_DANGNHAP == 1) {
-            ThemprogressDialog();
+
             AuthCredential authCredential = GoogleAuthProvider.getCredential(tokenId, null);
             mAuth.signInWithCredential(authCredential);
         } else if (CHECK_PROVIDER_DANGNHAP == 2) {
@@ -233,6 +233,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
         int id = v.getId();
         switch (id) {
             case R.id.btnDangNhapGoogle:
+                ThemprogressDialog();
                 dangNhapGoogle(mGoogleApiClient);
                 break;
             case R.id.btnDangNhapFacebook:

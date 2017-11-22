@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -45,10 +46,10 @@
         <activity android:name=".View.HienThiChiTietBinhLuan_Activity" />
         <activity android:name=".View.HinhBinhLuan_fullscreen_Activity" />
         <activity android:name=".View.CapNhatDanhSachWifi" />
-        <activity android:name=".View.PopupCapNhatWifi"
-            android:theme="@style/Theme.AppCompat.Light.Dialog">
-
-        </activity>
+        <activity
+            android:name=".View.PopupCapNhatWifi"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+        <activity android:name=".View.DanDuongQuanAn_Activity"></activity>
     </application>
 
 </manifest>

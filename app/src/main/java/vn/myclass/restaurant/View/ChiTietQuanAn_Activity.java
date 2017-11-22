@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.vision.Frame;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,10 +51,10 @@ import vn.myclass.restaurant.Model.QuanAnModel;
 import vn.myclass.restaurant.Model.TienIchModel;
 import vn.myclass.restaurant.R;
 
-public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapReadyCallback,View.OnClickListener {
+public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
     QuanAnModel quanAnModel;
     TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongCheckin, txtTongBinhLuan, txtTongAnh;
-    TextView txtTieudeToolbar, txtGioiHanGia,txtTenWifi,txtMatkhauWifi,txtNgaydangWifi;
+    TextView txtTieudeToolbar, txtGioiHanGia, txtTenWifi, txtMatkhauWifi, txtNgaydangWifi;
     ImageView imgHinhQuanAn;
     Toolbar toolbar;
     RecyclerView recyclerViewBinhluan;
@@ -60,8 +62,9 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     GoogleMap googleMap;
     MapFragment mapFragment;
     ChiNhanhQuanAnModel chiNhanhQuanAnModelTam, chiNhanhQuanAnModel;
-    LinearLayout lnkhungtienich,khungWifi;
+    LinearLayout lnkhungtienich, khungWifi;
     ChitietQuanAnController chitietQuanAnController;
+    View khungtinhnang;
     int posstion = 0;
 
 
@@ -86,10 +89,11 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         txtGioiHanGia = (TextView) findViewById(R.id.txtGioihanGia);
         lnkhungtienich = (LinearLayout) findViewById(R.id.khungtienich);
-        txtTenWifi= (TextView) findViewById(R.id.txtTenWifi);
-        txtMatkhauWifi= (TextView) findViewById(R.id.txtMatkhauWifi);
-        khungWifi= (LinearLayout) findViewById(R.id.khungWifi);
-        txtNgaydangWifi= (TextView) findViewById(R.id.txtNgayDangWifi);
+        txtTenWifi = (TextView) findViewById(R.id.txtTenWifi);
+        txtMatkhauWifi = (TextView) findViewById(R.id.txtMatkhauWifi);
+        khungWifi = (LinearLayout) findViewById(R.id.khungWifi);
+        txtNgaydangWifi = (TextView) findViewById(R.id.txtNgayDangWifi);
+        khungtinhnang = (View) findViewById(R.id.khungtinhnang);
         mapFragment.getMapAsync(this);
 
         toolbar.setTitle("");
@@ -120,7 +124,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
         }
         txtDiachiQuanAn.setText(chiNhanhQuanAnModelTam.getDiachi());
-        chitietQuanAnController=new ChitietQuanAnController();
+        chitietQuanAnController = new ChitietQuanAnController();
         hienThiChiTietQuanan();
 
     }
@@ -130,7 +134,8 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         onBackPressed();
         return true;
     }
-    private void   hienThiChiTietQuanan(){
+
+    private void hienThiChiTietQuanan() {
         //        Log.d("kiemtrabinhluan",quanAnModel.getBinhLuanModelList().size()+"-"+quanAnModel.getBinhLuanModelList().get(0).getThanhVienModel().getHoten());
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -195,8 +200,9 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
         //lấy dữ liệu từ controller wifi
         // cần lấy thằng nào thì truyền nó vào
-        chitietQuanAnController.HienThiDanhSachWifiQuanAn(quanAnModel.getMaquanan(),txtTenWifi,txtMatkhauWifi,txtNgaydangWifi);
+        chitietQuanAnController.HienThiDanhSachWifiQuanAn(quanAnModel.getMaquanan(), txtTenWifi, txtMatkhauWifi, txtNgaydangWifi);
         khungWifi.setOnClickListener(this);
+        khungtinhnang.setOnClickListener(this);
 
     }
 
@@ -239,10 +245,10 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             ImageView imageTienIch = new ImageView(ChiTietQuanAn_Activity.this);
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(70, 70);
-                            layoutParams.setMargins(30,10,10,10);
+                            layoutParams.setMargins(30, 10, 10, 10);
                             imageTienIch.setLayoutParams(layoutParams);
                             imageTienIch.setScaleType(ImageView.ScaleType.FIT_XY);
-                            imageTienIch.setPadding(5,5,5,5);
+                            imageTienIch.setPadding(5, 5, 5, 5);
                             imageTienIch.setImageBitmap(bitmap);
                             lnkhungtienich.addView(imageTienIch);
                         }
@@ -263,12 +269,21 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
     @Override
     public void onClick(View v) {
-        int id=v.getId();
-        switch (id){
+        int id = v.getId();
+        switch (id) {
             case R.id.khungWifi:
-                Intent iDanhSachWifi = new Intent(ChiTietQuanAn_Activity.this,CapNhatDanhSachWifi.class);
-                iDanhSachWifi.putExtra("maquanan",quanAnModel.getMaquanan());
+                Intent iDanhSachWifi = new Intent(ChiTietQuanAn_Activity.this, CapNhatDanhSachWifi.class);
+                iDanhSachWifi.putExtra("maquanan", quanAnModel.getMaquanan());
                 startActivity(iDanhSachWifi);
+                break;
+            case R.id.khungtinhnang:
+                Intent idangDuong = new Intent(ChiTietQuanAn_Activity.this, DanDuongQuanAn_Activity.class);
+                idangDuong.putExtra("latitude",quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getLatitude());
+                idangDuong.putExtra("longitude",quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getLongitude());
+                idangDuong.putExtra("tenquan",quanAnModel.getTenquanan());
+                startActivity(idangDuong);
+                break;
+
         }
     }
 }

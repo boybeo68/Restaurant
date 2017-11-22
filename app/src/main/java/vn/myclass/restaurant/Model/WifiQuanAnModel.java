@@ -1,6 +1,7 @@
 package vn.myclass.restaurant.Model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import vn.myclass.restaurant.Controller.Interface.ChitietQuanAn_Interface;
 import vn.myclass.restaurant.R;
+import vn.myclass.restaurant.View.ChiTietQuanAn_Activity;
 
 /**
  * Created by boybe on 11/20/2017.
