@@ -51,6 +51,10 @@
     <string name="CapNhat">Cập nhật</string>
     <string name="LoiCapNhatWifi">Vui lòng nhập đầy đủ thông tin </string>
     <string name="ViTriHienTai">Vị trí hiện tại</string>
+    <string name="Dang">Đăng</string>
+    <string name="TieuDeBL">Tiêu đề (không bắt buộc)</string>
+    <string name="NoiDungBL">Viết trên 100 từ , đúng chính tả , ngôn ngữ văn hóa ,không spam...để được duyệt điểm thưởng</string>
+    <string name="VietBinhLuan">Viết bình luận</string>
 
 
 </resources>

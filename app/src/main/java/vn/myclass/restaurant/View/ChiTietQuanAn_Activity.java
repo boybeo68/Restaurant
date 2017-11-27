@@ -1,5 +1,6 @@
 package vn.myclass.restaurant.View;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,6 +58,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongCheckin, txtTongBinhLuan, txtTongAnh;
     TextView txtTieudeToolbar, txtGioiHanGia, txtTenWifi, txtMatkhauWifi, txtNgaydangWifi;
     ImageView imgHinhQuanAn;
+    Button btnBinhluan;
     Toolbar toolbar;
     RecyclerView recyclerViewBinhluan;
     Adapter_BinhLuan adapter_binhLuan;
@@ -68,6 +71,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     int posstion = 0;
 
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,12 +98,14 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         khungWifi = (LinearLayout) findViewById(R.id.khungWifi);
         txtNgaydangWifi = (TextView) findViewById(R.id.txtNgayDangWifi);
         khungtinhnang = (View) findViewById(R.id.khungtinhnang);
+        btnBinhluan= (Button) findViewById(R.id.btnBinhLuan);
         mapFragment.getMapAsync(this);
 
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
 //        //Danh sách Chi nhánh quán ăn
 //        LinearLayout linearLayout= (LinearLayout)findViewById(R.id.linear);      //find the linear layout
@@ -131,7 +137,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        finish();
         return true;
     }
 
@@ -203,6 +209,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         chitietQuanAnController.HienThiDanhSachWifiQuanAn(quanAnModel.getMaquanan(), txtTenWifi, txtMatkhauWifi, txtNgaydangWifi);
         khungWifi.setOnClickListener(this);
         khungtinhnang.setOnClickListener(this);
+        btnBinhluan.setOnClickListener(this);
 
     }
 
@@ -283,6 +290,11 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                 idangDuong.putExtra("tenquan",quanAnModel.getTenquanan());
                 startActivity(idangDuong);
                 break;
+            case R.id.btnBinhLuan:
+                Intent ibinhLuan = new Intent(ChiTietQuanAn_Activity.this, Binhluan_Actitivty.class);
+                ibinhLuan.putExtra("diachi",quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getDiachi());
+                ibinhLuan.putExtra("tenquan",quanAnModel.getTenquanan());
+                startActivity(ibinhLuan);
 
         }
     }

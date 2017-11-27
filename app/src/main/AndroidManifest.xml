@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
 
     <application
@@ -13,7 +14,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
+        >
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDgujYQDYYXGBfKdCJB9MK0HmfsCssAmWY" />
@@ -48,8 +52,10 @@
         <activity android:name=".View.CapNhatDanhSachWifi" />
         <activity
             android:name=".View.PopupCapNhatWifi"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
-        <activity android:name=".View.DanDuongQuanAn_Activity"></activity>
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity android:name=".View.DanDuongQuanAn_Activity" />
+        <activity android:name=".View.Binhluan_Actitivty" />
+        <activity android:name=".View.ChonHinhBinhLuan_Activity"></activity>
     </application>
 
 </manifest>
