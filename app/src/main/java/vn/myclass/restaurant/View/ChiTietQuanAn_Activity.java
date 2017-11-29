@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -61,7 +64,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     QuanAnModel quanAnModel;
     TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongCheckin, txtTongBinhLuan, txtTongAnh;
     TextView txtTieudeToolbar, txtGioiHanGia, txtTenWifi, txtMatkhauWifi, txtNgaydangWifi;
-    ImageView imgHinhQuanAn;
+    ImageView imgHinhQuanAn,imgPlay;
     Button btnBinhluan;
     Toolbar toolbar;
     RecyclerView recyclerViewBinhluan;
@@ -73,6 +76,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     ChitietQuanAnController chitietQuanAnController;
     View khungtinhnang;
     int posstion = 0;
+    VideoView videoView;
 
 
     @SuppressLint("RestrictedApi")
@@ -103,6 +107,8 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         txtNgaydangWifi = (TextView) findViewById(R.id.txtNgayDangWifi);
         khungtinhnang = (View) findViewById(R.id.khungtinhnang);
         btnBinhluan= (Button) findViewById(R.id.btnBinhLuan);
+        videoView= (VideoView) findViewById(R.id.videoTrailer);
+        imgPlay= (ImageView) findViewById(R.id.imgPlay);
         mapFragment.getMapAsync(this);
 
         toolbar.setTitle("");
@@ -110,6 +116,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
 
 //        //Danh sách Chi nhánh quán ăn
 //        LinearLayout linearLayout= (LinearLayout)findViewById(R.id.linear);      //find the linear layout
@@ -133,6 +140,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
             }
 
         }
+
         txtDiachiQuanAn.setText(chiNhanhQuanAnModelTam.getDiachi());
         chitietQuanAnController = new ChitietQuanAnController();
         hienThiChiTietQuanan();
@@ -199,6 +207,25 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                 imgHinhQuanAn.setImageBitmap(bitmap);
             }
         });
+
+        if (quanAnModel.getVideogioithieu()!=null){
+            videoView.setVisibility(View.VISIBLE);
+            imgPlay.setVisibility(View.VISIBLE);
+            imgHinhQuanAn.setVisibility(View.GONE);
+            StorageReference storageVideo=FirebaseStorage.getInstance().getReference().child("video").child(quanAnModel.getVideogioithieu());
+            storageVideo.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    videoView.setVideoURI(uri);
+                    videoView.seekTo(1000);
+
+                }
+            });
+        }else {
+            videoView.setVisibility(View.GONE);
+            imgPlay.setVisibility(View.GONE);
+            imgHinhQuanAn.setVisibility(View.VISIBLE);
+        }
         //Load danh sách bình luận
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -216,6 +243,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         khungWifi.setOnClickListener(this);
         khungtinhnang.setOnClickListener(this);
         btnBinhluan.setOnClickListener(this);
+        imgPlay.setOnClickListener(this);
 
     }
 
@@ -303,6 +331,12 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                 ibinhLuan.putExtra("tenquan",quanAnModel.getTenquanan());
                 ibinhLuan.putExtra("maquan",quanAnModel.getMaquanan());
                 startActivity(ibinhLuan);
+            case R.id.imgPlay:
+                videoView.start();
+                MediaController mediaController=new MediaController(this);
+                videoView.setMediaController(mediaController);
+                imgPlay.setVisibility(View.GONE);
+                break;
         }
     }
 }
