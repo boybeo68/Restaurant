@@ -53,6 +53,7 @@ import java.util.List;
 
 import vn.myclass.restaurant.Adapter.Adapter_BinhLuan;
 import vn.myclass.restaurant.Controller.ChitietQuanAnController;
+import vn.myclass.restaurant.Controller.ThucDonController;
 import vn.myclass.restaurant.Model.BinhLuanModel;
 import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.QuanAnModel;
@@ -74,9 +75,11 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     ChiNhanhQuanAnModel chiNhanhQuanAnModelTam, chiNhanhQuanAnModel;
     LinearLayout lnkhungtienich, khungWifi;
     ChitietQuanAnController chitietQuanAnController;
+    ThucDonController thucDonController;
     View khungtinhnang;
     int posstion = 0;
     VideoView videoView;
+    RecyclerView recyclerThucdon;
 
 
     @SuppressLint("RestrictedApi")
@@ -109,6 +112,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         btnBinhluan= (Button) findViewById(R.id.btnBinhLuan);
         videoView= (VideoView) findViewById(R.id.videoTrailer);
         imgPlay= (ImageView) findViewById(R.id.imgPlay);
+        recyclerThucdon= (RecyclerView) findViewById(R.id.recyclerThucDon);
         mapFragment.getMapAsync(this);
 
         toolbar.setTitle("");
@@ -143,6 +147,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
         txtDiachiQuanAn.setText(chiNhanhQuanAnModelTam.getDiachi());
         chitietQuanAnController = new ChitietQuanAnController();
+        thucDonController=new ThucDonController();
         hienThiChiTietQuanan();
 
     }
@@ -240,6 +245,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         //lấy dữ liệu từ controller wifi
         // cần lấy thằng nào thì truyền nó vào
         chitietQuanAnController.HienThiDanhSachWifiQuanAn(quanAnModel.getMaquanan(), txtTenWifi, txtMatkhauWifi, txtNgaydangWifi);
+        thucDonController.getDanhSachThucDonQuanan(this,quanAnModel.getMaquanan(),recyclerThucdon);
         khungWifi.setOnClickListener(this);
         khungtinhnang.setOnClickListener(this);
         btnBinhluan.setOnClickListener(this);

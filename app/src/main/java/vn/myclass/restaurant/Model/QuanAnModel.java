@@ -37,9 +37,18 @@ public class QuanAnModel implements Parcelable{
     List<BinhLuanModel> binhLuanModelList;
     List<ChiNhanhQuanAnModel>chiNhanhQuanAnModelList;
     List<Bitmap> bitmapList;
+    List<ThucDonModel>thucDonModelList;
     long giatoida;
     long giatoithieu;
     long luotthich;
+
+    public List<ThucDonModel> getThucDonModelList() {
+        return thucDonModelList;
+    }
+
+    public void setThucDonModelList(List<ThucDonModel> thucDonModelList) {
+        this.thucDonModelList = thucDonModelList;
+    }
 
     protected QuanAnModel(Parcel in) {
         giaohang = in.readByte() != 0;

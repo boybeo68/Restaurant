@@ -296,6 +296,8 @@
                     android:layout_height="2dp"
                     android:background="@color/bacground_TrangChu" />
                 <include layout="@layout/layout_wifi_chitietquanan" />
+                <include layout="@layout/layout_thucdon_chitiet" />
+
                 <include layout="@layout/layout_binhluan_chitetquanan" />
             </LinearLayout>
 
