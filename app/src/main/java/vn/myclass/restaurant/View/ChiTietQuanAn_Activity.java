@@ -43,13 +43,17 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import vn.myclass.restaurant.Adapter.Adapter_BinhLuan;
 import vn.myclass.restaurant.Controller.ChitietQuanAnController;
+import vn.myclass.restaurant.Model.BinhLuanModel;
 import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.QuanAnModel;
+import vn.myclass.restaurant.Model.ThanhVienModel;
 import vn.myclass.restaurant.Model.TienIchModel;
 import vn.myclass.restaurant.R;
 
@@ -196,11 +200,13 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
             }
         });
         //Load danh sách bình luận
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerViewBinhluan.setLayoutManager(layoutManager);
         adapter_binhLuan = new Adapter_BinhLuan(this, quanAnModel.getBinhLuanModelList(), R.layout.custom_layout_binhluan_chitiet);
         recyclerViewBinhluan.setAdapter(adapter_binhLuan);
         adapter_binhLuan.notifyDataSetChanged();
+
         NestedScrollView nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollvieChitiet);
         nestedScrollView.smoothScrollTo(0, 0);
 
@@ -216,8 +222,6 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     @Override
     protected void onStart() {
         super.onStart();
-
-
     }
 
     @Override
@@ -237,39 +241,42 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     }
 
     private void downHinhTienIch() {
+        if (quanAnModel.getTienich()!=null){
+            for (String matienich : quanAnModel.getTienich()) {
+                DatabaseReference nodeTienIch = FirebaseDatabase.getInstance().getReference().child("quanlytienichs").child(matienich);
+                nodeTienIch.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-        for (String matienich : quanAnModel.getTienich()) {
-            DatabaseReference nodeTienIch = FirebaseDatabase.getInstance().getReference().child("quanlytienichs").child(matienich);
-            nodeTienIch.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    TienIchModel tienIchModel = dataSnapshot.getValue(TienIchModel.class);
-                    StorageReference storageHinhQuanAn = FirebaseStorage.getInstance().getReference().child("hinhtienich").child(tienIchModel.getHinhtienich());
-                    long ONE_MEGABYTE = 1024 * 1024;
-                    storageHinhQuanAn.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            ImageView imageTienIch = new ImageView(ChiTietQuanAn_Activity.this);
-                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(70, 70);
-                            layoutParams.setMargins(30, 10, 10, 10);
-                            imageTienIch.setLayoutParams(layoutParams);
-                            imageTienIch.setScaleType(ImageView.ScaleType.FIT_XY);
-                            imageTienIch.setPadding(5, 5, 5, 5);
-                            imageTienIch.setImageBitmap(bitmap);
-                            lnkhungtienich.addView(imageTienIch);
-                        }
-                    });
-                }
+                        TienIchModel tienIchModel = dataSnapshot.getValue(TienIchModel.class);
+                        StorageReference storageHinhQuanAn = FirebaseStorage.getInstance().getReference().child("hinhtienich").child(tienIchModel.getHinhtienich());
+                        long ONE_MEGABYTE = 1024 * 1024;
+                        storageHinhQuanAn.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                ImageView imageTienIch = new ImageView(ChiTietQuanAn_Activity.this);
+                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(70, 70);
+                                layoutParams.setMargins(30, 10, 10, 10);
+                                imageTienIch.setLayoutParams(layoutParams);
+                                imageTienIch.setScaleType(ImageView.ScaleType.FIT_XY);
+                                imageTienIch.setPadding(5, 5, 5, 5);
+                                imageTienIch.setImageBitmap(bitmap);
+                                lnkhungtienich.addView(imageTienIch);
+                            }
+                        });
+                    }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
-
-
+                    }
+                });
+            }
+        }else {
+            lnkhungtienich.setVisibility(View.INVISIBLE);
         }
+
 
     }
 
@@ -294,8 +301,8 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                 Intent ibinhLuan = new Intent(ChiTietQuanAn_Activity.this, Binhluan_Actitivty.class);
                 ibinhLuan.putExtra("diachi",quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getDiachi());
                 ibinhLuan.putExtra("tenquan",quanAnModel.getTenquanan());
+                ibinhLuan.putExtra("maquan",quanAnModel.getMaquanan());
                 startActivity(ibinhLuan);
-
         }
     }
 }

@@ -3,6 +3,7 @@ package vn.myclass.restaurant.View;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -74,6 +75,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
     EditText edEmailDN,edPassDN;
     Button btnDangNhap;
     ProgressDialog progressDialog;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +105,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
         txtDangKy.setOnClickListener(this);
         btnDangNhap.setOnClickListener(this);
         txtQuenPass.setOnClickListener(this);
+        sharedPreferences=getSharedPreferences("luudangnhap",MODE_PRIVATE);
         taoClientDangNhapGoogle();
 
     }
@@ -292,6 +295,10 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
+            SharedPreferences.Editor editor=sharedPreferences.edit();
+            editor.putString("mauser",user.getUid());
+            editor.commit();
+
             Intent iTrangChu = new Intent(DangNhapActivity.this, Trangchu_Activity.class);
             startActivity(iTrangChu);
 //            Toast.makeText(this,user.getEmail(),Toast.LENGTH_LONG).show();

@@ -29,13 +29,12 @@ public class Adapter_BinhLuan extends RecyclerView.Adapter<Adapter_BinhLuan.View
     Context context;
     List<BinhLuanModel>binhLuanModelList;
     int layout;
-    List<Bitmap>bitmapList;
+
 
     public Adapter_BinhLuan(Context context, List<BinhLuanModel>binhLuanModelList,int layout){
         this.context=context;
         this.binhLuanModelList=binhLuanModelList;
         this.layout=layout;
-        bitmapList=new ArrayList<>();
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {
@@ -70,6 +69,7 @@ public class Adapter_BinhLuan extends RecyclerView.Adapter<Adapter_BinhLuan.View
 //
         setHinhAnhBinhLuan(holder.circleImageView,binhLuanModel.getThanhVienModel().getHinhanh());
 //        Lấy ra list hình ảnh của  từng bình luậnbình luận
+        final List<Bitmap>bitmapList=new ArrayList<>();
         for (String linkhinh : binhLuanModel.getHinhanhBinhLuanList()){
             StorageReference storageHinhUser = FirebaseStorage.getInstance().getReference().child("hinhanh").child(linkhinh);
             long ONE_MEGABYTE = 1024 * 1024;
@@ -106,12 +106,7 @@ public class Adapter_BinhLuan extends RecyclerView.Adapter<Adapter_BinhLuan.View
 
     @Override
     public int getItemCount() {
-        int sobinhluan=binhLuanModelList.size();
-        if (sobinhluan>=5){
-            return 5;
-        }else{
-            return binhLuanModelList.size();
-        }
+        return binhLuanModelList.size();
     }
 
 

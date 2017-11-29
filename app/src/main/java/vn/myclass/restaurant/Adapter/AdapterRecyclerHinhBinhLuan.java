@@ -91,7 +91,12 @@ public class AdapterRecyclerHinhBinhLuan extends RecyclerView.Adapter<AdapterRec
     @Override
     public int getItemCount() {
         if (!ichitietBinhluan){
-            return 4;
+            if (listhinh.size()<4){
+                return listhinh.size();
+            }else {
+                return 4;
+            }
+
         }else {
             return listhinh.size();
         }
