@@ -56,6 +56,16 @@
     <string name="NoiDungBL">Viết trên 100 từ , đúng chính tả , ngôn ngữ văn hóa ,không spam...để được duyệt điểm thưởng</string>
     <string name="VietBinhLuan">Viết bình luận</string>
     <string name="ThucDon">Thực đơn</string>
+    <string name="TenQuan">Tên quán ăn</string>
+    <string name="GiaToiDa">Giá tối đa</string>
+    <string name="GiaToiThieu">Giá tối thiểu</string>
+    <string name="KhongGiaoHang">Không giao hàng</string>
+    <string name="GioMoCua">Giờ mở cửa</string>
+    <string name="GioDongCua">Giờ đóng cửa</string>
+    <string name="ChiNhanh">Chi nhánh</string>
+    <string name="ThemThucDon">Thêm thực đơn</string>
+    <string name="ThemQuanAn">Thêm quán ăn</string>
+    <string name="QuanAn">Quán ăn</string>
 
 
 </resources>

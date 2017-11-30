@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import vn.myclass.restaurant.View.Fragments.Angi_Fragment;
+import vn.myclass.restaurant.View.Fragments.ThemQuanAn_Fragment;
 import vn.myclass.restaurant.View.Fragments.Odau_Fragment;
 
 /**
@@ -12,11 +12,11 @@ import vn.myclass.restaurant.View.Fragments.Odau_Fragment;
  */
 
 public class Angi_Odau_Adapter extends FragmentStatePagerAdapter {
-    Angi_Fragment angi_fragment;
+    ThemQuanAn_Fragment angi_fragment;
     Odau_Fragment odau_fragment;
     public Angi_Odau_Adapter(FragmentManager fm) {
         super(fm);
-        angi_fragment=new Angi_Fragment();
+        angi_fragment=new ThemQuanAn_Fragment();
         odau_fragment =new Odau_Fragment();
     }
 

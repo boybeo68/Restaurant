@@ -33,7 +33,7 @@
                 android:button="@android:color/transparent"
                 android:checked="true"
                 android:padding="10dp"
-                android:text="@string/ODau"
+                android:text="@string/QuanAn"
                 android:textColor="@drawable/changetext_radio" />
 
             <RadioButton
@@ -43,7 +43,7 @@
                 android:background="@drawable/custom_radio_angi"
                 android:button="@android:color/transparent"
                 android:padding="10dp"
-                android:text="@string/AnGi"
+                android:text="@string/ThemQuanAn"
                 android:textColor="@drawable/changetext_radio" />
         </RadioGroup>
 

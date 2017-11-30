@@ -5,19 +5,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
-        >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDgujYQDYYXGBfKdCJB9MK0HmfsCssAmWY" />
@@ -55,7 +53,10 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity android:name=".View.DanDuongQuanAn_Activity" />
         <activity android:name=".View.Binhluan_Actitivty" />
-        <activity android:name=".View.ChonHinhBinhLuan_Activity"></activity>
+        <activity android:name=".View.ChonHinhBinhLuan_Activity" />
+        <activity android:name=".View.ThemQuanAn_Activity">
+
+        </activity>
     </application>
 
 </manifest>

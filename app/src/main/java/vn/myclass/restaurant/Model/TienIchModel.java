@@ -17,6 +17,15 @@ import vn.myclass.restaurant.View.ChiTietQuanAn_Activity;
 
 public class TienIchModel {
     String hinhtienich,tentienich;
+    String maTienIch;
+
+    public String getMaTienIch() {
+        return maTienIch;
+    }
+
+    public void setMaTienIch(String maTienIch) {
+        this.maTienIch = maTienIch;
+    }
 
     public TienIchModel() {
     }

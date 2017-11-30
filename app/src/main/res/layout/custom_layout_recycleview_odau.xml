@@ -1,62 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardViewOdau"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:id="@+id/cardViewOdau"
-    >
+    android:layout_marginTop="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="5dp"
-            >
+            android:padding="5dp">
+
             <TextView
                 android:id="@+id/txtDiemtrungbinhQuanAn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/background_cycle"
-                android:text="0"
-                android:gravity="center"
                 android:layout_margin="5dp"
-                android:textColor="@color/colorAccent"/>
+                android:background="@drawable/background_cycle"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/colorAccent" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-
                 android:layout_margin="5dp"
-                >
+                android:layout_weight="1"
+
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/txtTenquananOdau"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Gogi house"
-                    android:textStyle="bold"
                     android:textSize="18sp"
+                    android:textStyle="bold"
 
                     />
+
                 <TextView
                     android:id="@+id/txtDiachiquananOdau"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thanh Nhàn Hà nội "/>
+                    android:text="Thanh Nhàn Hà nội " />
             </LinearLayout>
+
             <TextView
+                android:id="@+id/txtKhoangcachquananODau"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/txtKhoangcachquananODau"
                 android:gravity="bottom"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="6km"/>
+                android:text="6km"
+                android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>
+
         <ImageView
             android:id="@+id/imgHinhQuananOdau"
             android:layout_width="match_parent"
@@ -65,50 +68,52 @@
             android:src="@drawable/hinhtest"
 
             />
+
         <Button
+            android:id="@+id/btnDatmonOdau"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btnDatmonOdau"
-            android:visibility="gone"
-            android:text="@string/Datmon"
             android:layout_margin="5dp"
-            android:padding="5dp"
-            android:drawableTop="@drawable/ic_local_shipping_white_24dp"
-            android:textColor="@color/colorAccent"
             android:background="@drawable/button_radius"
+            android:drawableTop="@drawable/ic_local_shipping_white_24dp"
+            android:padding="5dp"
+            android:text="@string/Datmon"
             android:textAllCaps="false"
-            />
+            android:textColor="@color/colorAccent"
+            android:visibility="gone" />
+
         <LinearLayout
+            android:id="@+id/containerBinhluan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="5dp"
-            android:id="@+id/containerBinhluan"
-            >
+            android:padding="5dp">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleimageviewUser"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:gravity="center"
                 android:src="@drawable/background"
                 android:text="6.6"
-                android:gravity="center"
-                android:layout_margin="5dp"
-                android:textColor="@color/colorAccent"/>
+                android:textColor="@color/colorAccent" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-
                 android:layout_margin="5dp"
-                >
+                android:layout_weight="1"
+
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/txtTieudebinhluan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tiêu đề bình luận"
-                    android:textStyle="bold"
                     android:textSize="15sp"
+                    android:textStyle="bold"
 
                     />
 
@@ -119,45 +124,48 @@
                     android:text="Thanh Nhàn Hà nội "
                     android:textSize="12sp" />
             </LinearLayout>
+
             <TextView
+                android:id="@+id/txtChamdiembinhluan"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/txtChamdiembinhluan"
                 android:gravity="bottom"
                 android:text="6.6"
-                android:textColor="#0ae239"/>
+                android:textColor="#0ae239" />
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/containerBinhluan2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="5dp"
-            android:id="@+id/containerBinhluan2"
-            >
+            android:padding="5dp">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleimageviewUser2"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:gravity="center"
                 android:src="@drawable/background"
                 android:text="6.6"
-                android:gravity="center"
-                android:layout_margin="5dp"
-                android:textColor="@color/colorAccent"/>
+                android:textColor="@color/colorAccent" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-
                 android:layout_margin="5dp"
-                >
+                android:layout_weight="1"
+
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/txtTieudebinhluan2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Gogi house"
-                    android:textStyle="bold"
                     android:textSize="15sp"
+                    android:textStyle="bold"
 
                     />
 
@@ -168,37 +176,41 @@
                     android:text="Thanh Nhàn Hà nội "
                     android:textSize="12sp" />
             </LinearLayout>
+
             <TextView
+                android:id="@+id/txtChamdiembinhluan2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/txtChamdiembinhluan2"
                 android:gravity="bottom"
-                android:textColor="#0ae239"
-                android:text="6.6"/>
+                android:text="6.6"
+                android:textColor="#0ae239" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp">
-            <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtTongbl"
-                android:layout_margin="5dp"
-                android:drawablePadding="5dp"
-                android:gravity="center"
-            android:drawableLeft="@drawable/ic_insert_comment_black_24dp"
-            android:text="0"
 
-            />
             <TextView
+                android:id="@+id/txtTongbl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtTonghinhanhbl"
                 android:layout_margin="5dp"
+                android:drawableLeft="@drawable/ic_insert_comment_black_24dp"
                 android:drawablePadding="5dp"
                 android:gravity="center"
+                android:text="0"
+
+                />
+
+            <TextView
+                android:id="@+id/txtTonghinhanhbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:drawableLeft="@drawable/ic_photo_camera_black_24dp"
+                android:drawablePadding="5dp"
+                android:gravity="center"
                 android:text="0"
 
                 />
