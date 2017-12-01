@@ -14,7 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
@@ -47,9 +49,10 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     List<String> thucDonList;
     List<TienIchModel> tienIchModelList;
     List<String>selecttienIchList;
+    List<String>chinhanhList;
     ArrayAdapter<String> adapterKhuvuc;
     ArrayAdapter<String> adapterThucDon;
-    LinearLayout khungtienich;
+    LinearLayout khungtienich,khungChiNhanh,khungChuaChiNhanh;
 
 
     @Nullable
@@ -61,6 +64,9 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         spinnerKhuVuc = (Spinner) view.findViewById(R.id.spinnerKhuVuc);
         spinnerThucDon = (Spinner) view.findViewById(R.id.spinnerThucDon);
         khungtienich= (LinearLayout) view.findViewById(R.id.khungTienTich);
+        khungChiNhanh= (LinearLayout) view.findViewById(R.id.khungChiNhanh);
+        khungChuaChiNhanh= (LinearLayout) view.findViewById(R.id.khungChuaChiNhanh);
+        cloneChiNhanh();
 
 
         thucDonModelList = new ArrayList<>();
@@ -68,6 +74,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         thucDonList = new ArrayList<>();
         tienIchModelList = new ArrayList<>();
         selecttienIchList=new ArrayList<>();
+        chinhanhList=new ArrayList<>();
         adapterKhuvuc = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, khuVucList);
         spinnerKhuVuc.setAdapter(adapterKhuvuc);
         adapterKhuvuc.notifyDataSetChanged();
@@ -86,6 +93,42 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         spinnerThucDon.setOnItemSelectedListener(this);
         return view;
 
+    }
+    private void cloneChiNhanh(){
+        final View view1=LayoutInflater.from(getContext()).inflate(R.layout.layout_clone_chinhanh,null);
+
+        final ImageButton imgThemChiNhanh= (ImageButton) view1.findViewById(R.id.imgThemChiNhanh);
+        final ImageButton imgXoaChiNhanh= (ImageButton) view1.findViewById(R.id.imgXoaChiNhanh);
+        imgThemChiNhanh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText edtTenChiNhanh= (EditText) view1.findViewById(R.id.edtTenChiNhanh);
+                String tenchinhanh=edtTenChiNhanh.getText().toString();
+
+                //tạo 1 view mới để add
+                v.setVisibility(View.GONE);
+                imgXoaChiNhanh.setVisibility(View.VISIBLE);
+                imgXoaChiNhanh.setTag(tenchinhanh);
+
+                chinhanhList.add(tenchinhanh);
+                edtTenChiNhanh.setFocusable(false);
+//                edtTenChiNhanh.setFocusableInTouchMode(false);
+
+                Log.d("kiemtraList",chinhanhList.size()+"");
+
+               cloneChiNhanh();
+            }
+        });
+        imgXoaChiNhanh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tenchinhanh=v.getTag().toString();
+                chinhanhList.remove(tenchinhanh);
+                khungChuaChiNhanh.removeView(view1);
+                Log.d("kiemtraList",chinhanhList.size()+"");
+            }
+        });
+        khungChuaChiNhanh.addView(view1);
     }
 
     private void layDanhSachTienIch() {

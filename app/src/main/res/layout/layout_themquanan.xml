@@ -23,14 +23,13 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/GiaToiDa"
                 android:inputType="number"
-                android:text="0" />
+                />
 
             <EditText
                 android:id="@+id/edGiaToiThieu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/GiaToiThieu"
-                android:text="0"
                 android:inputType="number"
                 />
             <RadioGroup
@@ -109,23 +108,12 @@
                 </LinearLayout>
             </HorizontalScrollView>
             <LinearLayout
+                android:id="@+id/khungChuaChiNhanh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="@string/ChiNhanh" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_white_24dp"
-                    android:padding="12dp"
-                    android:background="@color/colorPrimaryDark"/>
-
+                android:orientation="vertical">
             </LinearLayout>
+
             <Spinner
                 android:id="@+id/spinnerKhuVuc"
                 android:layout_width="match_parent"
