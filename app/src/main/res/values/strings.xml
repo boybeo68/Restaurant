@@ -66,6 +66,10 @@
     <string name="ThemThucDon">Thêm thực đơn</string>
     <string name="ThemQuanAn">Thêm quán ăn</string>
     <string name="QuanAn">Quán ăn</string>
+    <string name="TenMon">Tên món</string>
+    <string name="GiaTien">Giá Tiền</string>
+    <string name="NhapTenMon">Vui lòng nhập tên món</string>
+    <string name="NhapGiatien">Vui lòng nhập giá tiền</string>
 
 
 </resources>

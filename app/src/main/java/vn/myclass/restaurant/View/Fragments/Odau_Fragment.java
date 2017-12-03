@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 
 import vn.myclass.restaurant.Controller.Odau_Controller;
 import vn.myclass.restaurant.R;
@@ -28,6 +30,8 @@ public class Odau_Fragment extends Fragment {
     ProgressBar progressBar;
     SharedPreferences sharedPreferences;
     NestedScrollView nestedScrollView;
+    LinearLayout khungdanhmuc;
+    RadioButton rd_DanhMuc;
 
     @Nullable
     @Override
@@ -36,6 +40,9 @@ public class Odau_Fragment extends Fragment {
         recyclerOdau= (RecyclerView) view.findViewById(R.id.rycyclerOdau);
         progressBar= (ProgressBar) view.findViewById(R.id.progress_barOdau);
         nestedScrollView= (NestedScrollView) view.findViewById(R.id.NestedScrollViewOdau);
+        khungdanhmuc= (LinearLayout) view.findViewById(R.id.khungdanhmuc);
+        rd_DanhMuc= (RadioButton) view.findViewById(R.id.rd_danhmuc);
+        
         //lấy sharepreferences từ màn hình slashscreen : tọa độ
         sharedPreferences=getContext().getSharedPreferences("toado", Context.MODE_PRIVATE);
         Location vitrihientai=new Location("");
