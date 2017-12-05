@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -24,28 +25,48 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.ChonHinhBinhLuanModel;
 import vn.myclass.restaurant.Model.MonanModel;
+import vn.myclass.restaurant.Model.QuanAnModel;
+import vn.myclass.restaurant.Model.TestModel;
 import vn.myclass.restaurant.Model.ThemThucDonModel;
 import vn.myclass.restaurant.Model.ThucDonModel;
 import vn.myclass.restaurant.Model.TienIchModel;
 import vn.myclass.restaurant.R;
 import vn.myclass.restaurant.View.DangKy_Activity;
 import vn.myclass.restaurant.View.ThemQuanAn_Activity;
+import vn.myclass.restaurant.View.Trangchu_Activity;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -63,8 +84,10 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     final int RESULT_IMG6 = 116;
     final int RESULT_IMGTHUCDON = 117;
     final int RESULT_VIDEO = 200;
-    Button btnGioMoCua, btnGioDongCua;
-    String gioMoCua, gioDongCua;
+    Button btnGioMoCua, btnGioDongCua,btnThemQuanAn;
+    RadioGroup rdgTrangThai;
+    EditText edtTenQuan,edtGiaToiDa,edtGiaToiThieu;
+    String gioMoCua, gioDongCua,khuVuc;
     Spinner spinnerKhuVuc;
     List<ThucDonModel> thucDonModelList;
     List<String> khuVucList;
@@ -80,6 +103,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     ImageView imgTam,imgHinQuan1,imgHinQuan2,imgHinQuan3,imgHinQuan4,imgHinQuan5,imgHinQuan6,imgVideo;
     LinearLayout khungtienich,khungChiNhanh,khungChuaChiNhanh,khungchuaThucDon;
     VideoView videoView;
+    String maQuanAn;
 
 
     @Nullable
@@ -102,6 +126,12 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         imgHinQuan6= (ImageView) view.findViewById(R.id.imgHinhQuan6);
         videoView= (VideoView) view.findViewById(R.id.videoView);
         imgVideo= (ImageView) view.findViewById(R.id.imgvideo);
+        btnThemQuanAn= (Button) view.findViewById(R.id.btnThemQuanAn);
+        rdgTrangThai= (RadioGroup) view.findViewById(R.id.rdTrangThai);
+        edtGiaToiDa= (EditText) view.findViewById(R.id.edGiaToiDa);
+        edtGiaToiThieu= (EditText) view.findViewById(R.id.edGiaToiThieu);
+        edtTenQuan= (EditText) view.findViewById(R.id.edTenQuan);
+
 
         cloneChiNhanh();
 
@@ -135,6 +165,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         imgHinQuan5.setOnClickListener(this);
         imgHinQuan6.setOnClickListener(this);
         imgVideo.setOnClickListener(this);
+        btnThemQuanAn.setOnClickListener(this);
         return view;
     }
 
@@ -370,7 +401,128 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,"Chọn hình ..."),requestcode);
     }
+    private void layDanhSachKhuVuc() {
+        FirebaseDatabase.getInstance().getReference().child("khuvucs").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot valueKhuVu : dataSnapshot.getChildren()) {
+                    String tenKhuVuc = valueKhuVu.getKey();
+                    khuVucList.add(tenKhuVuc);
+                }
+                adapterKhuvuc.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void themQuanAn(){
+        String tenquan=edtTenQuan.getText().toString();
+        long giaToiDa=Long.parseLong(edtGiaToiDa.getText().toString());
+        long giaToiThieu=Long.parseLong(edtGiaToiThieu.getText().toString());
+        int rdchecked=rdgTrangThai.getCheckedRadioButtonId();
+        boolean giaoHang=false;
+        if (rdchecked==R.id.rdGiaoHang){
+            giaoHang=true;
+        }else {
+            giaoHang=false;
+        }
+        DatabaseReference nodeRoot=FirebaseDatabase.getInstance().getReference();
+        DatabaseReference nodeQuanAn=nodeRoot.child("quanans");
+        maQuanAn=nodeQuanAn.push().getKey();
+        nodeRoot.child("khuvucs").child(khuVuc).push().setValue(maQuanAn);
+        for (String chinhanh :chinhanhList){
+            String urlGeoCoding="https://maps.googleapis.com/maps/api/geocode/json?address="+chinhanh.replace(" ","%20")+"&key=AIzaSyAEnCj0g2NfDXdytA0C28A1XLP2is-aLDw";
+            DownloadToaDo downLoadToaDo=new DownloadToaDo();
+            downLoadToaDo.execute(urlGeoCoding);
+        }
+
+
+        QuanAnModel quanAnModel=new QuanAnModel();
+        quanAnModel.setTenquanan(tenquan);
+        quanAnModel.setGiatoida(giaToiDa);
+        quanAnModel.setGiatoithieu(giaToiThieu);
+        quanAnModel.setGiaohang(giaoHang);
+        quanAnModel.setVideogioithieu(videoSelect.getLastPathSegment());
+        quanAnModel.setTienich(selecttienIchList);
+        quanAnModel.setLuotthich(0);
+        quanAnModel.setGiomocua(gioMoCua);
+        quanAnModel.setGiodongcua(gioDongCua);
+        nodeQuanAn.child(maQuanAn).setValue(quanAnModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+            }
+        });
+        FirebaseStorage.getInstance().getReference().child("video/"+videoSelect.getLastPathSegment()).putFile(videoSelect);
+        for (Uri hinhquanan:hinhQuanAn){
+            FirebaseStorage.getInstance().getReference().child("hinhanh/"+hinhquanan.getLastPathSegment()).putFile(hinhquanan);
+            nodeRoot.child("hinhanhquanans").child(maQuanAn).push().setValue(hinhquanan.getLastPathSegment());
+        }
+
+        for (int i=0 ;i< themThucDonModelList.size() ; i++){
+            nodeRoot.child("thucdonquanans").child(maQuanAn).child(themThucDonModelList.get(i).getMathucdon()).push().setValue(themThucDonModelList.get(i).getMonanModel());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Bitmap bitmap = hinhDaChupList.get(i);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            FirebaseStorage.getInstance().getReference().child("hinhanh/"+themThucDonModelList.get(i).getMonanModel().getHinhanh()).putBytes(data);
+        }
+
+    }
+    class DownloadToaDo extends AsyncTask<String,Void,String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            StringBuilder stringBuilder = new StringBuilder();
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.connect();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+
+                while ((line = bufferedReader.readLine()) != null){
+                    stringBuilder.append(line+"\n");
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return stringBuilder.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            try {
+                JSONObject jsonObject=new JSONObject(s);
+                JSONArray results=jsonObject.getJSONArray("results");
+                for (int i=0;i<results.length();i++){
+                    JSONObject object=results.getJSONObject(i);
+                    String address = object.getString("formatted_address");
+                    JSONObject geometry=object.getJSONObject("geometry");
+                    JSONObject location=geometry.getJSONObject("location");
+                    double latitude= (double) location.get("lat");
+                    double longitude= (double) location.get("lng");
+
+                    ChiNhanhQuanAnModel chiNhanhQuanAnModel = new ChiNhanhQuanAnModel();
+                    chiNhanhQuanAnModel.setDiachi(address);
+                    chiNhanhQuanAnModel.setLatitude(latitude);
+                    chiNhanhQuanAnModel.setLongitude(longitude);
+                    FirebaseDatabase.getInstance().getReference().child("chinhanhquanans").child(maQuanAn).push().setValue(chiNhanhQuanAnModel);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -422,32 +574,19 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent,"Chọn video ..."),RESULT_VIDEO);
                 break;
+            case R.id.btnThemQuanAn:
+                    themQuanAn();
+                break;
         }
     }
 
-    private void layDanhSachKhuVuc() {
-        FirebaseDatabase.getInstance().getReference().child("khuvucs").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot valueKhuVu : dataSnapshot.getChildren()) {
-                    String tenKhuVuc = valueKhuVu.getKey();
-                    khuVucList.add(tenKhuVuc);
-                }
-                adapterKhuvuc.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.spinnerKhuVuc:
-                Log.d("kiemtra", khuVucList.get(position));
+               khuVuc= khuVucList.get(position);
                 break;
         }
     }

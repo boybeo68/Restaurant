@@ -30,17 +30,17 @@ import vn.myclass.restaurant.Controller.Interface.Odau_interface;
  */
 
 public class QuanAnModel implements Parcelable{
-    boolean giaohang;
-    String giodongcua, giomocua, tenquanan, videogioithieu, maquanan;
-    List<String> tienich;
-    List<String> hinhanhquanan;
-    List<BinhLuanModel> binhLuanModelList;
-    List<ChiNhanhQuanAnModel>chiNhanhQuanAnModelList;
-    List<Bitmap> bitmapList;
-    List<ThucDonModel>thucDonModelList;
-    long giatoida;
-    long giatoithieu;
-    long luotthich;
+    private boolean giaohang;
+    private String giodongcua, giomocua, tenquanan, videogioithieu, maquanan;
+    private List<String> tienich;
+    private List<String> hinhanhquanan;
+    private List<BinhLuanModel> binhLuanModelList;
+    private List<ChiNhanhQuanAnModel>chiNhanhQuanAnModelList;
+    private List<Bitmap> bitmapList;
+    private List<ThucDonModel>thucDonModelList;
+    private long giatoida;
+    private long giatoithieu;
+    private long luotthich;
 
     public List<ThucDonModel> getThucDonModelList() {
         return thucDonModelList;
@@ -96,31 +96,10 @@ public class QuanAnModel implements Parcelable{
         this.binhLuanModelList = binhLuanModelList;
     }
 
-
-
-
-
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-   private DatabaseReference noderoot;
+    private DatabaseReference noderoot;
 
     public QuanAnModel() {
-
-        noderoot = firebaseDatabase.getReference();
-    }
-
-    public QuanAnModel(boolean giaohang, String giodongcua, String giomocua, String tenquanan, String videogioithieu, String maquanan, List<String> tienich, List<String> hinhanhquanan, List<Bitmap> bitmapList, long giatoida, long giatoithieu, long luotthich) {
-        this.giaohang = giaohang;
-        this.giodongcua = giodongcua;
-        this.giomocua = giomocua;
-        this.tenquanan = tenquanan;
-        this.videogioithieu = videogioithieu;
-        this.maquanan = maquanan;
-        this.tienich = tienich;
-        this.hinhanhquanan = hinhanhquanan;
-        this.bitmapList = bitmapList;
-        this.giatoida = giatoida;
-        this.giatoithieu = giatoithieu;
-        this.luotthich = luotthich;
+        noderoot = FirebaseDatabase.getInstance().getReference();
     }
 
     public boolean isGiaohang() {
@@ -218,7 +197,7 @@ public class QuanAnModel implements Parcelable{
     public void setLuotthich(long luotthich) {
         this.luotthich = luotthich;
     }
-    DataSnapshot dataRoot;
+    private DataSnapshot dataRoot;
 
     public void getDanhsachQuanAn(final Odau_interface odau_interface, final Location vitrihientai, final int itemtieptheo, final int itemdaco) {
         ValueEventListener valueEventListener = new ValueEventListener() {
