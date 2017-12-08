@@ -73,15 +73,15 @@ public class ChonHinhBinhLuan_Activity extends AppCompatActivity implements View
         String []projection= {MediaStore.Images.Media.DATA};
         //đường dẫn tất cả hình ảnh trong thẻ nhớ
         Uri uri=MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
 
-        Cursor cursor=getContentResolver().query(uri,projection,null,null,null);
+        Cursor cursor=getContentResolver().query(uri,projection,null,null,orderBy);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             String duongdan=cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
             ChonHinhBinhLuanModel chonHinhBinhLuanModel=new ChonHinhBinhLuanModel(duongdan,false);
             listDuongdan.add(chonHinhBinhLuanModel);
             adapterChonHinhBinhLuan.notifyDataSetChanged();
-
             cursor.moveToNext();
         }
 

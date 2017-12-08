@@ -19,6 +19,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import vn.myclass.restaurant.Model.BinhLuanModel;
+import vn.myclass.restaurant.Model.ImagesNicer;
 import vn.myclass.restaurant.R;
 
 /**
@@ -77,7 +78,8 @@ public class Adapter_BinhLuan extends RecyclerView.Adapter<Adapter_BinhLuan.View
                 @Override
                 public void onSuccess(byte[] bytes) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                    bitmapList.add(bitmap);
+                    Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                    bitmapList.add(converetdImage);
                     if (bitmapList.size()==binhLuanModel.getHinhanhBinhLuanList().size()){
                         AdapterRecyclerHinhBinhLuan adapterRecyclerHinhBinhLuan=new AdapterRecyclerHinhBinhLuan(context,R.layout.custom_layout_hinhbinhluan,bitmapList,binhLuanModel,false);
                         RecyclerView.LayoutManager layoutManager=new GridLayoutManager(context,2);
@@ -99,7 +101,8 @@ public class Adapter_BinhLuan extends RecyclerView.Adapter<Adapter_BinhLuan.View
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                circleImageView.setImageBitmap(bitmap);
+                Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 100);
+                circleImageView.setImageBitmap(converetdImage);
             }
         });
     }

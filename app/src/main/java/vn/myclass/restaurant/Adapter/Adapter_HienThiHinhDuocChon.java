@@ -1,6 +1,7 @@
 package vn.myclass.restaurant.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 
 import java.util.List;
 
+import vn.myclass.restaurant.Model.ImagesNicer;
 import vn.myclass.restaurant.R;
 
 /**
@@ -20,8 +22,8 @@ public class Adapter_HienThiHinhDuocChon extends RecyclerView.Adapter<Adapter_Hi
 
     Context context;
     int resource;
-    List<String>listhinhduocchon;
-    public Adapter_HienThiHinhDuocChon(Context context, int resource, List<String>listhinhduocchon) {
+    List<Bitmap>listhinhduocchon;
+    public Adapter_HienThiHinhDuocChon(Context context, int resource, List<Bitmap>listhinhduocchon) {
         this.context=context;
         this.resource=resource;
         this.listhinhduocchon=listhinhduocchon;
@@ -45,8 +47,9 @@ public class Adapter_HienThiHinhDuocChon extends RecyclerView.Adapter<Adapter_Hi
 
     @Override
     public void onBindViewHolder(Adapter_HienThiHinhDuocChon.ViewHolderHinhChon holder, int position) {
-        Uri uri=Uri.parse(listhinhduocchon.get(position));
-        holder.imgView.setImageURI(uri);
+        Bitmap hinhduocchon=listhinhduocchon.get(position);
+        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(hinhduocchon, 300);
+        holder.imgView.setImageBitmap(converetdImage);
         holder.imgXoa.setTag(position);
         holder.imgXoa.setOnClickListener(new View.OnClickListener() {
             @Override

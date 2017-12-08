@@ -54,9 +54,6 @@
         <activity android:name=".View.DanDuongQuanAn_Activity" />
         <activity android:name=".View.Binhluan_Actitivty" />
         <activity android:name=".View.ChonHinhBinhLuan_Activity" />
-        <activity android:name=".View.ThemQuanAn_Activity">
-
-        </activity>
     </application>
 
 </manifest>

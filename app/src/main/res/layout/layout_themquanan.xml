@@ -53,6 +53,7 @@
                     android:buttonTint="@color/colorPrimaryDark"
                     android:checked="true"/>
             </RadioGroup>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,9 +79,32 @@
                     android:background="@color/colorPrimaryDark"
                     android:textColor="@color/colorAccent"/>
             </LinearLayout>
-            <FrameLayout
+            <RadioGroup
+                android:id="@+id/rdgVideo"
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/rdCoVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/CoVideo"
+                    android:buttonTint="@color/colorPrimaryDark"/>
+                <RadioButton
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/rdKhongVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/KhongVideo"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:checked="true"/>
+            </RadioGroup>
+            <FrameLayout
+                android:id="@+id/frameVideo"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:visibility="gone">
                 <VideoView
                     android:id="@+id/videoView"
                     android:layout_width="match_parent"

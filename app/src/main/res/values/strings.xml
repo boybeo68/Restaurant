@@ -70,6 +70,13 @@
     <string name="GiaTien">Giá Tiền</string>
     <string name="NhapTenMon">Vui lòng nhập tên món</string>
     <string name="NhapGiatien">Vui lòng nhập giá tiền</string>
+    <string name="ChamDiem">Chấm điểm bình luận</string>
+
+    <string name="title_activity_fullscreen_">Fullscreen_Activity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="CoVideo">Có video trailer</string>
+    <string name="KhongVideo">Không video trailer</string>
 
 
 </resources>

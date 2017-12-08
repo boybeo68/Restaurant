@@ -1,6 +1,7 @@
 package vn.myclass.restaurant.View.Fragments;
 
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -20,7 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,16 +58,13 @@ import java.util.Calendar;
 import java.util.List;
 
 import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
-import vn.myclass.restaurant.Model.ChonHinhBinhLuanModel;
+import vn.myclass.restaurant.Model.ImagesNicer;
 import vn.myclass.restaurant.Model.MonanModel;
 import vn.myclass.restaurant.Model.QuanAnModel;
-import vn.myclass.restaurant.Model.TestModel;
 import vn.myclass.restaurant.Model.ThemThucDonModel;
 import vn.myclass.restaurant.Model.ThucDonModel;
 import vn.myclass.restaurant.Model.TienIchModel;
 import vn.myclass.restaurant.R;
-import vn.myclass.restaurant.View.DangKy_Activity;
-import vn.myclass.restaurant.View.ThemQuanAn_Activity;
 import vn.myclass.restaurant.View.Trangchu_Activity;
 
 import static android.app.Activity.RESULT_OK;
@@ -84,8 +83,9 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     final int RESULT_IMG6 = 116;
     final int RESULT_IMGTHUCDON = 117;
     final int RESULT_VIDEO = 200;
+    FrameLayout frameVideo;
     Button btnGioMoCua, btnGioDongCua,btnThemQuanAn;
-    RadioGroup rdgTrangThai;
+    RadioGroup rdgTrangThai,rdVideo;
     EditText edtTenQuan,edtGiaToiDa,edtGiaToiThieu;
     String gioMoCua, gioDongCua,khuVuc;
     Spinner spinnerKhuVuc;
@@ -98,12 +98,14 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     List<ThemThucDonModel>themThucDonModelList;
     List<Bitmap>hinhDaChupList;
     List<Uri>hinhQuanAn;
+    List<Bitmap>hinhQuanAnBitMap;
     Uri videoSelect;
     ArrayAdapter<String> adapterKhuvuc;
     ImageView imgTam,imgHinQuan1,imgHinQuan2,imgHinQuan3,imgHinQuan4,imgHinQuan5,imgHinQuan6,imgVideo;
     LinearLayout khungtienich,khungChiNhanh,khungChuaChiNhanh,khungchuaThucDon;
     VideoView videoView;
     String maQuanAn;
+    QuanAnModel quanAnModel;
 
 
     @Nullable
@@ -131,6 +133,9 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         edtGiaToiDa= (EditText) view.findViewById(R.id.edGiaToiDa);
         edtGiaToiThieu= (EditText) view.findViewById(R.id.edGiaToiThieu);
         edtTenQuan= (EditText) view.findViewById(R.id.edTenQuan);
+        rdVideo=view.findViewById(R.id.rdgVideo);
+        frameVideo=view.findViewById(R.id.frameVideo);
+
 
 
         cloneChiNhanh();
@@ -145,9 +150,31 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         themThucDonModelList=new ArrayList<>();
         hinhDaChupList=new ArrayList<>();
         hinhQuanAn=new ArrayList<>();
+        hinhQuanAnBitMap=new ArrayList<>();
         adapterKhuvuc = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, khuVucList);
         spinnerKhuVuc.setAdapter(adapterKhuvuc);
         adapterKhuvuc.notifyDataSetChanged();
+
+        rdVideo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                View radioButton = rdVideo.findViewById(i);
+                int index = rdVideo.indexOfChild(radioButton);
+
+                // Add logic here
+
+                switch (index) {
+                    case 0: // first button
+//                        Toast.makeText(getContext(), "Selected button number " + index, Toast.LENGTH_SHORT).show();
+                        frameVideo.setVisibility(View.VISIBLE);
+                        break;
+                    case 1: // secondbutton
+//                        Toast.makeText(getContext(), "Selected button number " + index, Toast.LENGTH_SHORT).show();
+                        frameVideo.setVisibility(View.GONE);
+                        break;
+                }
+            }
+        });
         layDanhSachKhuVuc();
 
 
@@ -174,45 +201,82 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case RESULT_IMG1:
-                if (RESULT_OK==resultCode){
+                if (RESULT_OK==resultCode&& data != null && data.getData() != null){
                     Uri uri=data.getData();
-                    imgHinQuan1.setImageURI(uri);
-                    hinhQuanAn.add(uri);
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
+                        imgHinQuan1.setImageBitmap(bitmap);
+                        hinhQuanAnBitMap.add(bitmap);
+                        Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 break;
             case RESULT_IMG2:
                 if (RESULT_OK==resultCode){
                     Uri uri=data.getData();
-                    imgHinQuan2.setImageURI(uri);
-                    hinhQuanAn.add(uri);
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
+                        imgHinQuan2.setImageBitmap(bitmap);
+                        hinhQuanAnBitMap.add(bitmap);
+                        Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case RESULT_IMG3:
                 if (RESULT_OK==resultCode){
                     Uri uri=data.getData();
-                    imgHinQuan3.setImageURI(uri);
-                    hinhQuanAn.add(uri);
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
+                        imgHinQuan3.setImageBitmap(bitmap);
+                        hinhQuanAnBitMap.add(bitmap);
+                        Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case RESULT_IMG4:
                 if (RESULT_OK==resultCode){
                     Uri uri=data.getData();
-                    imgHinQuan4.setImageURI(uri);
-                    hinhQuanAn.add(uri);
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
+                        imgHinQuan4.setImageBitmap(bitmap);
+                        hinhQuanAnBitMap.add(bitmap);
+                        Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case RESULT_IMG5:
                 if (RESULT_OK==resultCode){
                     Uri uri=data.getData();
-                    imgHinQuan5.setImageURI(uri);
-                    hinhQuanAn.add(uri);
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
+                        imgHinQuan5.setImageBitmap(bitmap);
+                        hinhQuanAnBitMap.add(bitmap);
+                        Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case RESULT_IMG6:
                 if (RESULT_OK==resultCode){
                     Uri uri=data.getData();
-                    imgHinQuan6.setImageURI(uri);
-                    hinhQuanAn.add(uri);
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
+                        imgHinQuan6.setImageBitmap(bitmap);
+                        hinhQuanAnBitMap.add(bitmap);
+                        Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case RESULT_IMGTHUCDON:
@@ -231,9 +295,6 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                     Log.d("kiemtravideo",videoSelect+"");
                     videoView.setVideoURI(uri);
                     videoView.start();
-
-
-
                 }
         }
 
@@ -440,38 +501,63 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         }
 
 
-        QuanAnModel quanAnModel=new QuanAnModel();
+        quanAnModel=new QuanAnModel();
         quanAnModel.setTenquanan(tenquan);
         quanAnModel.setGiatoida(giaToiDa);
         quanAnModel.setGiatoithieu(giaToiThieu);
         quanAnModel.setGiaohang(giaoHang);
-        quanAnModel.setVideogioithieu(videoSelect.getLastPathSegment());
+
         quanAnModel.setTienich(selecttienIchList);
         quanAnModel.setLuotthich(0);
         quanAnModel.setGiomocua(gioMoCua);
         quanAnModel.setGiodongcua(gioDongCua);
+//        quanAnModel.setVideogioithieu(videoSelect.getLastPathSegment());
+//        FirebaseStorage.getInstance().getReference().child("video/"+videoSelect.getLastPathSegment()).putFile(videoSelect);
+
         nodeQuanAn.child(maQuanAn).setValue(quanAnModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+
             }
         });
-        FirebaseStorage.getInstance().getReference().child("video/"+videoSelect.getLastPathSegment()).putFile(videoSelect);
-        for (Uri hinhquanan:hinhQuanAn){
-            FirebaseStorage.getInstance().getReference().child("hinhanh/"+hinhquanan.getLastPathSegment()).putFile(hinhquanan);
-            nodeRoot.child("hinhanhquanans").child(maQuanAn).push().setValue(hinhquanan.getLastPathSegment());
+
+//        for (Bitmap bitmap:hinhQuanAnBitMap){
+//            nodeRoot.child("hinhanhquanans").child(maQuanAn).push().setValue(maQuanAn+".jpg");
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
+//            byte[] data = baos.toByteArray();
+//            FirebaseStorage.getInstance().getReference().child("hinhanh/"+maQuanAn+".jpg").putBytes(data);
+//        }
+
+        for (int j=0;j<hinhQuanAnBitMap.size();j++){
+            nodeRoot.child("hinhanhquanans").child(maQuanAn).push().setValue(maQuanAn+j+".jpg");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Bitmap bitmap = hinhQuanAnBitMap.get(j);
+            Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+            converetdImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            FirebaseStorage.getInstance().getReference().child("hinhanh/"+maQuanAn+j+".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Intent intent1=new Intent(getContext(),Trangchu_Activity.class);
+                    startActivity(intent1);
+                }
+            });
         }
 
         for (int i=0 ;i< themThucDonModelList.size() ; i++){
             nodeRoot.child("thucdonquanans").child(maQuanAn).child(themThucDonModelList.get(i).getMathucdon()).push().setValue(themThucDonModelList.get(i).getMonanModel());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Bitmap bitmap = hinhDaChupList.get(i);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
             byte[] data = baos.toByteArray();
             FirebaseStorage.getInstance().getReference().child("hinhanh/"+themThucDonModelList.get(i).getMonanModel().getHinhanh()).putBytes(data);
         }
 
     }
+
+
     class DownloadToaDo extends AsyncTask<String,Void,String>{
 
         @Override
@@ -595,4 +681,5 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 }

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vn.myclass.restaurant.Model.BinhLuanModel;
+import vn.myclass.restaurant.Model.ImagesNicer;
 import vn.myclass.restaurant.R;
 import vn.myclass.restaurant.View.HienThiChiTietBinhLuan_Activity;
 
@@ -41,7 +42,6 @@ public class AdapterRecyclerHinhBinhLuan extends RecyclerView.Adapter<AdapterRec
         this.listhinh=listhinh;
         this.binhLuanModel=binhLuanModel;
         this.ichitietBinhluan=ichitietBinhluan;
-
 
     }
     public class ViewHolderHinhBinhLuan extends RecyclerView.ViewHolder {
@@ -65,7 +65,8 @@ public class AdapterRecyclerHinhBinhLuan extends RecyclerView.Adapter<AdapterRec
 
     @Override
     public void onBindViewHolder(final AdapterRecyclerHinhBinhLuan.ViewHolderHinhBinhLuan holder, final int position) {
-        holder.imghinhBinhluan.setImageBitmap(listhinh.get(position));
+        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(listhinh.get(position), 300);
+        holder.imghinhBinhluan.setImageBitmap(converetdImage);
         if (!ichitietBinhluan){
             if (position==3){
 
