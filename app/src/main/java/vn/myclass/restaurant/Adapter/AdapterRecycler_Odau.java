@@ -49,7 +49,7 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {
-        TextView txtTenQuananOdau,txtTieudebinhluan2,txtTieudebinhluan,txtNodungbinhluan2,txtNodungbinhluan;
+        TextView txtTenQuananOdau,txtTieudebinhluan2,txtTieudebinhluan,txtNodungbinhluan2,txtNodungbinhluan,txtTenNguoiDungbinhluan,txtTennguoidungbinhluan2;
         TextView txtChamDiemBinhLuan,txtChamDiemBinhLuan2,txtTongBinhLuan,txtTongHinhBinhLuan,txtDiemTrungBinhQuanAn,txtDiaChiQuanAnODau,txtKhoanCachQuanAnODau;
         Button btnDatMonOdau;
         ImageView imageHinhQuanAnODau;
@@ -77,6 +77,8 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             txtDiaChiQuanAnODau= (TextView) itemView.findViewById(R.id.txtDiachiquananOdau);
             txtKhoanCachQuanAnODau= (TextView) itemView.findViewById(R.id.txtKhoangcachquananODau);
             cardView= (CardView) itemView.findViewById(R.id.cardViewOdau);
+            txtTenNguoiDungbinhluan=itemView.findViewById(R.id.txtTenNguoiBinhLuan);
+            txtTennguoidungbinhluan2=itemView.findViewById(R.id.txtTenNguoiBinhLuan2);
         }
     }
     @Override
@@ -187,7 +189,9 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
             holder.txtTieudebinhluan.setText(binhLuanModel.getTieude());
             holder.txtNodungbinhluan.setText(binhLuanModel.getNoidung());
             holder.txtChamDiemBinhLuan.setText(binhLuanModel.getChamdiem()+"");
+            holder.txtTenNguoiDungbinhluan.setText(binhLuanModel.getThanhVienModel().getHoten());
             holder.containerBinhLuan2.setVisibility(View.GONE);
+
             setHinhAnhBinhLuan(holder.cicleImageUser,binhLuanModel.getThanhVienModel().getHinhanh());
             if(quanAnModel.getBinhLuanModelList().size() >= 2){
                 holder.containerBinhLuan2.setVisibility(View.VISIBLE);
@@ -195,6 +199,7 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
                 holder.txtTieudebinhluan2.setText(binhLuanModel2.getTieude());
                 holder.txtNodungbinhluan2.setText(binhLuanModel2.getNoidung());
                 holder.txtChamDiemBinhLuan2.setText(binhLuanModel2.getChamdiem()+"");
+                holder.txtTennguoidungbinhluan2.setText(binhLuanModel2.getThanhVienModel().getHoten());
                 setHinhAnhBinhLuan(holder.cicleImageUser2,binhLuanModel2.getThanhVienModel().getHinhanh());
             }
             holder.txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size()+"");

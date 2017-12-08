@@ -41,7 +41,7 @@ public class Adapter_BinhLuan extends RecyclerView.Adapter<Adapter_BinhLuan.View
     public class ViewHodel extends RecyclerView.ViewHolder {
 
         CircleImageView circleImageView;
-        TextView txtTieudeBinhLuan,txtNoidungBinhluan,txtChamDiembinhluan;
+        TextView txtTieudeBinhLuan,txtNoidungBinhluan,txtChamDiembinhluan,txtTenNguoibinhluan;
         RecyclerView recyclerViewHinhBinhluan;
         public ViewHodel(View itemView) {
             super(itemView);
@@ -50,6 +50,7 @@ public class Adapter_BinhLuan extends RecyclerView.Adapter<Adapter_BinhLuan.View
             txtNoidungBinhluan= (TextView) itemView.findViewById(R.id.txtNoiDungbinhluan);
             txtChamDiembinhluan= (TextView) itemView.findViewById(R.id.txtChamdiembinhluan);
             recyclerViewHinhBinhluan= (RecyclerView) itemView.findViewById(R.id.recyle_hinhbinhluan);
+            txtTenNguoibinhluan=itemView.findViewById(R.id.txtTenNguoiBinhLuan);
 
         }
     }
@@ -67,6 +68,7 @@ public class Adapter_BinhLuan extends RecyclerView.Adapter<Adapter_BinhLuan.View
         holder.txtTieudeBinhLuan.setText(binhLuanModel.getTieude());
         holder.txtNoidungBinhluan.setText(binhLuanModel.getNoidung());
         holder.txtChamDiembinhluan.setText(binhLuanModel.getChamdiem()+"");
+        holder.txtTenNguoibinhluan.setText(binhLuanModel.getThanhVienModel().getHoten());
 //
         setHinhAnhBinhLuan(holder.circleImageView,binhLuanModel.getThanhVienModel().getHinhanh());
 //        Lấy ra list hình ảnh của  từng bình luậnbình luận

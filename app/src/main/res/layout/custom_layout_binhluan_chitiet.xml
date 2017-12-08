@@ -29,13 +29,21 @@
             android:layout_margin="5dp"
             >
             <TextView
+                android:id="@+id/txtTenNguoiBinhLuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ten người bình luận"
+                android:textStyle="bold"
+                android:textColor="@color/danghoatDong"
+                android:textSize="15sp"
+                />
+            <TextView
                 android:id="@+id/txtTieudebinhluan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tiêu đề bình luận"
                 android:textStyle="bold"
                 android:textSize="15sp"
-
                 />
 
             <TextView
