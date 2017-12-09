@@ -1,5 +1,7 @@
 package vn.myclass.restaurant.Model;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -8,8 +10,10 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,6 +26,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import vn.myclass.restaurant.R;
 
 /**
  * Created by boybe on 11/1/2017.
@@ -37,6 +43,7 @@ public class BinhLuanModel implements Parcelable{
     List<String> hinhanhBinhLuanList;
     String mauser;
     List<Bitmap>listBitMap;
+    boolean kiemtra=false;
 
 
     public BinhLuanModel() {
@@ -145,11 +152,11 @@ public class BinhLuanModel implements Parcelable{
         dest.writeString(mauser);
         dest.writeParcelable(thanhVienModel,flags);
     }
-    public void themBinhLuan(String maQuanAn, BinhLuanModel binhLuanModel, final List<Bitmap> listHinh){
+    public void themBinhLuan(final Context context, String maQuanAn, BinhLuanModel binhLuanModel, final List<Bitmap> listHinh){
         DatabaseReference nodeBinhLuan = FirebaseDatabase.getInstance().getReference().child("binhluans");
         // Sử dụng push để tạo key động
         final String mabinhluan =  nodeBinhLuan.child(maQuanAn).push().getKey();
-
+        listBitMap=new ArrayList<>();
         nodeBinhLuan.child(maQuanAn).child(mabinhluan).setValue(binhLuanModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -165,14 +172,33 @@ public class BinhLuanModel implements Parcelable{
 
                             for (int j=0;j<listHinh.size();j++){
 //                                FirebaseDatabase.getInstance().getReference().child("hinhanhbinhluans").child(mabinhluan).push().setValue(uri.getLastPathSegment());
+                                FirebaseDatabase.getInstance().getReference().child("hinhanhbinhluans").child(mabinhluan).push().setValue(mabinhluan+"mabinhluan"+j);
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                                 Bitmap bitmap = listHinh.get(j);
-                                Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                                final Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+
                                 converetdImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                                 byte[] data = baos.toByteArray();
-                                FirebaseStorage.getInstance().getReference().child("hinhanh/"+mabinhluan+"mabinhluan"+j).putBytes(data);
-                                FirebaseDatabase.getInstance().getReference().child("hinhanhbinhluans").child(mabinhluan).push().setValue(mabinhluan+"mabinhluan"+j);
+                                FirebaseStorage.getInstance().getReference().child("hinhanh/"+mabinhluan+"mabinhluan"+j).putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        listBitMap.add(converetdImage);
+                                        Log.d("kiemtralisthinh",listBitMap.size()+"--"+listHinh.size());
+                                        Toast.makeText(context, R.string.TaiHinh, Toast.LENGTH_SHORT).show();
+                                        if (listBitMap.size()==listHinh.size()){
+                                            Log.d("kiemtralisthinhdieukien",listBitMap.size()+"--"+listHinh.size());
+                                            Toast.makeText(context, R.string.TaiHinhAnh, Toast.LENGTH_SHORT).show();
+                                            ((Activity)context).finish();
+
+                                        }
+                                    }
+                                });
+
+
                             }
+
+
+
                         }
                     }
 

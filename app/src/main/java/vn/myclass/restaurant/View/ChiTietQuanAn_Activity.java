@@ -65,7 +65,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     QuanAnModel quanAnModel;
     TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongCheckin, txtTongBinhLuan, txtTongAnh;
     TextView txtTieudeToolbar, txtGioiHanGia, txtTenWifi, txtMatkhauWifi, txtNgaydangWifi;
-    ImageView imgHinhQuanAn,imgPlay;
+    ImageView imgHinhQuanAn, imgPlay;
     Button btnBinhluan;
     Toolbar toolbar;
     RecyclerView recyclerViewBinhluan;
@@ -109,10 +109,10 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         khungWifi = (LinearLayout) findViewById(R.id.khungWifi);
         txtNgaydangWifi = (TextView) findViewById(R.id.txtNgayDangWifi);
         khungtinhnang = (View) findViewById(R.id.khungtinhnang);
-        btnBinhluan= (Button) findViewById(R.id.btnBinhLuan);
-        videoView= (VideoView) findViewById(R.id.videoTrailer);
-        imgPlay= (ImageView) findViewById(R.id.imgPlay);
-        recyclerThucdon= (RecyclerView) findViewById(R.id.recyclerThucDon);
+        btnBinhluan = (Button) findViewById(R.id.btnBinhLuan);
+        videoView = (VideoView) findViewById(R.id.videoTrailer);
+        imgPlay = (ImageView) findViewById(R.id.imgPlay);
+        recyclerThucdon = (RecyclerView) findViewById(R.id.recyclerThucDon);
         mapFragment.getMapAsync(this);
 
         toolbar.setTitle("");
@@ -147,7 +147,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
         txtDiachiQuanAn.setText(chiNhanhQuanAnModelTam.getDiachi());
         chitietQuanAnController = new ChitietQuanAnController();
-        thucDonController=new ThucDonController();
+        thucDonController = new ThucDonController();
         hienThiChiTietQuanan();
 
     }
@@ -213,11 +213,11 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
             }
         });
 
-        if (quanAnModel.getVideogioithieu()!=null){
+        if (quanAnModel.getVideogioithieu() != null) {
             videoView.setVisibility(View.VISIBLE);
             imgPlay.setVisibility(View.VISIBLE);
             imgHinhQuanAn.setVisibility(View.GONE);
-            StorageReference storageVideo=FirebaseStorage.getInstance().getReference().child("video").child(quanAnModel.getVideogioithieu());
+            StorageReference storageVideo = FirebaseStorage.getInstance().getReference().child("video").child(quanAnModel.getVideogioithieu());
             storageVideo.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -226,26 +226,26 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
                 }
             });
-        }else {
+        } else {
             videoView.setVisibility(View.GONE);
             imgPlay.setVisibility(View.GONE);
             imgHinhQuanAn.setVisibility(View.VISIBLE);
         }
         //Load danh sách bình luận
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerViewBinhluan.setLayoutManager(layoutManager);
-        adapter_binhLuan = new Adapter_BinhLuan(this, quanAnModel.getBinhLuanModelList(), R.layout.custom_layout_binhluan_chitiet);
-        recyclerViewBinhluan.setAdapter(adapter_binhLuan);
-        adapter_binhLuan.notifyDataSetChanged();
-
-        NestedScrollView nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollvieChitiet);
-        nestedScrollView.smoothScrollTo(0, 0);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+//        recyclerViewBinhluan.setLayoutManager(layoutManager);
+//        adapter_binhLuan = new Adapter_BinhLuan(this, quanAnModel.getBinhLuanModelList(), R.layout.custom_layout_binhluan_chitiet);
+//        recyclerViewBinhluan.setAdapter(adapter_binhLuan);
+//        adapter_binhLuan.notifyDataSetChanged();
+//
+//        NestedScrollView nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollvieChitiet);
+//        nestedScrollView.smoothScrollTo(0, 0);
 
         //lấy dữ liệu từ controller wifi
         // cần lấy thằng nào thì truyền nó vào
         chitietQuanAnController.HienThiDanhSachWifiQuanAn(quanAnModel.getMaquanan(), txtTenWifi, txtMatkhauWifi, txtNgaydangWifi);
-        thucDonController.getDanhSachThucDonQuanan(this,quanAnModel.getMaquanan(),recyclerThucdon);
+        thucDonController.getDanhSachThucDonQuanan(this, quanAnModel.getMaquanan(), recyclerThucdon);
         khungWifi.setOnClickListener(this);
         khungtinhnang.setOnClickListener(this);
         btnBinhluan.setOnClickListener(this);
@@ -256,6 +256,46 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     @Override
     protected void onStart() {
         super.onStart();
+        DatabaseReference noderoot=FirebaseDatabase.getInstance().getReference();
+        noderoot.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot snapshotBinhLuan = dataSnapshot.child("binhluans").child(quanAnModel.getMaquanan());
+                Log.d("kiemtrabinhluan2", snapshotBinhLuan + "");
+                //do 1 quán ăn có nhiều bình luận ==>tạo list
+                List<BinhLuanModel> binhLuanModels = new ArrayList<>();
+
+                for (DataSnapshot valueBinhLuan : snapshotBinhLuan.getChildren()) {
+                    BinhLuanModel binhLuanModel = valueBinhLuan.getValue(BinhLuanModel.class);
+
+                    ThanhVienModel thanhVienModel = dataSnapshot.child("thanhviens").child(binhLuanModel.getMauser()).getValue(ThanhVienModel.class);
+                    binhLuanModel.setThanhVienModel(thanhVienModel);// có được dữ liệu về thành viên của bình luận đó
+                    binhLuanModel.setManbinhluan(valueBinhLuan.getKey());
+                    List<String> hinhbinhluanList = new ArrayList<>();//1 bình luận có nhiều tấm hinh
+                    DataSnapshot snapshotnodeHinhanhBL = dataSnapshot.child("hinhanhbinhluans").child(binhLuanModel.getManbinhluan());
+                    for (DataSnapshot valuehinhanhbinhluan : snapshotnodeHinhanhBL.getChildren()) {
+                        hinhbinhluanList.add(valuehinhanhbinhluan.getValue(String.class));
+                    }
+                    binhLuanModel.setHinhanhBinhLuanList(hinhbinhluanList);
+                    binhLuanModels.add(binhLuanModel);
+                }
+                quanAnModel.setBinhLuanModelList(binhLuanModels);
+                Log.d("kiemtrabinhluan4", quanAnModel.getBinhLuanModelList().size() + "");
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ChiTietQuanAn_Activity.this);
+                recyclerViewBinhluan.setLayoutManager(layoutManager);
+                adapter_binhLuan = new Adapter_BinhLuan(ChiTietQuanAn_Activity.this, quanAnModel.getBinhLuanModelList(), R.layout.custom_layout_binhluan_chitiet);
+                recyclerViewBinhluan.setAdapter(adapter_binhLuan);
+                adapter_binhLuan.notifyDataSetChanged();
+
+                NestedScrollView nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollvieChitiet);
+                nestedScrollView.smoothScrollTo(0, 0);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -275,7 +315,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     }
 
     private void downHinhTienIch() {
-        if (quanAnModel.getTienich()!=null){
+        if (quanAnModel.getTienich() != null) {
             for (String matienich : quanAnModel.getTienich()) {
                 DatabaseReference nodeTienIch = FirebaseDatabase.getInstance().getReference().child("quanlytienichs").child(matienich);
                 nodeTienIch.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -307,7 +347,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                     }
                 });
             }
-        }else {
+        } else {
             lnkhungtienich.setVisibility(View.INVISIBLE);
         }
 
@@ -326,20 +366,20 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                 break;
             case R.id.khungtinhnang:
                 Intent idangDuong = new Intent(ChiTietQuanAn_Activity.this, DanDuongQuanAn_Activity.class);
-                idangDuong.putExtra("latitude",quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getLatitude());
-                idangDuong.putExtra("longitude",quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getLongitude());
-                idangDuong.putExtra("tenquan",quanAnModel.getTenquanan());
+                idangDuong.putExtra("latitude", quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getLatitude());
+                idangDuong.putExtra("longitude", quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getLongitude());
+                idangDuong.putExtra("tenquan", quanAnModel.getTenquanan());
                 startActivity(idangDuong);
                 break;
             case R.id.btnBinhLuan:
                 Intent ibinhLuan = new Intent(ChiTietQuanAn_Activity.this, Binhluan_Actitivty.class);
-                ibinhLuan.putExtra("diachi",quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getDiachi());
-                ibinhLuan.putExtra("tenquan",quanAnModel.getTenquanan());
-                ibinhLuan.putExtra("maquan",quanAnModel.getMaquanan());
+                ibinhLuan.putExtra("diachi", quanAnModel.getChiNhanhQuanAnModelList().get(posstion).getDiachi());
+                ibinhLuan.putExtra("tenquan", quanAnModel.getTenquanan());
+                ibinhLuan.putExtra("maquan", quanAnModel.getMaquanan());
                 startActivity(ibinhLuan);
             case R.id.imgPlay:
                 videoView.start();
-                MediaController mediaController=new MediaController(this);
+                MediaController mediaController = new MediaController(this);
                 videoView.setMediaController(mediaController);
                 imgPlay.setVisibility(View.GONE);
                 break;

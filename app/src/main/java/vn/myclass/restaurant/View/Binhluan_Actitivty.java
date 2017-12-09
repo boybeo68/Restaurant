@@ -1,6 +1,8 @@
 package vn.myclass.restaurant.View;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -132,7 +134,7 @@ public class Binhluan_Actitivty extends AppCompatActivity implements View.OnClic
                 binhLuanModel.setTieude(tieude);
                 binhLuanModel.setMauser(mauser);
                 binhLuanController.themBinhLuan(this,maquan,binhLuanModel,hinhQuanAnBitMap);
-                finish();
+//                finish();
                 break;
             case R.id.imgChupHinh:
                 Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

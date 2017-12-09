@@ -1,5 +1,6 @@
 package vn.myclass.restaurant.Controller;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 
@@ -20,7 +21,7 @@ public class BinhLuanController {
         binhLuanModel=new BinhLuanModel();
 
     }
-    public void themBinhLuan(Context context,String maQuanAn, BinhLuanModel binhLuanModel, List<Bitmap> listHinh){
-        binhLuanModel.themBinhLuan(maQuanAn,binhLuanModel,listHinh);
+    public void themBinhLuan(Context context, String maQuanAn, BinhLuanModel binhLuanModel, List<Bitmap> listHinh){
+        binhLuanModel.themBinhLuan(context,maQuanAn,binhLuanModel,listHinh);
     }
 }
