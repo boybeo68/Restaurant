@@ -65,8 +65,9 @@ public class AdapterRecyclerHinhBinhLuan extends RecyclerView.Adapter<AdapterRec
 
     @Override
     public void onBindViewHolder(final AdapterRecyclerHinhBinhLuan.ViewHolderHinhBinhLuan holder, final int position) {
-        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(listhinh.get(position), 300);
+        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(listhinh.get(position), 500);
         holder.imghinhBinhluan.setImageBitmap(converetdImage);
+
         if (!ichitietBinhluan){
             if (position==3){
 
@@ -83,10 +84,8 @@ public class AdapterRecyclerHinhBinhLuan extends RecyclerView.Adapter<AdapterRec
                         }
                     });
                 }
-
             }
         }
-
     }
 
     @Override

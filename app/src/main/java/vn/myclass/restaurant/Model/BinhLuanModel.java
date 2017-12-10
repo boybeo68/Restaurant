@@ -3,6 +3,8 @@ package vn.myclass.restaurant.Model;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcel;
@@ -170,12 +172,14 @@ public class BinhLuanModel implements Parcelable{
 //                                }
 //                            });
 
+
                             for (int j=0;j<listHinh.size();j++){
+
 //                                FirebaseDatabase.getInstance().getReference().child("hinhanhbinhluans").child(mabinhluan).push().setValue(uri.getLastPathSegment());
                                 FirebaseDatabase.getInstance().getReference().child("hinhanhbinhluans").child(mabinhluan).push().setValue(mabinhluan+"mabinhluan"+j);
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                                 Bitmap bitmap = listHinh.get(j);
-                                final Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                                final Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 500);
 
                                 converetdImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                                 byte[] data = baos.toByteArray();
@@ -183,10 +187,10 @@ public class BinhLuanModel implements Parcelable{
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                         listBitMap.add(converetdImage);
-                                        Log.d("kiemtralisthinh",listBitMap.size()+"--"+listHinh.size());
-                                        Toast.makeText(context, R.string.TaiHinh, Toast.LENGTH_SHORT).show();
+//                                        Log.d("kiemtralisthinh",listBitMap.size()+"--"+listHinh.size());
+//                                        Toast.makeText(context, R.string.TaiHinh, Toast.LENGTH_SHORT).show();
                                         if (listBitMap.size()==listHinh.size()){
-                                            Log.d("kiemtralisthinhdieukien",listBitMap.size()+"--"+listHinh.size());
+//                                            Log.d("kiemtralisthinhdieukien",listBitMap.size()+"--"+listHinh.size());
                                             Toast.makeText(context, R.string.TaiHinhAnh, Toast.LENGTH_SHORT).show();
                                             ((Activity)context).finish();
 

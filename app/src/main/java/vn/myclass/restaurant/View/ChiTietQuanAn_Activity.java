@@ -222,7 +222,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                 @Override
                 public void onSuccess(Uri uri) {
                     videoView.setVideoURI(uri);
-                    videoView.seekTo(1000);
+//                    videoView.seekTo(1000);
 
                 }
             });

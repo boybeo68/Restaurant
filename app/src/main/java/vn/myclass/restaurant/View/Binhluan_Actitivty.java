@@ -135,6 +135,13 @@ public class Binhluan_Actitivty extends AppCompatActivity implements View.OnClic
                 binhLuanModel.setMauser(mauser);
                 binhLuanController.themBinhLuan(this,maquan,binhLuanModel,hinhQuanAnBitMap);
 //                finish();
+                ProgressDialog progressDialog=ProgressDialog.show(this,getString(R.string.ThongBao), getString(R.string.TaiHinh), false, true, new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+
+                    }
+                });
+                progressDialog.show();
                 break;
             case R.id.imgChupHinh:
                 Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

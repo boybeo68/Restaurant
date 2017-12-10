@@ -106,6 +106,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     VideoView videoView;
     String maQuanAn;
     QuanAnModel quanAnModel;
+    MonanModel monanModel;
 
 
     @Nullable
@@ -338,15 +339,16 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                     String tenHinh=String.valueOf(thoigian)+".jpg";
                     int position=spinnerThucDon.getSelectedItemPosition();
                     String mathucDon=thucDonModelList.get(position).getMathucdon();
-                    MonanModel monanModel=new MonanModel();
+                    monanModel=new MonanModel();
                     monanModel.setTenmon(edtTenMon.getText().toString());
                     monanModel.setGiatien(Long.parseLong(edtGiaTien.getText().toString()));
                     monanModel.setHinhanh(tenHinh);
                     ThemThucDonModel themThucDonModel=new ThemThucDonModel();
                     themThucDonModel.setMathucdon(mathucDon);
                     themThucDonModel.setMonanModel(monanModel);
+                    imgXoaThucDon.setTag(themThucDonModel);
                     themThucDonModelList.add(themThucDonModel);
-
+                    Log.d("kiemtralistthucdon",themThucDonModelList.size()+"");
 
                     cloneThucDon();
                 }
@@ -357,7 +359,17 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         imgXoaThucDon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                int position=spinnerThucDon.getSelectedItemPosition();
+//                String mathucDon=thucDonModelList.get(position).getMathucdon();
+//                ThemThucDonModel themThucDonModel=new ThemThucDonModel();
+//                themThucDonModel.setMathucdon(mathucDon);
+//                themThucDonModel.setMonanModel(monanModel);
+                ThemThucDonModel thucDonModel1= (ThemThucDonModel) v.getTag();
+                themThucDonModelList.remove(thucDonModel1);
+                Log.d("kiemtralistthucdon",themThucDonModelList.size()+"");
+
                 khungchuaThucDon.removeView(view2);
+
             }
         });
         khungchuaThucDon.addView(view2);

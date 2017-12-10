@@ -80,7 +80,7 @@ public class Adapter_BinhLuan extends RecyclerView.Adapter<Adapter_BinhLuan.View
                 @Override
                 public void onSuccess(byte[] bytes) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                    Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                    Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 500);
                     bitmapList.add(converetdImage);
                     if (bitmapList.size()==binhLuanModel.getHinhanhBinhLuanList().size()){
                         AdapterRecyclerHinhBinhLuan adapterRecyclerHinhBinhLuan=new AdapterRecyclerHinhBinhLuan(context,R.layout.custom_layout_hinhbinhluan,bitmapList,binhLuanModel,false);
