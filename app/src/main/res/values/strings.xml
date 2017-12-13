@@ -79,6 +79,7 @@
     <string name="KhongVideo">Không video trailer</string>
     <string name="TaiHinhAnh">Tải binh luận hoàn tất</string>
     <string name="TaiHinh">Đang tải bình luận... </string>
+    <string name="DanhSachQuanDaDang">Danh sách quán đã đăng</string>
 
 
 </resources>

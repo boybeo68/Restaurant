@@ -38,7 +38,6 @@ import vn.myclass.restaurant.R;
 
 public class Binhluan_Actitivty extends AppCompatActivity implements View.OnClickListener {
 
-
     final int RESULT_IMG2 = 212;
     final int RESULT_IMG3 = 213;
     final int RESULT_IMG4 = 214;
@@ -63,7 +62,9 @@ public class Binhluan_Actitivty extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.layout_binhluan);
+
         String tenquanan=getIntent().getStringExtra("tenquan");
         String diachi=getIntent().getStringExtra("diachi");
         maquan=getIntent().getStringExtra("maquan");
@@ -94,7 +95,6 @@ public class Binhluan_Actitivty extends AppCompatActivity implements View.OnClic
         edtChamDiemBinhLuan.setFilters(new InputFilter[]{new InputFilterMinMax(0, 10)});
 
     }
-
     private void addConTroll() {
         txtTenQuanan= (TextView) findViewById(R.id.txtTenQuanAn);
         txtDiaChiQuanan= (TextView) findViewById(R.id.txtDiachiquanan);

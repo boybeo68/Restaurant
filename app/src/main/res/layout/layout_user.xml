@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <include layout="@layout/layout_toolbar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:id="@+id/chitietUser"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleimageviewUser"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/background"
+            android:text="6.6"
+            android:gravity="center"
+            android:layout_margin="5dp"
+            android:textColor="@color/colorAccent"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+
+            android:layout_margin="5dp"
+            >
+            <TextView
+                android:id="@+id/txtTenUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ten User"
+                android:textStyle="bold"
+                android:textColor="@color/danghoatDong"
+                android:textSize="15sp"
+                />
+            <TextView
+                android:id="@+id/txtEmailUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Địa chỉ email"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/DanhsachQuanDaDang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/DanhSachQuanDaDang"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        />
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyle_QuandaDang">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

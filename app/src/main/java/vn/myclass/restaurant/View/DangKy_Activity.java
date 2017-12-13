@@ -91,13 +91,6 @@ public class DangKy_Activity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     progressDialog.dismiss();
-                    ThanhVienModel thanhVienModel=new ThanhVienModel();
-                    thanhVienModel.setHoten(email);
-                    thanhVienModel.setHinhanh("user.png");
-                    Log.d("xemhinhanh",thanhVienModel.getHinhanh());
-                    String uid=task.getResult().getUser().getUid();
-                    dangki_controller=new Dangki_Controller();
-                    dangki_controller.ThemThongTinThanVienController(thanhVienModel,uid);
                     Toast.makeText(DangKy_Activity.this, getString(R.string.success),
                             Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(DangKy_Activity.this,DangNhapActivity.class);

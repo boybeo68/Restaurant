@@ -54,6 +54,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 
+import vn.myclass.restaurant.Controller.Dangki_Controller;
+import vn.myclass.restaurant.Model.ThanhVienModel;
 import vn.myclass.restaurant.R;
 
 /**
@@ -76,6 +78,8 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
     Button btnDangNhap;
     ProgressDialog progressDialog;
     SharedPreferences sharedPreferences;
+    String emailGoogle;
+    String emailFb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,7 +114,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
 
     }
     public void dangNhapFacebook(){
-        btnDangnhapFacebook.setReadPermissions(Arrays.asList("public_profile", "email"));
+        btnDangnhapFacebook.setReadPermissions("email", "public_profile");
         btnDangnhapFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
@@ -202,6 +206,8 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                 GoogleSignInAccount account = result.getSignInAccount();
                 String tokenId = account.getIdToken();
+                emailGoogle=account.getEmail();
+
                 chungThucFireBase(tokenId);
             }
 
@@ -215,7 +221,26 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
         if (CHECK_PROVIDER_DANGNHAP == 1) {
 
             AuthCredential authCredential = GoogleAuthProvider.getCredential(tokenId, null);
-            mAuth.signInWithCredential(authCredential);
+            Log.d("kiemtratoken",tokenId);
+            mAuth.signInWithCredential(authCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()){
+//                        ThanhVienModel thanhVienModel=new ThanhVienModel();
+//                        thanhVienModel.setHoten(emailGoogle);
+//                        thanhVienModel.setHinhanh("user.png");
+//                        Log.d("xemhinhanh",thanhVienModel.getHinhanh());
+//                        String uid=task.getResult().getUser().getUid();
+//                        Log.d("kiemtrauid",task.getResult().getUser().getUid());
+//                        Dangki_Controller  dangki_controller=new Dangki_Controller();
+//                        dangki_controller.ThemThongTinThanVienController(thanhVienModel,uid);
+                    }else {
+
+                    }
+                }
+            });
+
+
         } else if (CHECK_PROVIDER_DANGNHAP == 2) {
             ThemprogressDialog();
             AuthCredential authCredential = FacebookAuthProvider.getCredential(tokenId);
@@ -260,7 +285,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
     private void dangNhapEmail() {
 
 
-        String email = edEmailDN.getText().toString();
+        final String email = edEmailDN.getText().toString();
         String pass = edPassDN.getText().toString();
         String thongbao="";
         if (email.trim().length() == 0) {
@@ -274,10 +299,18 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
             mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (!task.isSuccessful()) {
-                        Toast.makeText(DangNhapActivity.this,getString(R.string.TaiKhoanKhongHopLe),Toast.LENGTH_SHORT).show();
-                    }else {
+                    if (task.isSuccessful()) {
 
+//                        ThanhVienModel thanhVienModel=new ThanhVienModel();
+//                        thanhVienModel.setHoten(email);
+//                        thanhVienModel.setHinhanh("user.png");
+//                        Log.d("xemhinhanh",thanhVienModel.getHinhanh());
+//                        String uid=task.getResult().getUser().getUid();
+//                        Log.d("kiemtrauid",task.getResult().getUser().getUid());
+//                        Dangki_Controller  dangki_controller=new Dangki_Controller();
+//                        dangki_controller.ThemThongTinThanVienController(thanhVienModel,uid);
+                    }else {
+                        Toast.makeText(DangNhapActivity.this,getString(R.string.TaiKhoanKhongHopLe),Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -297,7 +330,16 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
         if (user != null) {
             SharedPreferences.Editor editor=sharedPreferences.edit();
             editor.putString("mauser",user.getUid());
+            editor.putString("emailuser",user.getEmail());
             editor.commit();
+
+            ThanhVienModel thanhVienModel=new ThanhVienModel();
+                        thanhVienModel.setHoten(user.getEmail());
+                        thanhVienModel.setHinhanh("user.png");
+                        Log.d("xemhinhanh",thanhVienModel.getHinhanh());
+                        String uid=user.getUid();
+                        Dangki_Controller  dangki_controller=new Dangki_Controller();
+                        dangki_controller.ThemThongTinThanVienController(thanhVienModel,uid);
 
             Intent iTrangChu = new Intent(DangNhapActivity.this, Trangchu_Activity.class);
             startActivity(iTrangChu);

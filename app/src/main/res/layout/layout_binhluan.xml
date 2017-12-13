@@ -58,7 +58,7 @@
         android:background="#FFF"/>
     <EditText
         android:id="@+id/edtChamDiemBL"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/ChamDiem"
         android:textSize="15sp"

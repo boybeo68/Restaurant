@@ -17,6 +17,8 @@ import vn.myclass.restaurant.R;
 
 /**
  * Created by boybe on 11/23/2017.
+ * Chọn list hình ảnh theo đường dẫn trong máy
+ * không dùng list này nữa
  */
 
 public class Adapter_ChonHinhBinhLuan extends RecyclerView.Adapter<Adapter_ChonHinhBinhLuan.ViewHolderChonHinhBL> {

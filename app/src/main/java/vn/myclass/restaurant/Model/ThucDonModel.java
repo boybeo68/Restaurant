@@ -70,7 +70,6 @@ public class ThucDonModel {
                                 thucDonModel.setMonanModelList(monanModels);
                                 thucDonModels.add(thucDonModel);
                                 thucDon_interface.getThucDon(thucDonModels);
-
                             }
 
                             @Override

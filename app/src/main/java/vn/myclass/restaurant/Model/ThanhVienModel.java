@@ -2,7 +2,12 @@ package vn.myclass.restaurant.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -11,13 +16,16 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 
 public class ThanhVienModel implements Parcelable {
-    String hoten,hinhanh;
-    String maThanhVien;
+   private String hoten,hinhanh;
+   private String maThanhVien;
 
     protected ThanhVienModel(Parcel in) {
         hoten = in.readString();
         hinhanh = in.readString();
         maThanhVien = in.readString();
+    }
+
+    public ThanhVienModel() {
     }
 
     public static final Creator<ThanhVienModel> CREATOR = new Creator<ThanhVienModel>() {
@@ -40,17 +48,6 @@ public class ThanhVienModel implements Parcelable {
         this.maThanhVien = maThanhVien;
     }
 
-    private DatabaseReference nodeThanhvien;
-
-    public ThanhVienModel() {
-        nodeThanhvien= FirebaseDatabase.getInstance().getReference().child("thanhviens");
-    }
-
-    public ThanhVienModel(String hoten, String hinhanh) {
-        this.hoten = hoten;
-        this.hinhanh = hinhanh;
-    }
-
     public String getHoten() {
         return hoten;
     }
@@ -66,9 +63,7 @@ public class ThanhVienModel implements Parcelable {
     public void setHinhanh(String hinhanh) {
         this.hinhanh = hinhanh;
     }
-    public  void ThemThongTinThanhVien(ThanhVienModel thanhVienModel,String uid){
-        nodeThanhvien.child(uid).setValue(thanhVienModel);
-    }
+
 
     @Override
     public int describeContents() {
@@ -80,5 +75,14 @@ public class ThanhVienModel implements Parcelable {
         dest.writeString(hoten);
         dest.writeString(hinhanh);
         dest.writeString(maThanhVien);
+    }
+    public  void ThemThongTinThanhVien(ThanhVienModel thanhVienModel,String uid){
+        DatabaseReference nodeThanhVien = FirebaseDatabase.getInstance().getReference().child("thanhviens");
+        nodeThanhVien.child(uid).setValue(thanhVienModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d("kiemtrathanhvien","thanh công");
+            }
+        });
     }
 }
