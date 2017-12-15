@@ -231,6 +231,7 @@ public class QuanAnModel implements Parcelable{
         int i=0;
 
         for (DataSnapshot valueQuanan : dataSnapshotQuanan.getChildren()) {
+//            Log.d("kiemtra14testvaluequan",valueQuanan+"");
 
             if (i == itemtieptheo){
                 break;
@@ -257,9 +258,11 @@ public class QuanAnModel implements Parcelable{
             List<BinhLuanModel> binhLuanModels = new ArrayList<>();
 
             for (DataSnapshot valueBinhLuan : snapshotBinhLuan.getChildren()) {
+                Log.d("kiemtra15cc",valueBinhLuan+"");
                 BinhLuanModel binhLuanModel = valueBinhLuan.getValue(BinhLuanModel.class);
-
+                Log.d("kiemtra15cc",dataSnapshot.child("thanhviens").child(binhLuanModel.getMauser())+"");
                 ThanhVienModel thanhVienModel = dataSnapshot.child("thanhviens").child(binhLuanModel.getMauser()).getValue(ThanhVienModel.class);
+
                 binhLuanModel.setThanhVienModel(thanhVienModel);// có được dữ liệu về thành viên của bình luận đó
                 binhLuanModel.setManbinhluan(valueBinhLuan.getKey());
                 List<String> hinhbinhluanList = new ArrayList<>();//1 bình luận có nhiều tấm hinh

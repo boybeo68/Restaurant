@@ -80,6 +80,14 @@
     <string name="TaiHinhAnh">Tải binh luận hoàn tất</string>
     <string name="TaiHinh">Đang tải bình luận... </string>
     <string name="DanhSachQuanDaDang">Danh sách quán đã đăng</string>
+    <string name="HoTen">Họ và tên</string>
+    <string name="DanhSachQuanDaLuu">Danh sách quán đã lưu</string>
+    <string name="DongY">Đồng ý</string>
+    <string name="KhongDongY">Không đồng ý</string>
+    <string name="XoaQuan">Bạn có chắc muốn xóa quán ăn?</string>
+    <string name="DangXuat">Đăng xuất</string>
+    <string name="HinhAnh">Hình ảnh</string>
+    <string name="ChinhSua">Chỉnh sửa</string>
 
 
 </resources>

@@ -2,7 +2,9 @@ package vn.myclass.restaurant.View.Fragments;
 
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -61,6 +63,7 @@ import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.ImagesNicer;
 import vn.myclass.restaurant.Model.MonanModel;
 import vn.myclass.restaurant.Model.QuanAnModel;
+import vn.myclass.restaurant.Model.ThanhVienModel;
 import vn.myclass.restaurant.Model.ThemThucDonModel;
 import vn.myclass.restaurant.Model.ThucDonModel;
 import vn.myclass.restaurant.Model.TienIchModel;
@@ -99,14 +102,17 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     List<Bitmap>hinhDaChupList;
     List<Uri>hinhQuanAn;
     List<Bitmap>hinhQuanAnBitMap;
+    List<String>listMaQuanThanhVien;
     Uri videoSelect;
     ArrayAdapter<String> adapterKhuvuc;
     ImageView imgTam,imgHinQuan1,imgHinQuan2,imgHinQuan3,imgHinQuan4,imgHinQuan5,imgHinQuan6,imgVideo;
     LinearLayout khungtienich,khungChiNhanh,khungChuaChiNhanh,khungchuaThucDon;
     VideoView videoView;
-    String maQuanAn;
+    String maQuanAn,mauser;
     QuanAnModel quanAnModel;
     MonanModel monanModel;
+    SharedPreferences sharedPreferences;
+    final DatabaseReference nodeRoot=FirebaseDatabase.getInstance().getReference();
 
 
     @Nullable
@@ -137,7 +143,8 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         rdVideo=view.findViewById(R.id.rdgVideo);
         frameVideo=view.findViewById(R.id.frameVideo);
 
-
+        sharedPreferences=getContext().getSharedPreferences("luudangnhap", Context.MODE_PRIVATE);
+        mauser=sharedPreferences.getString("mauser","");
 
         cloneChiNhanh();
 
@@ -152,6 +159,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         hinhDaChupList=new ArrayList<>();
         hinhQuanAn=new ArrayList<>();
         hinhQuanAnBitMap=new ArrayList<>();
+        listMaQuanThanhVien=new ArrayList<>();
         adapterKhuvuc = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, khuVucList);
         spinnerKhuVuc.setAdapter(adapterKhuvuc);
         adapterKhuvuc.notifyDataSetChanged();
@@ -174,6 +182,23 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                         frameVideo.setVisibility(View.GONE);
                         break;
                 }
+            }
+        });
+        nodeRoot.child("thanhviens").child(mauser).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ThanhVienModel thanhVienModel=dataSnapshot.getValue(ThanhVienModel.class);
+                for (String maquan:thanhVienModel.getMaquan()){
+                    listMaQuanThanhVien.add(maquan);
+                }
+
+                Log.d("kiemtra15clist",listMaQuanThanhVien.size()+"");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
         layDanhSachKhuVuc();
@@ -502,7 +527,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         }else {
             giaoHang=false;
         }
-        DatabaseReference nodeRoot=FirebaseDatabase.getInstance().getReference();
+
         DatabaseReference nodeQuanAn=nodeRoot.child("quanans");
         maQuanAn=nodeQuanAn.push().getKey();
         nodeRoot.child("khuvucs").child(khuVuc).push().setValue(maQuanAn);
@@ -511,7 +536,12 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
             DownloadToaDo downLoadToaDo=new DownloadToaDo();
             downLoadToaDo.execute(urlGeoCoding);
         }
+//        nodeRoot.child("thanhviens").child(mauser).child("maquan").push().setValue(maQuanAn);
 
+
+            listMaQuanThanhVien.add(maQuanAn);
+        Log.d("kiemtra15clist2",listMaQuanThanhVien.size()+"");
+        nodeRoot.child("thanhviens").child(mauser).child("maquan").setValue(listMaQuanThanhVien);
 
         quanAnModel=new QuanAnModel();
         quanAnModel.setTenquanan(tenquan);

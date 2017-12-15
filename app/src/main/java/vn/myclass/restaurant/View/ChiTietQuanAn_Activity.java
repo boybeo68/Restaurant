@@ -63,7 +63,7 @@ import vn.myclass.restaurant.R;
 
 public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
     QuanAnModel quanAnModel;
-    TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongCheckin, txtTongBinhLuan, txtTongAnh;
+    TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongChiNhanh, txtTongBinhLuan, txtTongAnh;
     TextView txtTieudeToolbar, txtGioiHanGia, txtTenWifi, txtMatkhauWifi, txtNgaydangWifi;
     ImageView imgHinhQuanAn, imgPlay;
     Button btnBinhluan;
@@ -95,7 +95,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         txtDiachiQuanAn = (TextView) findViewById(R.id.txtTenDiachi_chitetQA);
         txtGioHoatDong = (TextView) findViewById(R.id.txtGioHoatDong_chitietQA);
         txtTrangThai = (TextView) findViewById(R.id.txtTrangThai_chitietQA);
-        txtTongCheckin = (TextView) findViewById(R.id.txtSoCheckin_chitetQA);
+        txtTongChiNhanh = (TextView) findViewById(R.id.txtSoChiNhanh);
         txtTongBinhLuan = (TextView) findViewById(R.id.txtSoBinhLuan_chitietQA);
         txtTongAnh = (TextView) findViewById(R.id.txtSoHinhAnh_chitietQA);
         txtTieudeToolbar = (TextView) findViewById(R.id.txtTieudeToolbar);
@@ -136,6 +136,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 //            linearLayout.addView(chiNhanh);                                     //inflating :)
 //        }
 //        Chi nhánh gần nhất
+        txtTongChiNhanh.setText(quanAnModel.getChiNhanhQuanAnModelList().size()+"");
         chiNhanhQuanAnModelTam = quanAnModel.getChiNhanhQuanAnModelList().get(0);
         for (ChiNhanhQuanAnModel chiNhanhQuanAnModel : quanAnModel.getChiNhanhQuanAnModelList()) {
             if (chiNhanhQuanAnModelTam.getKhoangcach() > chiNhanhQuanAnModel.getKhoangcach()) {
@@ -222,7 +223,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                 @Override
                 public void onSuccess(Uri uri) {
                     videoView.setVideoURI(uri);
-//                    videoView.seekTo(1000);
+                    videoView.seekTo(1000);
 
                 }
             });
