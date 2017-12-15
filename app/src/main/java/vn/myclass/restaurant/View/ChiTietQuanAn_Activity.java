@@ -1,13 +1,17 @@
 package vn.myclass.restaurant.View;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -32,7 +37,9 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.Frame;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,7 +73,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongChiNhanh, txtTongBinhLuan, txtTongAnh;
     TextView txtTieudeToolbar, txtGioiHanGia, txtTenWifi, txtMatkhauWifi, txtNgaydangWifi;
     ImageView imgHinhQuanAn, imgPlay;
-    Button btnBinhluan;
+    Button btnBinhluan,btnLuuLai;
     Toolbar toolbar;
     RecyclerView recyclerViewBinhluan;
     Adapter_BinhLuan adapter_binhLuan;
@@ -80,6 +87,9 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     int posstion = 0;
     VideoView videoView;
     RecyclerView recyclerThucdon;
+    List<String>listQuanLuu;
+    SharedPreferences sharedPreferences;
+    String mauser;
 
 
     @SuppressLint("RestrictedApi")
@@ -90,6 +100,8 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
         recyclerViewBinhluan = (RecyclerView) findViewById(R.id.recycle_BinhLuan_ChitetQuanAn);
         quanAnModel = getIntent().getParcelableExtra("quanan");
+        sharedPreferences=getSharedPreferences("luudangnhap",MODE_PRIVATE);
+        mauser=sharedPreferences.getString("mauser","");
 //        Log.d("kiemtraintent",quanAnModel.getTenquanan());
         txtTenQuanAn = (TextView) findViewById(R.id.txtTenQuanAn_chitetQA);
         txtDiachiQuanAn = (TextView) findViewById(R.id.txtTenDiachi_chitetQA);
@@ -112,8 +124,10 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         btnBinhluan = (Button) findViewById(R.id.btnBinhLuan);
         videoView = (VideoView) findViewById(R.id.videoTrailer);
         imgPlay = (ImageView) findViewById(R.id.imgPlay);
+        btnLuuLai=findViewById(R.id.btnLuulai);
         recyclerThucdon = (RecyclerView) findViewById(R.id.recyclerThucDon);
         mapFragment.getMapAsync(this);
+        listQuanLuu=new ArrayList<>();
 
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -251,6 +265,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         khungtinhnang.setOnClickListener(this);
         btnBinhluan.setOnClickListener(this);
         imgPlay.setOnClickListener(this);
+        btnLuuLai.setOnClickListener(this);
 
     }
 
@@ -261,8 +276,14 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         noderoot.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                ThanhVienModel thanhVienModel2 = dataSnapshot.child("thanhviens").child(mauser).getValue(ThanhVienModel.class);
+                for (String maquan:thanhVienModel2.getMaquanluu()){
+                    listQuanLuu.add(maquan);
+                }
+
+                Log.d("kiemtra15clist",listQuanLuu.size()+"");
                 DataSnapshot snapshotBinhLuan = dataSnapshot.child("binhluans").child(quanAnModel.getMaquanan());
-                Log.d("kiemtrabinhluan2", snapshotBinhLuan + "");
+//                Log.d("kiemtrabinhluan2", snapshotBinhLuan + "");
                 //do 1 quán ăn có nhiều bình luận ==>tạo list
                 List<BinhLuanModel> binhLuanModels = new ArrayList<>();
 
@@ -281,7 +302,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                     binhLuanModels.add(binhLuanModel);
                 }
                 quanAnModel.setBinhLuanModelList(binhLuanModels);
-                Log.d("kiemtrabinhluan4", quanAnModel.getBinhLuanModelList().size() + "");
+//                Log.d("kiemtrabinhluan4", quanAnModel.getBinhLuanModelList().size() + "");
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ChiTietQuanAn_Activity.this);
                 recyclerViewBinhluan.setLayoutManager(layoutManager);
                 adapter_binhLuan = new Adapter_BinhLuan(ChiTietQuanAn_Activity.this, quanAnModel.getBinhLuanModelList(), R.layout.custom_layout_binhluan_chitiet);
@@ -383,6 +404,40 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                 MediaController mediaController = new MediaController(this);
                 videoView.setMediaController(mediaController);
                 imgPlay.setVisibility(View.GONE);
+                break;
+            case R.id.btnLuulai:
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+                alertBuilder.create();
+                alertBuilder.setMessage(R.string.LuuQuan);
+                alertBuilder.setPositiveButton(R.string.DongY, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!listQuanLuu.contains(quanAnModel.getMaquanan())){
+                            listQuanLuu.add(quanAnModel.getMaquanan());
+                            FirebaseDatabase.getInstance().getReference().child("thanhviens").child(mauser).child("maquanluu").setValue(listQuanLuu).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(ChiTietQuanAn_Activity.this, R.string.success, Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+                        }else if(listQuanLuu.contains(quanAnModel.getMaquanan())) {
+                            Toast.makeText(ChiTietQuanAn_Activity.this, R.string.QuanDaLuu, Toast.LENGTH_SHORT).show();
+                        }
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                    }
+                }).setNegativeButton(R.string.KhongDongY, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(ChiTietQuanAn_Activity.this, "không Đồng ý", Toast.LENGTH_SHORT).show();
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                alertBuilder.show();
                 break;
         }
     }

@@ -25,7 +25,16 @@ public class ThanhVienModel implements Parcelable {
     private String hoten, hinhanh;
     private String maThanhVien;
     private List<String> maquan;
+    private List<String> maquanluu;
     private List<QuanAnModel> quanAnModelList;
+
+    public List<String> getMaquanluu() {
+        return maquanluu;
+    }
+
+    public void setMaquanluu(List<String> maquanluu) {
+        this.maquanluu = maquanluu;
+    }
 
     public List<QuanAnModel> getQuanAnModelList() {
         return quanAnModelList;
@@ -48,6 +57,7 @@ public class ThanhVienModel implements Parcelable {
         hinhanh = in.readString();
         maThanhVien = in.readString();
         maquan = in.createStringArrayList();
+        maquanluu = in.createStringArrayList();
         quanAnModelList = new ArrayList<QuanAnModel>();
         in.readTypedList(quanAnModelList, QuanAnModel.CREATOR);
     }
@@ -103,6 +113,7 @@ public class ThanhVienModel implements Parcelable {
         dest.writeString(hinhanh);
         dest.writeString(maThanhVien);
         dest.writeStringList(maquan);
+        dest.writeStringList(maquanluu);
         dest.writeTypedList(quanAnModelList);
     }
 

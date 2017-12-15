@@ -88,6 +88,8 @@
     <string name="DangXuat">Đăng xuất</string>
     <string name="HinhAnh">Hình ảnh</string>
     <string name="ChinhSua">Chỉnh sửa</string>
+    <string name="LuuQuan">Bạn có muốn lưu quán?</string>
+    <string name="QuanDaLuu">Quán đã lưu trước đó</string>
 
 
 </resources>

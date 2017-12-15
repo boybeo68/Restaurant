@@ -47,10 +47,11 @@ public class User_Activity extends AppCompatActivity {
     Toolbar toolbar;
     String mauser;
     Location vitrihientai;
-    QuanAnModel quanAnModel;
-    RecyclerView recyclerViewQuandaDang;
-    Adapter_Quan_Da_Dang adapter_quan_da_dang;
+
+    RecyclerView recyclerViewQuandaDang,recyclerViewQuanDaluu;
+
     List<QuanAnModel> quanAnModelList;
+    List<QuanAnModel>quanAnModelListQuanLuu;
     CircleImageView circleImageUser;
     private ProgressDialog progressDialog;
     Button btnDangXuat;
@@ -67,6 +68,7 @@ public class User_Activity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         txtTieudetoolbar=findViewById(R.id.txtTieudeToolbar);
         recyclerViewQuandaDang=findViewById(R.id.recyle_QuandaDang);
+        recyclerViewQuanDaluu=findViewById(R.id.recyle_QuandaLuu);
         btnDangXuat=findViewById(R.id.btnDangXuat);
         circleImageUser=findViewById(R.id.circleimageviewUser);
         mAuth = FirebaseAuth.getInstance();
@@ -95,9 +97,87 @@ public class User_Activity extends AppCompatActivity {
             }
         });
         quanAnModelList = new ArrayList<>();
+        quanAnModelListQuanLuu=new ArrayList<>();
         docDulieuDatabase2();
+        docDulieuDatabase1quanLuu();
 
+    }
 
+    private void docDulieuDatabase1quanLuu() {
+        DatabaseReference nodeRoot=FirebaseDatabase.getInstance().getReference();
+        ValueEventListener valueEventListener=new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ThanhVienModel thanhVienModel = dataSnapshot.child("thanhviens").child(mauser).getValue(ThanhVienModel.class);
+                if (thanhVienModel.getMaquanluu()!=null){
+                    for (final String maquanan:thanhVienModel.getMaquanluu()){
+//                        Log.d("kiemtra15cUser",maquanan);
+                        DataSnapshot valueQuanan = dataSnapshot.child("quanans").child(maquanan);
+//                        Log.d("kiemtra14testvaluequan",valueQuanan+"");
+                        QuanAnModel  quanAnModelLuu = valueQuanan.getValue(QuanAnModel.class);
+                        quanAnModelLuu.setMaquanan(valueQuanan.getKey());
+                        //Lấy danh sách hình ảnh quán ăn
+                        DataSnapshot dataSnapshotHinhQA = dataSnapshot.child("hinhanhquanans").child(valueQuanan.getKey());
+//                              Log.d("kiemtraMa",valueQuanan.getKey());
+                        List<String> hinhanhList = new ArrayList<>();
+                        for (DataSnapshot valueHinhanhQA : dataSnapshotHinhQA.getChildren()) {
+//                              Log.d("kiemtrahinh",valueHinhanhQA.getValue()+"");
+                            hinhanhList.add(valueHinhanhQA.getValue(String.class));
+                        }
+                        quanAnModelLuu.setHinhanhquanan(hinhanhList);
+                        //Lấy danh sách bình luân của quán ăn
+                        DataSnapshot snapshotBinhLuan = dataSnapshot.child("binhluans").child(quanAnModelLuu.getMaquanan());
+                        //do 1 quán ăn có nhiều bình luận ==>tạo list
+                        List<BinhLuanModel> binhLuanModels = new ArrayList<>();
+
+                        for (DataSnapshot valueBinhLuan : snapshotBinhLuan.getChildren()) {
+                            BinhLuanModel binhLuanModel = valueBinhLuan.getValue(BinhLuanModel.class);
+
+                            ThanhVienModel thanhVienModel2 = dataSnapshot.child("thanhviens").child(binhLuanModel.getMauser()).getValue(ThanhVienModel.class);
+                            binhLuanModel.setThanhVienModel(thanhVienModel2);// có được dữ liệu về thành viên của bình luận đó
+                            binhLuanModel.setManbinhluan(valueBinhLuan.getKey());
+                            List<String> hinhbinhluanList = new ArrayList<>();//1 bình luận có nhiều tấm hinh
+                            DataSnapshot snapshotnodeHinhanhBL = dataSnapshot.child("hinhanhbinhluans").child(binhLuanModel.getManbinhluan());
+                            for (DataSnapshot valuehinhanhbinhluan : snapshotnodeHinhanhBL.getChildren()) {
+                                hinhbinhluanList.add(valuehinhanhbinhluan.getValue(String.class));
+                            }
+                            binhLuanModel.setHinhanhBinhLuanList(hinhbinhluanList);
+                            binhLuanModels.add(binhLuanModel);
+                        }
+                        quanAnModelLuu.setBinhLuanModelList(binhLuanModels);
+                        // lấy chi nhánh quán ăn
+                        List<ChiNhanhQuanAnModel>chiNhanhQuanAnModels =new ArrayList<>();
+                        DataSnapshot snapshotChiNhanh=dataSnapshot.child("chinhanhquanans").child(quanAnModelLuu.getMaquanan());
+                        for (DataSnapshot valueChinhanhquanan : snapshotChiNhanh.getChildren()){
+                            ChiNhanhQuanAnModel chiNhanhQuanAnModel=valueChinhanhquanan.getValue(ChiNhanhQuanAnModel.class);
+                            Location vitriquanan=new Location("");
+                            vitriquanan.setLongitude(chiNhanhQuanAnModel.getLongitude());
+                            vitriquanan.setLatitude(chiNhanhQuanAnModel.getLatitude());
+                            double khoangcach= vitrihientai.distanceTo(vitriquanan)/1000;
+                            Log.d("toado",khoangcach+"=="+chiNhanhQuanAnModel.getDiachi());
+                            chiNhanhQuanAnModel.setKhoangcach(khoangcach);
+                            chiNhanhQuanAnModels.add(chiNhanhQuanAnModel);
+                        }
+                        quanAnModelLuu.setChiNhanhQuanAnModelList(chiNhanhQuanAnModels);
+                        quanAnModelListQuanLuu.add(quanAnModelLuu);
+                        Log.d("kiemtra14list",quanAnModelListQuanLuu.size()+"");
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(User_Activity.this);
+                        recyclerViewQuanDaluu.setLayoutManager(layoutManager);
+                        Adapter_Quan_Da_Dang adapter_quanluu=new Adapter_Quan_Da_Dang(User_Activity.this,R.layout.custom_layout_quan_da_dang,quanAnModelListQuanLuu);
+                        recyclerViewQuanDaluu.setAdapter(adapter_quanluu);
+
+                        adapter_quanluu.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        nodeRoot.addValueEventListener(valueEventListener);
     }
 
     @Override
@@ -116,7 +196,7 @@ public class User_Activity extends AppCompatActivity {
                         Log.d("kiemtra15cUser",maquanan);
                         DataSnapshot valueQuanan = dataSnapshot.child("quanans").child(maquanan);
                         Log.d("kiemtra14testvaluequan",valueQuanan+"");
-                        quanAnModel = valueQuanan.getValue(QuanAnModel.class);
+                        QuanAnModel quanAnModel = valueQuanan.getValue(QuanAnModel.class);
                         quanAnModel.setMaquanan(valueQuanan.getKey());
                         //Lấy danh sách hình ảnh quán ăn
                         DataSnapshot dataSnapshotHinhQA = dataSnapshot.child("hinhanhquanans").child(valueQuanan.getKey());
@@ -165,7 +245,7 @@ public class User_Activity extends AppCompatActivity {
                         Log.d("kiemtra14list",quanAnModelList.size()+"");
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(User_Activity.this);
                         recyclerViewQuandaDang.setLayoutManager(layoutManager);
-                        adapter_quan_da_dang=new Adapter_Quan_Da_Dang(User_Activity.this,R.layout.custom_layout_quan_da_dang,quanAnModelList);
+                        Adapter_Quan_Da_Dang adapter_quan_da_dang=new Adapter_Quan_Da_Dang(User_Activity.this,R.layout.custom_layout_quan_da_dang,quanAnModelList);
                         recyclerViewQuandaDang.setAdapter(adapter_quan_da_dang);
 
                         adapter_quan_da_dang.notifyDataSetChanged();
