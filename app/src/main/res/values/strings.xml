@@ -90,6 +90,10 @@
     <string name="ChinhSua">Chỉnh sửa</string>
     <string name="LuuQuan">Bạn có muốn lưu quán?</string>
     <string name="QuanDaLuu">Quán đã lưu trước đó</string>
+    <string name="ChamDiemQA">Chấm điểm </string>
+    <string name="Sua">Sửa</string>
+    <string name="Xoa">Xóa</string>
+    <string name="ThongTinCaNhan">Thông tin cá nhân</string>
 
 
 </resources>

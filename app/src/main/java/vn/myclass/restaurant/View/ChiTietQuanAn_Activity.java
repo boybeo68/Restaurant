@@ -71,7 +71,7 @@ import vn.myclass.restaurant.R;
 public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
     QuanAnModel quanAnModel;
     TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongChiNhanh, txtTongBinhLuan, txtTongAnh;
-    TextView txtTieudeToolbar, txtGioiHanGia, txtTenWifi, txtMatkhauWifi, txtNgaydangWifi;
+    TextView txtTieudeToolbar, txtGioiHanGia, txtTenWifi, txtMatkhauWifi, txtNgaydangWifi,txtChamDiem_chitietQA;
     ImageView imgHinhQuanAn, imgPlay;
     Button btnBinhluan,btnLuuLai;
     Toolbar toolbar;
@@ -124,6 +124,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         btnBinhluan = (Button) findViewById(R.id.btnBinhLuan);
         videoView = (VideoView) findViewById(R.id.videoTrailer);
         imgPlay = (ImageView) findViewById(R.id.imgPlay);
+        txtChamDiem_chitietQA=findViewById(R.id.txtChamDiem_chitietQA);
         btnLuuLai=findViewById(R.id.btnLuulai);
         recyclerThucdon = (RecyclerView) findViewById(R.id.recyclerThucDon);
         mapFragment.getMapAsync(this);
@@ -201,7 +202,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         Log.d("kiemtraCN", quanAnModel.getChiNhanhQuanAnModelList().size() + "");
         txtGioHoatDong.setText(quanAnModel.getGiomocua() + "-" + quanAnModel.getGiodongcua());
         txtTongAnh.setText(quanAnModel.getHinhanhquanan().size() + "");
-        txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size() + "");
+
         txtTieudeToolbar.setText(quanAnModel.getTenquanan());
 
 
@@ -277,8 +278,10 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ThanhVienModel thanhVienModel2 = dataSnapshot.child("thanhviens").child(mauser).getValue(ThanhVienModel.class);
-                for (String maquan:thanhVienModel2.getMaquanluu()){
-                    listQuanLuu.add(maquan);
+                if (thanhVienModel2.getMaquanluu()!=null){
+                    for (String maquan:thanhVienModel2.getMaquanluu()){
+                        listQuanLuu.add(maquan);
+                    }
                 }
 
                 Log.d("kiemtra15clist",listQuanLuu.size()+"");
@@ -303,6 +306,17 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                 }
                 quanAnModel.setBinhLuanModelList(binhLuanModels);
 //                Log.d("kiemtrabinhluan4", quanAnModel.getBinhLuanModelList().size() + "");
+                if(quanAnModel.getBinhLuanModelList().size() > 0){
+                    txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size() + "");
+                    double tongdiemquanan=0;
+                    //tổng điểm trung bình của bình luận và tổng số hình bình luận
+                    for (BinhLuanModel binhLuanModel1:quanAnModel.getBinhLuanModelList()){
+                        tongdiemquanan+=binhLuanModel1.getChamdiem();
+                    }
+                    double diemtrungbinhquanan=tongdiemquanan/(quanAnModel.getBinhLuanModelList().size());
+                    txtChamDiem_chitietQA.setText(String.format("%.1f",diemtrungbinhquanan));
+                }
+
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ChiTietQuanAn_Activity.this);
                 recyclerViewBinhluan.setLayoutManager(layoutManager);
                 adapter_binhLuan = new Adapter_BinhLuan(ChiTietQuanAn_Activity.this, quanAnModel.getBinhLuanModelList(), R.layout.custom_layout_binhluan_chitiet);
@@ -318,6 +332,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
             }
         });
+
     }
 
     @Override

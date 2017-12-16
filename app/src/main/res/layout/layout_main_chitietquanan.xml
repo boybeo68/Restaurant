@@ -192,7 +192,7 @@
                                 android:id="@+id/txtSoBinhLuan_chitietQA"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="123"
+                                android:text="0"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -211,16 +211,13 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/txtSoLuuLai_chitietQA"
+                                android:id="@+id/txtChamDiem_chitietQA"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="123"
+                                android:text="0"
+                                android:textColor="@color/danghoatDong"
+                                android:textSize="30sp"
                                 android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/LuuLai" />
 
 
                         </LinearLayout>

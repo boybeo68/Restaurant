@@ -189,9 +189,12 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 ThanhVienModel thanhVienModel=dataSnapshot.getValue(ThanhVienModel.class);
-                for (String maquan:thanhVienModel.getMaquan()){
-                    listMaQuanThanhVien.add(maquan);
+                if (thanhVienModel.getMaquan()!=null){
+                    for (String maquan:thanhVienModel.getMaquan()){
+                        listMaQuanThanhVien.add(maquan);
+                    }
                 }
+
 
                 Log.d("kiemtra15clist",listMaQuanThanhVien.size()+"");
             }
@@ -529,6 +532,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         }
 
         DatabaseReference nodeQuanAn=nodeRoot.child("quanans");
+        Log.d("kiemtraget",nodeQuanAn.push()+"");
         maQuanAn=nodeQuanAn.push().getKey();
         nodeRoot.child("khuvucs").child(khuVuc).push().setValue(maQuanAn);
         for (String chinhanh :chinhanhList){

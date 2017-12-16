@@ -33,6 +33,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import vn.myclass.restaurant.Adapter.Adapter_BinhLuan;
+import vn.myclass.restaurant.Adapter.Adapter_QuanDaLuu;
 import vn.myclass.restaurant.Adapter.Adapter_Quan_Da_Dang;
 import vn.myclass.restaurant.Controller.Interface.Odau_interface;
 import vn.myclass.restaurant.Model.BinhLuanModel;
@@ -52,6 +53,8 @@ public class User_Activity extends AppCompatActivity {
 
     List<QuanAnModel> quanAnModelList;
     List<QuanAnModel>quanAnModelListQuanLuu;
+    List<String>listMaquanLuu;
+    List<String>listQuanDaDang;
     CircleImageView circleImageUser;
     private ProgressDialog progressDialog;
     Button btnDangXuat;
@@ -84,7 +87,7 @@ public class User_Activity extends AppCompatActivity {
         txtEmailUser.setText(emailUser);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        txtTieudetoolbar.setText(emailUser);
+        txtTieudetoolbar.setText(R.string.ThongTinCaNhan);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -98,6 +101,8 @@ public class User_Activity extends AppCompatActivity {
         });
         quanAnModelList = new ArrayList<>();
         quanAnModelListQuanLuu=new ArrayList<>();
+        listMaquanLuu=new ArrayList<>();
+        listQuanDaDang=new ArrayList<>();
         docDulieuDatabase2();
         docDulieuDatabase1quanLuu();
 
@@ -112,6 +117,7 @@ public class User_Activity extends AppCompatActivity {
                 ThanhVienModel thanhVienModel = dataSnapshot.child("thanhviens").child(mauser).getValue(ThanhVienModel.class);
                 if (thanhVienModel.getMaquanluu()!=null){
                     for (final String maquanan:thanhVienModel.getMaquanluu()){
+                        listMaquanLuu.add(maquanan);
 //                        Log.d("kiemtra15cUser",maquanan);
                         DataSnapshot valueQuanan = dataSnapshot.child("quanans").child(maquanan);
 //                        Log.d("kiemtra14testvaluequan",valueQuanan+"");
@@ -161,10 +167,10 @@ public class User_Activity extends AppCompatActivity {
                         }
                         quanAnModelLuu.setChiNhanhQuanAnModelList(chiNhanhQuanAnModels);
                         quanAnModelListQuanLuu.add(quanAnModelLuu);
-                        Log.d("kiemtra14list",quanAnModelListQuanLuu.size()+"");
+                        Log.d("kiemtra16list",quanAnModelListQuanLuu.size()+"==="+listMaquanLuu.size());
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(User_Activity.this);
                         recyclerViewQuanDaluu.setLayoutManager(layoutManager);
-                        Adapter_Quan_Da_Dang adapter_quanluu=new Adapter_Quan_Da_Dang(User_Activity.this,R.layout.custom_layout_quan_da_dang,quanAnModelListQuanLuu);
+                        Adapter_QuanDaLuu adapter_quanluu=new Adapter_QuanDaLuu(User_Activity.this,R.layout.custom_layout_quandaluu,quanAnModelListQuanLuu,mauser,listMaquanLuu);
                         recyclerViewQuanDaluu.setAdapter(adapter_quanluu);
 
                         adapter_quanluu.notifyDataSetChanged();
@@ -177,7 +183,7 @@ public class User_Activity extends AppCompatActivity {
 
             }
         };
-        nodeRoot.addValueEventListener(valueEventListener);
+        nodeRoot.addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override
@@ -193,6 +199,7 @@ public class User_Activity extends AppCompatActivity {
                 ThanhVienModel thanhVienModel = dataSnapshot.child("thanhviens").child(mauser).getValue(ThanhVienModel.class);
                 if (thanhVienModel.getMaquan()!=null){
                     for (final String maquanan:thanhVienModel.getMaquan()){
+                        listQuanDaDang.add(maquanan);
                         Log.d("kiemtra15cUser",maquanan);
                         DataSnapshot valueQuanan = dataSnapshot.child("quanans").child(maquanan);
                         Log.d("kiemtra14testvaluequan",valueQuanan+"");
@@ -245,7 +252,7 @@ public class User_Activity extends AppCompatActivity {
                         Log.d("kiemtra14list",quanAnModelList.size()+"");
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(User_Activity.this);
                         recyclerViewQuandaDang.setLayoutManager(layoutManager);
-                        Adapter_Quan_Da_Dang adapter_quan_da_dang=new Adapter_Quan_Da_Dang(User_Activity.this,R.layout.custom_layout_quan_da_dang,quanAnModelList);
+                        Adapter_Quan_Da_Dang adapter_quan_da_dang=new Adapter_Quan_Da_Dang(User_Activity.this,R.layout.custom_layout_quan_da_dang,quanAnModelList,mauser,listQuanDaDang);
                         recyclerViewQuandaDang.setAdapter(adapter_quan_da_dang);
 
                         adapter_quan_da_dang.notifyDataSetChanged();
@@ -259,7 +266,7 @@ public class User_Activity extends AppCompatActivity {
 
             }
         };
-        nodeRoot.addValueEventListener(valueEventListener);
+        nodeRoot.addListenerForSingleValueEvent(valueEventListener);
     }
     @Override
     public boolean onSupportNavigateUp() {
