@@ -1,8 +1,11 @@
 package vn.myclass.restaurant.View.Fragments;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -103,6 +106,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     List<Uri>hinhQuanAn;
     List<Bitmap>hinhQuanAnBitMap;
     List<String>listMaQuanThanhVien;
+    List<Bitmap>listKiemtra;
     Uri videoSelect;
     ArrayAdapter<String> adapterKhuvuc;
     ImageView imgTam,imgHinQuan1,imgHinQuan2,imgHinQuan3,imgHinQuan4,imgHinQuan5,imgHinQuan6,imgVideo;
@@ -112,6 +116,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     QuanAnModel quanAnModel;
     MonanModel monanModel;
     SharedPreferences sharedPreferences;
+    Bitmap converetdImage;
     final DatabaseReference nodeRoot=FirebaseDatabase.getInstance().getReference();
 
 
@@ -160,6 +165,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         hinhQuanAn=new ArrayList<>();
         hinhQuanAnBitMap=new ArrayList<>();
         listMaQuanThanhVien=new ArrayList<>();
+        listKiemtra=new ArrayList<>();
         adapterKhuvuc = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, khuVucList);
         spinnerKhuVuc.setAdapter(adapterKhuvuc);
         adapterKhuvuc.notifyDataSetChanged();
@@ -560,13 +566,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
 //        quanAnModel.setVideogioithieu(videoSelect.getLastPathSegment());
 //        FirebaseStorage.getInstance().getReference().child("video/"+videoSelect.getLastPathSegment()).putFile(videoSelect);
 
-        nodeQuanAn.child(maQuanAn).setValue(quanAnModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
-
-            }
-        });
+        nodeQuanAn.child(maQuanAn).setValue(quanAnModel);
 
 //        for (Bitmap bitmap:hinhQuanAnBitMap){
 //            nodeRoot.child("hinhanhquanans").child(maQuanAn).push().setValue(maQuanAn+".jpg");
@@ -580,14 +580,18 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
             nodeRoot.child("hinhanhquanans").child(maQuanAn).push().setValue(maQuanAn+j+".jpg");
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Bitmap bitmap = hinhQuanAnBitMap.get(j);
-            Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+            converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
             converetdImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
             FirebaseStorage.getInstance().getReference().child("hinhanh/"+maQuanAn+j+".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Intent intent1=new Intent(getContext(),Trangchu_Activity.class);
-                    startActivity(intent1);
+                    listKiemtra.add(converetdImage);
+                    if (listKiemtra.size()==hinhQuanAnBitMap.size()){
+                        Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(getContext(),Trangchu_Activity.class);
+                        getContext().startActivity(intent);
+                    }
                 }
             });
         }
@@ -707,7 +711,15 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                 startActivityForResult(Intent.createChooser(intent,"Chọn video ..."),RESULT_VIDEO);
                 break;
             case R.id.btnThemQuanAn:
+                ProgressDialog progressDialog=ProgressDialog.show(getContext(),getString(R.string.ThongBao), getString(R.string.ThongBaoThemQA), false, true, new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+
+                    }
+                });
+                progressDialog.show();
                     themQuanAn();
+
                 break;
         }
     }

@@ -2,6 +2,7 @@ package vn.myclass.restaurant.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,7 @@ import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.QuanAnModel;
 import vn.myclass.restaurant.Model.ThanhVienModel;
 import vn.myclass.restaurant.R;
+import vn.myclass.restaurant.View.SuaQuanAn_Activity;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -128,7 +130,33 @@ public class Adapter_Quan_Da_Dang extends RecyclerView.Adapter<Adapter_Quan_Da_D
                 }).setNegativeButton(R.string.KhongDongY, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(context, "không Đồng ý", Toast.LENGTH_SHORT).show();
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                alertBuilder.show();
+            }
+        });
+        holder.btnSuaQuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                alertBuilder.create();
+                alertBuilder.setMessage(R.string.SuaQuan);
+                alertBuilder.setPositiveButton(R.string.DongY, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent isuaQuan=new Intent(context,SuaQuanAn_Activity.class);
+                        isuaQuan.putExtra("quanan",quanAnModel);
+                        context.startActivity(isuaQuan);
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                    }
+                }).setNegativeButton(R.string.KhongDongY, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         if (dialog != null) {
                             dialog.dismiss();
                         }

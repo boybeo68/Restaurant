@@ -94,6 +94,12 @@
     <string name="Sua">Sửa</string>
     <string name="Xoa">Xóa</string>
     <string name="ThongTinCaNhan">Thông tin cá nhân</string>
+    <string name="SuaQuan">Bạn có muốn sửa quán đã đăng?</string>
+    <string name="SuaQuanAn">Sửa quán ăn </string>
+    <string name="XoaChiNhanh">Bạn có chắc muốn xóa chi nhanh?</string>
+    <string name="DanhSachThucDon">Danh sách thực đơn</string>
+    <string name="ThongBaoThemQA">Đang thêm quán ăn...</string>
+    <string name="XoaHinh">Bạn có chắc muốn xóa hình ảnh quán ăn?</string>
 
 
 </resources>
