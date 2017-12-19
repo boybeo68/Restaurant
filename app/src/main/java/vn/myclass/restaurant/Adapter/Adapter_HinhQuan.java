@@ -3,13 +3,18 @@ package vn.myclass.restaurant.Adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -29,13 +34,11 @@ public class Adapter_HinhQuan extends RecyclerView.Adapter<Adapter_HinhQuan.View
 
     Context context;
     int resource;
-    List<Bitmap> listhinhduocchon;
     String maquan;
     List<String>listlinkHinh;
-    public Adapter_HinhQuan(Context context, int resource, List<Bitmap>listhinhduocchon,String maquan,List<String>listlinkHinh) {
+    public Adapter_HinhQuan(Context context, int resource,String maquan,List<String>listlinkHinh) {
         this.context=context;
         this.resource=resource;
-        this.listhinhduocchon=listhinhduocchon;
         this.maquan=maquan;
         this.listlinkHinh=listlinkHinh;
     }
@@ -56,10 +59,24 @@ public class Adapter_HinhQuan extends RecyclerView.Adapter<Adapter_HinhQuan.View
     }
 
     @Override
-    public void onBindViewHolder(Adapter_HinhQuan.ViewHolderHinhQuan holder, int position) {
-        final Bitmap hinhduocchon=listhinhduocchon.get(position);
-        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(hinhduocchon, 500);
-        holder.imgView.setImageBitmap(converetdImage);
+    public void onBindViewHolder(final Adapter_HinhQuan.ViewHolderHinhQuan holder, final int position) {
+        final String hinhString=listlinkHinh.get(position);
+//        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(hinhduocchon, 300);
+
+
+        StorageReference storageHinhUser = FirebaseStorage.getInstance().getReference().child("hinhanh").child(hinhString);
+        long ONE_MEGABYTE = 1024 * 1024;
+        storageHinhUser.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 200);
+                holder.imgView.setImageBitmap(converetdImage);
+            }
+        });
+
+
+
         holder.imgXoa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,8 +86,7 @@ public class Adapter_HinhQuan extends RecyclerView.Adapter<Adapter_HinhQuan.View
                 alertBuilder.setPositiveButton(R.string.DongY, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        removeIteminView(hinhduocchon);
+                        removeIteminView(hinhString);
                         if (dialog != null) {
                             dialog.dismiss();
                         }
@@ -90,23 +106,21 @@ public class Adapter_HinhQuan extends RecyclerView.Adapter<Adapter_HinhQuan.View
 
     @Override
     public int getItemCount() {
-        return listhinhduocchon.size();
+        return listlinkHinh.size();
     }
-    private void removeIteminView(Bitmap hinhduocchon){
-        int curentPosition=listhinhduocchon.indexOf(hinhduocchon);
-        listhinhduocchon.remove(curentPosition);
+    private void removeIteminView(String hinhduocchon){
+        int curentPosition=listlinkHinh.indexOf(hinhduocchon);
         listlinkHinh.remove(curentPosition);
         DatabaseReference nodeRoot= FirebaseDatabase.getInstance().getReference();
-        FirebaseStorage  storage= FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference desertRef = storageRef.child("hinhanh");
-
         nodeRoot.child("hinhanhquanans").child(maquan).removeValue();
         for (String linkhinh:listlinkHinh){
             nodeRoot.child("hinhanhquanans").child(maquan).push().setValue(linkhinh);
-            desertRef.child(linkhinh).delete();
         }
         notifyItemRemoved(curentPosition);
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
 

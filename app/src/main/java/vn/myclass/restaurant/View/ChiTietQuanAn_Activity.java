@@ -261,7 +261,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         //lấy dữ liệu từ controller wifi
         // cần lấy thằng nào thì truyền nó vào
         chitietQuanAnController.HienThiDanhSachWifiQuanAn(quanAnModel.getMaquanan(), txtTenWifi, txtMatkhauWifi, txtNgaydangWifi);
-        thucDonController.getDanhSachThucDonQuanan(this, quanAnModel.getMaquanan(), recyclerThucdon);
+        thucDonController.getDanhSachThucDonQuanan(this, quanAnModel.getMaquanan(), recyclerThucdon,false);
         khungWifi.setOnClickListener(this);
         khungtinhnang.setOnClickListener(this);
         btnBinhluan.setOnClickListener(this);
@@ -279,6 +279,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ThanhVienModel thanhVienModel2 = dataSnapshot.child("thanhviens").child(mauser).getValue(ThanhVienModel.class);
                 if (thanhVienModel2.getMaquanluu()!=null){
+                    listQuanLuu.clear();
                     for (String maquan:thanhVienModel2.getMaquanluu()){
                         listQuanLuu.add(maquan);
                     }

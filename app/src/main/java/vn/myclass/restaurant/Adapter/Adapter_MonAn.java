@@ -1,21 +1,30 @@
 package vn.myclass.restaurant.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.DatMon;
 import vn.myclass.restaurant.Model.MonanModel;
+import vn.myclass.restaurant.Model.ThucDonModel;
 import vn.myclass.restaurant.R;
 
 /**
@@ -25,15 +34,21 @@ import vn.myclass.restaurant.R;
 public class Adapter_MonAn extends RecyclerView.Adapter<Adapter_MonAn.ViewHolderMonAn> {
     Context context;
     List<MonanModel>monanModels;
+    boolean isuaquan;
+    ThucDonModel thucDonModel;
+    String maquan;
     public static List<DatMon>datMonList =new ArrayList<>();
-    public Adapter_MonAn(Context context, List<MonanModel>monanModels) {
+    public Adapter_MonAn(Context context, List<MonanModel>monanModels,boolean isuaquan,ThucDonModel thucDonModel,String maquan) {
         this.context=context;
         this.monanModels=monanModels;
+        this.isuaquan=isuaquan;
+        this.thucDonModel=thucDonModel;
+        this.maquan=maquan;
     }
 
     public class ViewHolderMonAn extends RecyclerView.ViewHolder {
         ImageView imgGiamSoLuong,imgTangSoLuong;
-
+        ImageButton imgXoathudon;
         TextView txtTenMonAn,txtSoLuong,txtGiatien;
         public ViewHolderMonAn(View itemView) {
             super(itemView);
@@ -42,6 +57,7 @@ public class Adapter_MonAn extends RecyclerView.Adapter<Adapter_MonAn.ViewHolder
             imgTangSoLuong= (ImageView) itemView.findViewById(R.id.imgTangSoLuong);
             txtSoLuong= (TextView) itemView.findViewById(R.id.txtSoluongMon);
             txtGiatien= (TextView) itemView.findViewById(R.id.txtGiatienmonAn);
+            imgXoathudon=itemView.findViewById(R.id.imgXoaThucDon);
         }
     }
     @Override
@@ -129,11 +145,57 @@ public class Adapter_MonAn extends RecyclerView.Adapter<Adapter_MonAn.ViewHolder
                 holder.txtGiatien.setText(numberFormat.format(giasau)+"đ");
             }
         });
+        if (isuaquan){
+            holder.imgGiamSoLuong.setVisibility(View.GONE);
+            holder.imgTangSoLuong.setVisibility(View.GONE);
+            holder.txtSoLuong.setVisibility(View.GONE);
+            holder.txtGiatien.setVisibility(View.GONE);
+            holder.imgXoathudon.setVisibility(View.VISIBLE);
+            holder.imgXoathudon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                    alertBuilder.create();
+                    alertBuilder.setMessage(R.string.XoaThucDon);
+                    alertBuilder.setPositiveButton(R.string.DongY, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            removePosition(monanModel);
+                            if (dialog != null) {
+                                dialog.dismiss();
+                            }
+                        }
+                    }).setNegativeButton(R.string.KhongDongY, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(context, "không Đồng ý", Toast.LENGTH_SHORT).show();
+                            if (dialog != null) {
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                    alertBuilder.show();
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
         return monanModels.size();
+    }
+    private void removePosition(MonanModel monanModel){
+        int currentposition=monanModels.indexOf(monanModel);
+        monanModels.remove(currentposition);
+
+        DatabaseReference nodeRoot= FirebaseDatabase.getInstance().getReference();
+        nodeRoot.child("thucdonquanans").child(maquan).child(thucDonModel.getMathucdon()).removeValue();
+        for (int i=0;i<monanModels.size();i++){
+            MonanModel monanModel1moi = new MonanModel();
+            monanModel1moi=monanModels.get(i);
+            nodeRoot.child("thucdonquanans").child(maquan).child(thucDonModel.getMathucdon()).push().setValue(monanModel1moi);
+        }
+        notifyItemRemoved(currentposition);
     }
 
 

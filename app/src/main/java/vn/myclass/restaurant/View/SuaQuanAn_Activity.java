@@ -1,8 +1,10 @@
 package vn.myclass.restaurant.View;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -11,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,7 +39,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,12 +49,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -72,6 +79,7 @@ import vn.myclass.restaurant.Model.ThemThucDonModel;
 import vn.myclass.restaurant.Model.ThucDonModel;
 import vn.myclass.restaurant.Model.TienIchModel;
 import vn.myclass.restaurant.R;
+import vn.myclass.restaurant.View.Fragments.ThemQuanAn_Fragment;
 
 public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClickListener {
     final int RESULT_IMG2 = 112;
@@ -112,8 +120,10 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
     TextView txtTenQuanAn,txtTieudetoolbar;
     Toolbar toolbar;
     RecyclerView recyclerViewkhungChiNhanhtontai;
+    Bitmap converetdImage;
     ThucDonController thucDonController;
     RecyclerView recyclerThucdon,recyclerViewHinhQuan;
+    List<Bitmap>listKiemtra;
     final DatabaseReference nodeRoot= FirebaseDatabase.getInstance().getReference();
     ChiNhanhQuanAnModel chiNhanhQuanAnModel=new ChiNhanhQuanAnModel();
 
@@ -149,7 +159,7 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
         txtTieudetoolbar=findViewById(R.id.txtTieudeToolbar);
         recyclerThucdon = (RecyclerView) findViewById(R.id.recyclerThucDon);
         thucDonController = new ThucDonController();
-        thucDonController.getDanhSachThucDonQuanan(this, quanAnModel.getMaquanan(), recyclerThucdon);
+        thucDonController.getDanhSachThucDonQuanan(this, quanAnModel.getMaquanan(), recyclerThucdon,true);
 
         txtTenQuanAn.setText(quanAnModel.getTenquanan());
         edtGiaToiDa.setText(quanAnModel.getGiatoida()+"");
@@ -183,6 +193,7 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
         hinhQuanAn=new ArrayList<>();
         hinhQuanAnBitMap=new ArrayList<>();
         listMaQuanThanhVien=new ArrayList<>();
+        listKiemtra=new ArrayList<>();
         chinhanhListTontai=new ArrayList<>();
         bitmapList=new ArrayList<>();
 
@@ -209,25 +220,32 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
 
         layDanhSachTienIch();
         cloneThucDon();
-        for (String linkhinh : quanAnModel.getHinhanhquanan()){
-            StorageReference storageHinhUser = FirebaseStorage.getInstance().getReference().child("hinhanh").child(linkhinh);
-            long ONE_MEGABYTE = 1024 * 1024;
-            storageHinhUser.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                    Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 500);
-                    bitmapList.add(converetdImage);
-                    if (bitmapList.size()==quanAnModel.getHinhanhquanan().size()){
-                        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(SuaQuanAn_Activity.this,LinearLayoutManager.HORIZONTAL,false);
-                        Adapter_HinhQuan adapter_hinhQuan=new Adapter_HinhQuan(SuaQuanAn_Activity.this,R.layout.custom_layouthinhduocchon,bitmapList,quanAnModel.getMaquanan(),quanAnModel.getHinhanhquanan());
-                        recyclerViewHinhQuan.setLayoutManager(layoutManager);
-                        recyclerViewHinhQuan.setAdapter(adapter_hinhQuan);
-                        adapter_hinhQuan.notifyDataSetChanged();
-                    }
-                }
-            });
-        }
+        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(SuaQuanAn_Activity.this,LinearLayoutManager.HORIZONTAL,false);
+        Adapter_HinhQuan adapter_hinhQuan=new Adapter_HinhQuan(SuaQuanAn_Activity.this,R.layout.custom_layouthinhduocchon,quanAnModel.getMaquanan(),quanAnModel.getHinhanhquanan());
+        recyclerViewHinhQuan.setLayoutManager(layoutManager);
+        recyclerViewHinhQuan.setAdapter(adapter_hinhQuan);
+        adapter_hinhQuan.notifyDataSetChanged();
+//        for (String linkhinh : quanAnModel.getHinhanhquanan()){
+//            StorageReference storageHinhUser = FirebaseStorage.getInstance().getReference().child("hinhanh").child(linkhinh);
+//            long ONE_MEGABYTE = 1024 * 1024;
+//            storageHinhUser.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//                @Override
+//                public void onSuccess(byte[] bytes) {
+//                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+//                    Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+//                    bitmapList.add(converetdImage);
+//                    if (bitmapList.size()==quanAnModel.getHinhanhquanan().size()){
+//                        Log.d("kiemtra19",bitmapList.size()+"");
+//                        Log.d("kiemtra19",quanAnModel.getHinhanhquanan()+"");
+//                        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(SuaQuanAn_Activity.this,LinearLayoutManager.HORIZONTAL,false);
+//                        Adapter_HinhQuan adapter_hinhQuan=new Adapter_HinhQuan(SuaQuanAn_Activity.this,R.layout.custom_layouthinhduocchon,bitmapList,quanAnModel.getMaquanan(),quanAnModel.getHinhanhquanan());
+//                        recyclerViewHinhQuan.setLayoutManager(layoutManager);
+//                        recyclerViewHinhQuan.setAdapter(adapter_hinhQuan);
+//                        adapter_hinhQuan.notifyDataSetChanged();
+//                    }
+//                }
+//            });
+//        }
 
 
         btnGioMoCua.setOnClickListener(this);
@@ -483,8 +501,9 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
                 if (RESULT_OK==resultCode){
                     Uri uri=data.getData();
                     try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(SuaQuanAn_Activity.this.getContentResolver(),uri);
-                        imgHinQuan2.setImageBitmap(bitmap);
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan2.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -496,8 +515,9 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
                 if (RESULT_OK==resultCode){
                     Uri uri=data.getData();
                     try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(SuaQuanAn_Activity.this.getContentResolver(),uri);
-                        imgHinQuan3.setImageBitmap(bitmap);
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan3.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -509,8 +529,9 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
                 if (RESULT_OK==resultCode){
                     Uri uri=data.getData();
                     try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(SuaQuanAn_Activity.this.getContentResolver(),uri);
-                        imgHinQuan4.setImageBitmap(bitmap);
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan4.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -522,8 +543,9 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
                 if (RESULT_OK==resultCode){
                     Uri uri=data.getData();
                     try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(SuaQuanAn_Activity.this.getContentResolver(),uri);
-                        imgHinQuan5.setImageBitmap(bitmap);
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan5.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -535,8 +557,9 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
                 if (RESULT_OK==resultCode){
                     Uri uri=data.getData();
                     try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(SuaQuanAn_Activity.this.getContentResolver(),uri);
-                        imgHinQuan6.setImageBitmap(bitmap);
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan6.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -613,12 +636,85 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
                 startActivityForResult(Intent.createChooser(intent,"Chọn video ..."),RESULT_VIDEO);
                 break;
             case R.id.btnThemQuanAn:
+                ProgressDialog progressDialog=ProgressDialog.show(this,getString(R.string.ThongBao), getString(R.string.ThongBaoSuaQuan), false, true, new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+
+                    }
+                });
+                progressDialog.show();
                 suaQuanAn();
                 break;
         }
     }
 
     private void suaQuanAn() {
+        long giaToiDa=Long.parseLong(edtGiaToiDa.getText().toString());
+        long giaToiThieu=Long.parseLong(edtGiaToiThieu.getText().toString());
+        int rdchecked=rdgTrangThai.getCheckedRadioButtonId();
+        boolean giaoHang=false;
+        if (rdchecked==R.id.rdGiaoHang){
+            giaoHang=true;
+        }else {
+            giaoHang=false;
+        }
+        DatabaseReference nodeQuanAn=nodeRoot.child("quanans");
+        for (String chinhanh :chinhanhList){
+            String urlGeoCoding="https://maps.googleapis.com/maps/api/geocode/json?address="+chinhanh.replace(" ","%20")+"&key=AIzaSyAEnCj0g2NfDXdytA0C28A1XLP2is-aLDw";
+            DownloadToaDo downloadToaDo=new DownloadToaDo();
+            downloadToaDo.execute(urlGeoCoding);
+        }
 
+        final QuanAnModel quanAnModelthem=new QuanAnModel();
+        quanAnModelthem.setTenquanan(txtTenQuanAn.getText().toString());
+        quanAnModelthem.setGiatoida(giaToiDa);
+        quanAnModelthem.setGiatoithieu(giaToiThieu);
+        quanAnModelthem.setGiaohang(giaoHang);
+
+        quanAnModelthem.setTienich(selecttienIchList);
+        quanAnModelthem.setLuotthich(0);
+        quanAnModelthem.setGiomocua(btnGioMoCua.getText().toString());
+        quanAnModelthem.setGiodongcua(btnGioDongCua.getText().toString());
+
+        if (hinhQuanAnBitMap.size()!=0){
+            nodeQuanAn.child(maQuanAn).setValue(quanAnModelthem);
+            for (int j=0;j<hinhQuanAnBitMap.size();j++){
+                String mahinhanh=nodeRoot.child("hinhanhquanans").child(maQuanAn).push().getKey();
+                nodeRoot.child("hinhanhquanans").child(maQuanAn).child(mahinhanh).setValue(mahinhanh+j+".jpg");
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                Bitmap bitmap = hinhQuanAnBitMap.get(j);
+                converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                converetdImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                FirebaseStorage.getInstance().getReference().child("hinhanh/"+mahinhanh+j+".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        listKiemtra.add(converetdImage);
+                        if (listKiemtra.size()==hinhQuanAnBitMap.size()){
+                            Toast.makeText(SuaQuanAn_Activity.this, R.string.success, Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(SuaQuanAn_Activity.this,Trangchu_Activity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
+            }
+        }else {
+            nodeQuanAn.child(maQuanAn).setValue(quanAnModelthem).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Toast.makeText(SuaQuanAn_Activity.this, R.string.success, Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(SuaQuanAn_Activity.this,Trangchu_Activity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        for (int i=0 ;i< themThucDonModelList.size() ; i++){
+            nodeRoot.child("thucdonquanans").child(maQuanAn).child(themThucDonModelList.get(i).getMathucdon()).push().setValue(themThucDonModelList.get(i).getMonanModel());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Bitmap bitmap = hinhDaChupList.get(i);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+            byte[] data = baos.toByteArray();
+            FirebaseStorage.getInstance().getReference().child("hinhanh/"+themThucDonModelList.get(i).getMonanModel().getHinhanh()).putBytes(data);
+        }
     }
 }

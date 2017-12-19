@@ -196,6 +196,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
 
                 ThanhVienModel thanhVienModel=dataSnapshot.getValue(ThanhVienModel.class);
                 if (thanhVienModel.getMaquan()!=null){
+                    listMaQuanThanhVien.clear();
                     for (String maquan:thanhVienModel.getMaquan()){
                         listMaQuanThanhVien.add(maquan);
                     }
@@ -240,7 +241,8 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                     Uri uri=data.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                        imgHinQuan1.setImageBitmap(bitmap);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan1.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -254,7 +256,8 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                     Uri uri=data.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                        imgHinQuan2.setImageBitmap(bitmap);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan2.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -267,7 +270,8 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                     Uri uri=data.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                        imgHinQuan3.setImageBitmap(bitmap);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan3.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -280,7 +284,8 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                     Uri uri=data.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                        imgHinQuan4.setImageBitmap(bitmap);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan4.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -293,7 +298,8 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                     Uri uri=data.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                        imgHinQuan5.setImageBitmap(bitmap);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan5.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -306,7 +312,8 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                     Uri uri=data.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                        imgHinQuan6.setImageBitmap(bitmap);
+                        Bitmap converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                        imgHinQuan6.setImageBitmap(converetdImage);
                         hinhQuanAnBitMap.add(bitmap);
                         Log.d("kiemtrabit",hinhQuanAnBitMap.size()+"");
                     } catch (IOException e) {
@@ -577,13 +584,14 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
 //        }
 
         for (int j=0;j<hinhQuanAnBitMap.size();j++){
-            nodeRoot.child("hinhanhquanans").child(maQuanAn).push().setValue(maQuanAn+j+".jpg");
+            String mahinhanh=nodeRoot.child("hinhanhquanans").child(maQuanAn).push().getKey();
+            nodeRoot.child("hinhanhquanans").child(maQuanAn).child(mahinhanh).setValue(mahinhanh+j+".jpg");
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Bitmap bitmap = hinhQuanAnBitMap.get(j);
             converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
             converetdImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
-            FirebaseStorage.getInstance().getReference().child("hinhanh/"+maQuanAn+j+".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            FirebaseStorage.getInstance().getReference().child("hinhanh/"+mahinhanh+j+".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     listKiemtra.add(converetdImage);

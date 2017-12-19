@@ -100,6 +100,8 @@
     <string name="DanhSachThucDon">Danh sách thực đơn</string>
     <string name="ThongBaoThemQA">Đang thêm quán ăn...</string>
     <string name="XoaHinh">Bạn có chắc muốn xóa hình ảnh quán ăn?</string>
+    <string name="XoaThucDon">Bạn có chắc muốn xóa món ăn trong thực đơn này?</string>
+    <string name="ThongBaoSuaQuan">Đang sửa quán ăn...</string>
 
 
 </resources>

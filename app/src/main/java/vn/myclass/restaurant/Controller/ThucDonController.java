@@ -23,14 +23,14 @@ public class ThucDonController {
         thucDonModel =new ThucDonModel();
     }
 
-    public void getDanhSachThucDonQuanan(final Context context, String maQuanAn, final RecyclerView recyclerView){
+    public void getDanhSachThucDonQuanan(final Context context, final String maQuanAn, final RecyclerView recyclerView, final boolean isuaquan){
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         //lấy toàn bộ cái interface đã đc thêm dữ liệu
         ThucDon_interface thucDon_interface=new ThucDon_interface() {
             @Override
             public void getThucDon(List<ThucDonModel> thucDonModelList) {
-                Adapter_ThucDon adapter_thucDon=new Adapter_ThucDon(context,thucDonModelList);
+                Adapter_ThucDon adapter_thucDon=new Adapter_ThucDon(context,thucDonModelList,isuaquan,maQuanAn);
                 recyclerView.setAdapter(adapter_thucDon);
                 adapter_thucDon.notifyDataSetChanged();
 
