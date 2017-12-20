@@ -694,6 +694,7 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
                             Toast.makeText(SuaQuanAn_Activity.this, R.string.success, Toast.LENGTH_SHORT).show();
                             Intent intent=new Intent(SuaQuanAn_Activity.this,Trangchu_Activity.class);
                             startActivity(intent);
+                            finish();
                         }
                     }
                 });
@@ -705,6 +706,7 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(SuaQuanAn_Activity.this, R.string.success, Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(SuaQuanAn_Activity.this,Trangchu_Activity.class);
                     startActivity(intent);
+                    finish();
                 }
             });
         }

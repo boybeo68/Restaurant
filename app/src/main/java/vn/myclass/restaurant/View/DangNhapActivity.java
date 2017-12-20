@@ -343,6 +343,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
 
             Intent iTrangChu = new Intent(DangNhapActivity.this, Trangchu_Activity.class);
             startActivity(iTrangChu);
+            finish();
 //            Toast.makeText(this,user.getEmail(),Toast.LENGTH_LONG).show();
         } else {
 

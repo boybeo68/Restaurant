@@ -230,18 +230,21 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         });
 
         if (quanAnModel.getVideogioithieu() != null) {
-            videoView.setVisibility(View.VISIBLE);
-            imgPlay.setVisibility(View.VISIBLE);
-            imgHinhQuanAn.setVisibility(View.GONE);
-            StorageReference storageVideo = FirebaseStorage.getInstance().getReference().child("video").child(quanAnModel.getVideogioithieu());
-            storageVideo.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    videoView.setVideoURI(uri);
-                    videoView.seekTo(1000);
+            if (!quanAnModel.getVideogioithieu().equals("")){
+                videoView.setVisibility(View.VISIBLE);
+                imgPlay.setVisibility(View.VISIBLE);
+                imgHinhQuanAn.setVisibility(View.GONE);
+                StorageReference storageVideo = FirebaseStorage.getInstance().getReference().child("video").child(quanAnModel.getVideogioithieu());
+                storageVideo.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        videoView.setVideoURI(uri);
+                        videoView.seekTo(1000);
 
-                }
-            });
+                    }
+                });
+            }
+
         } else {
             videoView.setVisibility(View.GONE);
             imgPlay.setVisibility(View.GONE);

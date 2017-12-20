@@ -113,6 +113,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     LinearLayout khungtienich,khungChiNhanh,khungChuaChiNhanh,khungchuaThucDon;
     VideoView videoView;
     String maQuanAn,mauser;
+    String videoQuanAn="";
     QuanAnModel quanAnModel;
     MonanModel monanModel;
     SharedPreferences sharedPreferences;
@@ -179,11 +180,11 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                 // Add logic here
 
                 switch (index) {
-                    case 0: // first button
+                    case 0: // Có video
 //                        Toast.makeText(getContext(), "Selected button number " + index, Toast.LENGTH_SHORT).show();
                         frameVideo.setVisibility(View.VISIBLE);
                         break;
-                    case 1: // secondbutton
+                    case 1: // Không video
 //                        Toast.makeText(getContext(), "Selected button number " + index, Toast.LENGTH_SHORT).show();
                         frameVideo.setVisibility(View.GONE);
                         break;
@@ -334,6 +335,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                     videoView.setMediaController(mediaController);
                     Uri uri=data.getData();
                     videoSelect=uri;
+                    videoQuanAn=videoSelect.getLastPathSegment();
                     Log.d("kiemtravideo",videoSelect+"");
                     videoView.setVideoURI(uri);
                     videoView.start();
@@ -570,39 +572,82 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
         quanAnModel.setLuotthich(0);
         quanAnModel.setGiomocua(gioMoCua);
         quanAnModel.setGiodongcua(gioDongCua);
+        quanAnModel.setVideogioithieu(videoQuanAn);
 //        quanAnModel.setVideogioithieu(videoSelect.getLastPathSegment());
-//        FirebaseStorage.getInstance().getReference().child("video/"+videoSelect.getLastPathSegment()).putFile(videoSelect);
+        if (!videoQuanAn.equals("")){
+            for (int j=0;j<hinhQuanAnBitMap.size();j++){
+                String mahinhanh=nodeRoot.child("hinhanhquanans").child(maQuanAn).push().getKey();
+                nodeRoot.child("hinhanhquanans").child(maQuanAn).child(mahinhanh).setValue(mahinhanh+j+".jpg");
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                Bitmap bitmap = hinhQuanAnBitMap.get(j);
+                converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                converetdImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                FirebaseStorage.getInstance().getReference().child("hinhanh/"+mahinhanh+j+".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        listKiemtra.add(converetdImage);
+                    }
+                });
+            }
+            FirebaseStorage.getInstance().getReference().child("video/"+videoQuanAn).putFile(videoSelect).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(getContext(),Trangchu_Activity.class);
+                    getContext().startActivity(intent);
+                    getActivity().finish();
+                }
+            });
+        }else {
+            for (int j=0;j<hinhQuanAnBitMap.size();j++){
+                String mahinhanh=nodeRoot.child("hinhanhquanans").child(maQuanAn).push().getKey();
+                nodeRoot.child("hinhanhquanans").child(maQuanAn).child(mahinhanh).setValue(mahinhanh+j+".jpg");
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                Bitmap bitmap = hinhQuanAnBitMap.get(j);
+                converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+                converetdImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                FirebaseStorage.getInstance().getReference().child("hinhanh/"+mahinhanh+j+".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        listKiemtra.add(converetdImage);
+                        if (listKiemtra.size()==hinhQuanAnBitMap.size()){
+                            Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(getContext(),Trangchu_Activity.class);
+                            getContext().startActivity(intent);
+                            getActivity().finish();
+                        }
+                    }
+                });
+            }
+        }
+
 
         nodeQuanAn.child(maQuanAn).setValue(quanAnModel);
 
-//        for (Bitmap bitmap:hinhQuanAnBitMap){
-//            nodeRoot.child("hinhanhquanans").child(maQuanAn).push().setValue(maQuanAn+".jpg");
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
-//            byte[] data = baos.toByteArray();
-//            FirebaseStorage.getInstance().getReference().child("hinhanh/"+maQuanAn+".jpg").putBytes(data);
-//        }
 
-        for (int j=0;j<hinhQuanAnBitMap.size();j++){
-            String mahinhanh=nodeRoot.child("hinhanhquanans").child(maQuanAn).push().getKey();
-            nodeRoot.child("hinhanhquanans").child(maQuanAn).child(mahinhanh).setValue(mahinhanh+j+".jpg");
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Bitmap bitmap = hinhQuanAnBitMap.get(j);
-            converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
-            converetdImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
-            FirebaseStorage.getInstance().getReference().child("hinhanh/"+mahinhanh+j+".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    listKiemtra.add(converetdImage);
-                    if (listKiemtra.size()==hinhQuanAnBitMap.size()){
-                        Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(getContext(),Trangchu_Activity.class);
-                        getContext().startActivity(intent);
-                    }
-                }
-            });
-        }
+//        for (int j=0;j<hinhQuanAnBitMap.size();j++){
+//            String mahinhanh=nodeRoot.child("hinhanhquanans").child(maQuanAn).push().getKey();
+//            nodeRoot.child("hinhanhquanans").child(maQuanAn).child(mahinhanh).setValue(mahinhanh+j+".jpg");
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            Bitmap bitmap = hinhQuanAnBitMap.get(j);
+//            converetdImage = ImagesNicer.getResizedBitmapLength(bitmap, 300);
+//            converetdImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//            byte[] data = baos.toByteArray();
+//            FirebaseStorage.getInstance().getReference().child("hinhanh/"+mahinhanh+j+".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    listKiemtra.add(converetdImage);
+//                    if (listKiemtra.size()==hinhQuanAnBitMap.size()){
+//                        Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+//                        Intent intent=new Intent(getContext(),Trangchu_Activity.class);
+//                        getContext().startActivity(intent);
+//                        getActivity().finish();
+//                    }
+//                }
+//            });
+//        }
 
         for (int i=0 ;i< themThucDonModelList.size() ; i++){
             nodeRoot.child("thucdonquanans").child(maQuanAn).child(themThucDonModelList.get(i).getMathucdon()).push().setValue(themThucDonModelList.get(i).getMonanModel());
@@ -722,7 +767,6 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                 ProgressDialog progressDialog=ProgressDialog.show(getContext(),getString(R.string.ThongBao), getString(R.string.ThongBaoThemQA), false, true, new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-
                     }
                 });
                 progressDialog.show();
