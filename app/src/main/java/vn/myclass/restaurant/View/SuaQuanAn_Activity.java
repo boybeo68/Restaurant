@@ -111,7 +111,7 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
     Uri videoSelect;
     ArrayAdapter<String> adapterKhuvuc;
     ImageView imgTam,imgHinQuan2,imgHinQuan3,imgHinQuan4,imgHinQuan5,imgHinQuan6,imgVideo;
-    LinearLayout khungtienich,khungChiNhanh,khungChuaChiNhanh,khungchuaThucDon;
+    LinearLayout khungtienich,khungChiNhanh,khungChuaChiNhanh,khungchuaThucDon,lnTongtien;
     VideoView videoView;
     String maQuanAn,mauser;
     QuanAnModel quanAnModel;
@@ -124,6 +124,7 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
     ThucDonController thucDonController;
     RecyclerView recyclerThucdon,recyclerViewHinhQuan;
     List<Bitmap>listKiemtra;
+    TextView txtTongtien;
     final DatabaseReference nodeRoot= FirebaseDatabase.getInstance().getReference();
     ChiNhanhQuanAnModel chiNhanhQuanAnModel=new ChiNhanhQuanAnModel();
 
@@ -154,12 +155,15 @@ public class SuaQuanAn_Activity extends AppCompatActivity implements View.OnClic
         edtGiaToiThieu= (EditText) findViewById(R.id.edGiaToiThieu);
         recyclerViewHinhQuan=findViewById(R.id.recyclerHinhQuan);
         txtTenQuanAn=findViewById(R.id.edTenQuan);
+        txtTongtien=findViewById(R.id.txtTongTien);
         rdVideo=findViewById(R.id.rdgVideo);
         frameVideo=findViewById(R.id.frameVideo);
         txtTieudetoolbar=findViewById(R.id.txtTieudeToolbar);
         recyclerThucdon = (RecyclerView) findViewById(R.id.recyclerThucDon);
+        lnTongtien=findViewById(R.id.lnTongtien);
         thucDonController = new ThucDonController();
-        thucDonController.getDanhSachThucDonQuanan(this, quanAnModel.getMaquanan(), recyclerThucdon,true);
+        lnTongtien.setVisibility(View.GONE);
+        thucDonController.getDanhSachThucDonQuanan(this, quanAnModel.getMaquanan(), recyclerThucdon,true,txtTongtien);
 
         txtTenQuanAn.setText(quanAnModel.getTenquanan());
         edtGiaToiDa.setText(quanAnModel.getGiatoida()+"");

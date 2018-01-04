@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -293,6 +294,21 @@ public class QuanAnModel implements Parcelable{
             odau_interface.getDanhsachQuananModel(quanAnModel);
         }
     }
+   public void getDanhsachSearch(final Odau_interface odau_interface, final Location vitrihientai,String textSearch){
+        ValueEventListener valueEventListener=new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        noderoot.addListenerForSingleValueEvent(valueEventListener);
+
+   }
 
     @Override
     public int describeContents() {

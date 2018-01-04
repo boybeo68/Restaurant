@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -40,12 +41,14 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
     List<QuanAnModel> quanAnModelList;
     int resource;
     Context context;
+    double khoangcach;
 
 
-    public AdapterRecycler_Odau(Context context,List<QuanAnModel> quanAnModelList,int resource){
+    public AdapterRecycler_Odau(Context context,List<QuanAnModel> quanAnModelList,int resource,double khoangcach){
             this.quanAnModelList=quanAnModelList;
             this.resource=resource;
             this.context=context;
+            this.khoangcach=khoangcach;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {
@@ -90,24 +93,15 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
 
     @Override
     public void onBindViewHolder(final AdapterRecycler_Odau.ViewHodel holder, int position) {
-//        QuanAnModel quanAnModel=quanAnModelList.get(position);
+//        final QuanAnModel quanAnModel=quanAnModelList.get(position);
 //        holder.txtTenQuananOdau.setText(quanAnModel.getTenquanan());
 //
 //        if (quanAnModel.isGiaohang()){
 //            holder.btnDatMonOdau.setVisibility(View.VISIBLE);
 //        }
 //        Log.d("SizeHinh",quanAnModel.getHinhanhquanan().size()+"");
-//        if (quanAnModel.getHinhanhquanan().size()>0){
-//
-//            StorageReference storageHinhanh= FirebaseStorage.getInstance().getReference().child("hinhanh").child(quanAnModel.getHinhanhquanan().get(0));
-//            long ONE_MEGABYTE=1024*1024;
-//            storageHinhanh.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//                @Override
-//                public void onSuccess(byte[] bytes) {
-//                    Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-//                    holder.imageHinhQuanAnODau.setImageBitmap(bitmap);
-//                }
-//            });
+//        if (quanAnModel.getBitmapList().size()>0){
+//            holder.imageHinhQuanAnODau.setImageBitmap(quanAnModel.getBitmapList().get(0));
 //
 //        }
 //        //Lấy danh sách bình luận của quán ăn
@@ -116,12 +110,17 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
 //            holder.txtTieudebinhluan.setText(binhLuanModel.getTieude());
 //            holder.txtNodungbinhluan.setText(binhLuanModel.getNoidung());
 //            holder.txtChamDiemBinhLuan.setText(binhLuanModel.getChamdiem()+"");
+//            holder.txtTenNguoiDungbinhluan.setText(binhLuanModel.getThanhVienModel().getHoten());
+//            holder.containerBinhLuan2.setVisibility(View.GONE);
+//
 //            setHinhAnhBinhLuan(holder.cicleImageUser,binhLuanModel.getThanhVienModel().getHinhanh());
-//            if(quanAnModel.getBinhLuanModelList().size() > 2){
+//            if(quanAnModel.getBinhLuanModelList().size() >= 2){
+//                holder.containerBinhLuan2.setVisibility(View.VISIBLE);
 //                BinhLuanModel binhLuanModel2 = quanAnModel.getBinhLuanModelList().get(1);
 //                holder.txtTieudebinhluan2.setText(binhLuanModel2.getTieude());
 //                holder.txtNodungbinhluan2.setText(binhLuanModel2.getNoidung());
 //                holder.txtChamDiemBinhLuan2.setText(binhLuanModel2.getChamdiem()+"");
+//                holder.txtTennguoidungbinhluan2.setText(binhLuanModel2.getThanhVienModel().getHoten());
 //                setHinhAnhBinhLuan(holder.cicleImageUser2,binhLuanModel2.getThanhVienModel().getHinhanh());
 //            }
 //            holder.txtTongBinhLuan.setText(quanAnModel.getBinhLuanModelList().size()+"");
@@ -155,6 +154,15 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
 //            holder.txtKhoanCachQuanAnODau.setText(String.format("%.1f",chiNhanhQuanAnModelTam.getKhoangcach())+"km" );
 //
 //        }
+//        holder.cardView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent ichitietQuanAn=new Intent(context, ChiTietQuanAn_Activity.class);
+//                ichitietQuanAn.putExtra("quanan",quanAnModel);
+//                context.startActivity(ichitietQuanAn);
+//
+//            }
+//        });
 
         QuanAnModel quanAnModel=quanAnModelList.get(position);
         if (quanAnModel.getChiNhanhQuanAnModelList().size()>0){
@@ -165,7 +173,9 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
                 }
             }
             //lấy các quán trong phạm vi 10000km
-            if (chiNhanhQuanAnModelTam.getKhoangcach()<10000.0){
+            if (chiNhanhQuanAnModelTam.getKhoangcach()>khoangcach){
+                quanAnModelList.remove(position);
+            }else {
                 layQuanAnOgan(holder,position);
             }
         }
@@ -173,6 +183,7 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
     }
     public  void layQuanAnOgan(final AdapterRecycler_Odau.ViewHodel holder, int position){
         final QuanAnModel quanAnModel=quanAnModelList.get(position);
+
         holder.txtTenQuananOdau.setText(quanAnModel.getTenquanan());
 
         if (quanAnModel.isGiaohang()){
@@ -181,7 +192,6 @@ public class AdapterRecycler_Odau extends RecyclerView.Adapter<AdapterRecycler_O
         Log.d("SizeHinh",quanAnModel.getHinhanhquanan().size()+"");
         if (quanAnModel.getBitmapList().size()>0){
             holder.imageHinhQuanAnODau.setImageBitmap(quanAnModel.getBitmapList().get(0));
-
         }
         //Lấy danh sách bình luận của quán ăn
         if(quanAnModel.getBinhLuanModelList().size() > 0){

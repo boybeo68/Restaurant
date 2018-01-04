@@ -24,11 +24,13 @@ public class Adapter_ThucDon extends RecyclerView.Adapter<Adapter_ThucDon.ViewHo
     List<ThucDonModel>thucDonModells;
     boolean isuaquan;
     String maquan;
-    public Adapter_ThucDon(Context context, List<ThucDonModel>thucDonModels,boolean isuaquan,String maquan) {
+    TextView txtTongTien;
+    public Adapter_ThucDon(Context context, List<ThucDonModel>thucDonModels,boolean isuaquan,String maquan,TextView txtTongtien) {
         this.context=context;
         this.thucDonModells=thucDonModels;
         this.isuaquan=isuaquan;
         this.maquan=maquan;
+        this.txtTongTien=txtTongtien;
     }
 
     public class ViewHolderThucDon extends RecyclerView.ViewHolder {
@@ -52,7 +54,7 @@ public class Adapter_ThucDon extends RecyclerView.Adapter<Adapter_ThucDon.ViewHo
         ThucDonModel thucDonModel=thucDonModells.get(position);
         holder.txtTenThucDon.setText(thucDonModel.getTenthucdon());
         holder.recyclerMonAn.setLayoutManager(new LinearLayoutManager(context));
-        Adapter_MonAn adapter_monAn=new Adapter_MonAn(context,thucDonModel.getMonanModelList(),isuaquan,thucDonModel,maquan);
+        Adapter_MonAn adapter_monAn=new Adapter_MonAn(context,thucDonModel.getMonanModelList(),isuaquan,thucDonModel,maquan,txtTongTien);
         holder.recyclerMonAn.setAdapter(adapter_monAn);
         adapter_monAn.notifyDataSetChanged();
     }

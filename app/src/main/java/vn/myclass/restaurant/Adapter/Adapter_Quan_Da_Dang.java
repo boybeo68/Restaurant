@@ -31,6 +31,7 @@ import vn.myclass.restaurant.Model.ChiNhanhQuanAnModel;
 import vn.myclass.restaurant.Model.QuanAnModel;
 import vn.myclass.restaurant.Model.ThanhVienModel;
 import vn.myclass.restaurant.R;
+import vn.myclass.restaurant.View.ChiTietQuanAn_Activity;
 import vn.myclass.restaurant.View.SuaQuanAn_Activity;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -163,6 +164,15 @@ public class Adapter_Quan_Da_Dang extends RecyclerView.Adapter<Adapter_Quan_Da_D
                     }
                 });
                 alertBuilder.show();
+            }
+        });
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent ichitietQuanAn=new Intent(context, ChiTietQuanAn_Activity.class);
+                ichitietQuanAn.putExtra("quanan",quanAnModel);
+                context.startActivity(ichitietQuanAn);
+
             }
         });
     }

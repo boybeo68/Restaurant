@@ -103,6 +103,8 @@
     <string name="XoaThucDon">Bạn có chắc muốn xóa món ăn trong thực đơn này?</string>
     <string name="ThongBaoSuaQuan">Đang sửa quán ăn...</string>
     <string name="TimKiem">Tìm kiếm</string>
+    <string name="TatCa">Tất cả</string>
+    <string name="TongTien">Tổng tiền</string>
 
 
 </resources>

@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -35,12 +37,12 @@ public class Odau_Fragment extends Fragment {
     ProgressBar progressBar;
     SharedPreferences sharedPreferences;
     NestedScrollView nestedScrollView;
-    LinearLayout khungdanhmuc,lnTimKiem;
+    LinearLayout khungdanhmuc,lnTimKiem,khunggantoi;
     RadioButton rd_DanhMuc;
     RadioGroup rdgTab;
-    double khoangcach=10000;
-
-
+    Button btn10km,btnTatca,btnTimkiem;
+    EditText edtTimkiem;
+    double khoangcach=10000.0;
 
     @Nullable
     @Override
@@ -53,6 +55,17 @@ public class Odau_Fragment extends Fragment {
         rd_DanhMuc= (RadioButton) view.findViewById(R.id.rd_danhmuc);
         lnTimKiem=view.findViewById(R.id.lnTimkiem);
         rdgTab=view.findViewById(R.id.group_radio_tab);
+        khunggantoi=view.findViewById(R.id.khungGanToi);
+        btn10km=view.findViewById(R.id.btn10km);
+        btnTatca=view.findViewById(R.id.btnTatCa);
+        btnTimkiem=view.findViewById(R.id.btnTimkiem);
+        edtTimkiem=view.findViewById(R.id.edtTimkiem);
+
+        //lấy sharepreferences từ màn hình slashscreen : tọa độ
+        sharedPreferences=getContext().getSharedPreferences("toado", Context.MODE_PRIVATE);
+        final Location vitrihientai=new Location("");
+        vitrihientai.setLatitude(Double.parseDouble(sharedPreferences.getString("latitude","0")));
+        vitrihientai.setLongitude(Double.parseDouble(sharedPreferences.getString("longitude","0")));
         rdgTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -62,6 +75,29 @@ public class Odau_Fragment extends Fragment {
                     case 0: //Gần tôi
                         khungdanhmuc.setVisibility(View.GONE);
                         lnTimKiem.setVisibility(View.GONE);
+                        khunggantoi.setVisibility(View.VISIBLE);
+                        btn10km.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                khoangcach =10.0;
+
+                                odau_controller =new Odau_Controller(getContext());
+                                Log.d("kiemtratoado",sharedPreferences.getString("latitude","0") + "");
+                                odau_controller.getDanhsachquananController(getContext(),nestedScrollView,recyclerOdau,progressBar,vitrihientai,khoangcach);
+                            }
+                        });
+                        btnTatca.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                khoangcach =10000.0;
+
+                                odau_controller =new Odau_Controller(getContext());
+                                Log.d("kiemtratoado",sharedPreferences.getString("latitude","0") + "");
+                                odau_controller.getDanhsachquananController(getContext(),nestedScrollView,recyclerOdau,progressBar,vitrihientai,khoangcach);
+                            }
+                        });
+
+
 //                        Intent iTrangChu=new Intent(getContext(), Trangchu_Activity.class);
 //                        getActivity().startActivity(iTrangChu);
 
@@ -69,39 +105,36 @@ public class Odau_Fragment extends Fragment {
                     case 1: //View
                         khungdanhmuc.setVisibility(View.GONE);
                         lnTimKiem.setVisibility(View.GONE);
+                        khunggantoi.setVisibility(View.GONE);
                         break;
                     case 2: //Danh Mục
                         khungdanhmuc.setVisibility(View.VISIBLE);
                         lnTimKiem.setVisibility(View.GONE);
+                        khunggantoi.setVisibility(View.GONE);
                         break;
                     case 3: //View
                         khungdanhmuc.setVisibility(View.GONE);
                         lnTimKiem.setVisibility(View.GONE);
+                        khunggantoi.setVisibility(View.GONE);
                         break;
                     case 4: //Tìm kiếm
                         khungdanhmuc.setVisibility(View.GONE);
                         lnTimKiem.setVisibility(View.VISIBLE);
+                        khunggantoi.setVisibility(View.GONE);
                         break;
                 }
             }
         });
-        
-        //lấy sharepreferences từ màn hình slashscreen : tọa độ
-        sharedPreferences=getContext().getSharedPreferences("toado", Context.MODE_PRIVATE);
-        Location vitrihientai=new Location("");
-        vitrihientai.setLatitude(Double.parseDouble(sharedPreferences.getString("latitude","0")));
-        vitrihientai.setLongitude(Double.parseDouble(sharedPreferences.getString("longitude","0")));
+
 
         odau_controller =new Odau_Controller(getContext());
         Log.d("kiemtratoado",sharedPreferences.getString("latitude","0") + "");
-        odau_controller.getDanhsachquananController(getContext(),nestedScrollView,recyclerOdau,progressBar,vitrihientai);
+        odau_controller.getDanhsachquananController(getContext(),nestedScrollView,recyclerOdau,progressBar,vitrihientai,khoangcach);
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-
     }
 }

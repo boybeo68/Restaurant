@@ -38,13 +38,13 @@ public class Odau_Controller {
         quanAnModel = new QuanAnModel();
     }
 
-    public void getDanhsachquananController(Context context,final NestedScrollView nestedScrollView, RecyclerView recyclerViewOdau, final ProgressBar progressBar, final Location vitrihientai) {
+    public void getDanhsachquananController(Context context,final NestedScrollView nestedScrollView, RecyclerView recyclerViewOdau, final ProgressBar progressBar, final Location vitrihientai,double khoangcach) {
 
         final List<QuanAnModel> quanAnModelList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerViewOdau.setLayoutManager(layoutManager);
 
-        adapterRecycler_odau = new AdapterRecycler_Odau(context,quanAnModelList, R.layout.custom_layout_recycleview_odau);
+        adapterRecycler_odau = new AdapterRecycler_Odau(context,quanAnModelList, R.layout.custom_layout_recycleview_odau,khoangcach);
         recyclerViewOdau.setAdapter(adapterRecycler_odau);
         progressBar.setVisibility(View.VISIBLE);
         // không sét sự kiên scroll của recyclerView vì nó nằm trong NestedScrollView sẽ không biết roll cái nào nếu recyc cũng để match parent
@@ -70,8 +70,6 @@ public class Odau_Controller {
                                 adapterRecycler_odau.notifyDataSetChanged();
                                 progressBar.setVisibility(View.GONE);
                             }
-
-
                         }
                     });
                 }

@@ -112,44 +112,48 @@
                 <!---->
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/khungGanToi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+                android:visibility="gone"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn10km"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/change_background_tab"
+            android:layout_margin="5dp"
+            android:text="10km"
+            android:textAllCaps="false"
+            android:drawableLeft="@drawable/nearby"
+            android:paddingLeft="10dp"
+            android:gravity="left|center"
+            android:drawablePadding="10dp"
+            android:textColor="@drawable/change_text_tabdanhmuc"
+
+            />
+            <Button
+                android:id="@+id/btnTatCa"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/change_background_tab"                    android:layout_margin="5dp"
+            android:text="@string/TatCa"
+            android:textAllCaps="false"
+            android:drawableLeft="@drawable/blog"
+            android:paddingLeft="10dp"
+            android:gravity="left|center"
+            android:drawablePadding="10dp"
+            android:textColor="@drawable/change_text_tabdanhmuc"
+            />
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/khungdanhmuc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 android:orientation="vertical">
-                <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:orientation="horizontal">-->
-                <!--<Button-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/change_background_tab"-->
-                <!--android:layout_margin="5dp"-->
-                <!--android:text="@string/Gantoi"-->
-                <!--android:textAllCaps="false"-->
-                <!--android:drawableLeft="@drawable/nearby"-->
-                <!--android:paddingLeft="10dp"-->
-                <!--android:gravity="left|center"-->
-                <!--android:drawablePadding="10dp"-->
-                <!--android:textColor="@drawable/change_text_tabdanhmuc"-->
-
-                <!--/>-->
-                <!--<Button-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/change_background_tab"                    android:layout_margin="5dp"-->
-                <!--android:text="@string/Blog"-->
-                <!--android:textAllCaps="false"-->
-                <!--android:drawableLeft="@drawable/blog"-->
-                <!--android:paddingLeft="10dp"-->
-                <!--android:gravity="left|center"-->
-                <!--android:drawablePadding="10dp"-->
-                <!--android:textColor="@drawable/change_text_tabdanhmuc"-->
-                <!--/>-->
-                <!--</LinearLayout>-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

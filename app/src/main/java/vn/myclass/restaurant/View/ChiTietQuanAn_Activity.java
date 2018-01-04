@@ -71,7 +71,7 @@ import vn.myclass.restaurant.R;
 public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
     QuanAnModel quanAnModel;
     TextView txtTenQuanAn, txtDiachiQuanAn, txtGioHoatDong, txtTrangThai, txtTongChiNhanh, txtTongBinhLuan, txtTongAnh;
-    TextView txtTieudeToolbar, txtGioiHanGia, txtTenWifi, txtMatkhauWifi, txtNgaydangWifi,txtChamDiem_chitietQA;
+    TextView txtTieudeToolbar, txtGioiHanGia, txtTenWifi, txtMatkhauWifi, txtNgaydangWifi,txtChamDiem_chitietQA,txtTongTien;
     ImageView imgHinhQuanAn, imgPlay;
     Button btnBinhluan,btnLuuLai;
     Toolbar toolbar;
@@ -90,7 +90,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     List<String>listQuanLuu;
     SharedPreferences sharedPreferences;
     String mauser;
-
+    int tongtien;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -100,6 +100,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
 
         recyclerViewBinhluan = (RecyclerView) findViewById(R.id.recycle_BinhLuan_ChitetQuanAn);
         quanAnModel = getIntent().getParcelableExtra("quanan");
+
         sharedPreferences=getSharedPreferences("luudangnhap",MODE_PRIVATE);
         mauser=sharedPreferences.getString("mauser","");
 //        Log.d("kiemtraintent",quanAnModel.getTenquanan());
@@ -125,6 +126,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         videoView = (VideoView) findViewById(R.id.videoTrailer);
         imgPlay = (ImageView) findViewById(R.id.imgPlay);
         txtChamDiem_chitietQA=findViewById(R.id.txtChamDiem_chitietQA);
+        txtTongTien=findViewById(R.id.txtTongTien);
         btnLuuLai=findViewById(R.id.btnLuulai);
         recyclerThucdon = (RecyclerView) findViewById(R.id.recyclerThucDon);
         mapFragment.getMapAsync(this);
@@ -264,7 +266,10 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         //lấy dữ liệu từ controller wifi
         // cần lấy thằng nào thì truyền nó vào
         chitietQuanAnController.HienThiDanhSachWifiQuanAn(quanAnModel.getMaquanan(), txtTenWifi, txtMatkhauWifi, txtNgaydangWifi);
-        thucDonController.getDanhSachThucDonQuanan(this, quanAnModel.getMaquanan(), recyclerThucdon,false);
+
+        thucDonController.getDanhSachThucDonQuanan(this, quanAnModel.getMaquanan(), recyclerThucdon,false,txtTongTien);
+        tongtien=getIntent().getIntExtra("tongtien",0);
+
         khungWifi.setOnClickListener(this);
         khungtinhnang.setOnClickListener(this);
         btnBinhluan.setOnClickListener(this);

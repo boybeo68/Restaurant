@@ -7,6 +7,24 @@ package vn.myclass.restaurant.Model;
 public class DatMon {
     String tenMonAn;
     int soLuong;
+    int giaTien;
+    int tongtien;
+
+    public int getTongtien() {
+        return tongtien;
+    }
+
+    public void setTongtien(int tongtien) {
+        this.tongtien = tongtien;
+    }
+
+    public int getGiaTien() {
+        return giaTien;
+    }
+
+    public void setGiaTien(int giaTien) {
+        this.giaTien = giaTien;
+    }
 
     public String getTenMonAn() {
         return tenMonAn;

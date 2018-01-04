@@ -68,7 +68,7 @@ public class Adapter_QuanDaLuu extends RecyclerView.Adapter<Adapter_QuanDaLuu.Vi
     }
 
     @Override
-    public void onBindViewHolder(Adapter_QuanDaLuu.ViewHolderQuanLuu holder, int position) {
+    public void onBindViewHolder(Adapter_QuanDaLuu.ViewHolderQuanLuu holder, final int position) {
         final QuanAnModel quanAnModel=quanAnModelList.get(position);
         holder.txtTenQuananOdau.setText(quanAnModel.getTenquanan());
         double tongdiemquanan=0;

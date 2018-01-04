@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -23,14 +24,14 @@ public class ThucDonController {
         thucDonModel =new ThucDonModel();
     }
 
-    public void getDanhSachThucDonQuanan(final Context context, final String maQuanAn, final RecyclerView recyclerView, final boolean isuaquan){
+    public void getDanhSachThucDonQuanan(final Context context, final String maQuanAn, final RecyclerView recyclerView, final boolean isuaquan, final TextView txtTongTien){
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         //lấy toàn bộ cái interface đã đc thêm dữ liệu
         ThucDon_interface thucDon_interface=new ThucDon_interface() {
             @Override
             public void getThucDon(List<ThucDonModel> thucDonModelList) {
-                Adapter_ThucDon adapter_thucDon=new Adapter_ThucDon(context,thucDonModelList,isuaquan,maQuanAn);
+                Adapter_ThucDon adapter_thucDon=new Adapter_ThucDon(context,thucDonModelList,isuaquan,maQuanAn,txtTongTien);
                 recyclerView.setAdapter(adapter_thucDon);
                 adapter_thucDon.notifyDataSetChanged();
 

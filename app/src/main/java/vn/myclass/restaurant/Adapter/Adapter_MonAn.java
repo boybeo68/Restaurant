@@ -2,6 +2,7 @@ package vn.myclass.restaurant.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,6 +27,7 @@ import vn.myclass.restaurant.Model.DatMon;
 import vn.myclass.restaurant.Model.MonanModel;
 import vn.myclass.restaurant.Model.ThucDonModel;
 import vn.myclass.restaurant.R;
+import vn.myclass.restaurant.View.ChiTietQuanAn_Activity;
 
 /**
  * Created by boybe on 11/29/2017.
@@ -37,13 +39,16 @@ public class Adapter_MonAn extends RecyclerView.Adapter<Adapter_MonAn.ViewHolder
     boolean isuaquan;
     ThucDonModel thucDonModel;
     String maquan;
+    TextView txtTongTien;
     public static List<DatMon>datMonList =new ArrayList<>();
-    public Adapter_MonAn(Context context, List<MonanModel>monanModels,boolean isuaquan,ThucDonModel thucDonModel,String maquan) {
+    int tongtien=0;
+    public Adapter_MonAn(Context context, List<MonanModel>monanModels,boolean isuaquan,ThucDonModel thucDonModel,String maquan,TextView txtTongTien) {
         this.context=context;
         this.monanModels=monanModels;
         this.isuaquan=isuaquan;
         this.thucDonModel=thucDonModel;
         this.maquan=maquan;
+        this.txtTongTien=txtTongTien;
     }
 
     public class ViewHolderMonAn extends RecyclerView.ViewHolder {
@@ -97,12 +102,15 @@ public class Adapter_MonAn extends RecyclerView.Adapter<Adapter_MonAn.ViewHolder
                 DatMon datMon=new DatMon();
                 datMon.setSoLuong(dem);
                 datMon.setTenMonAn(monanModel.getTenmon());
+                datMon.setGiaTien(giasau);
                 holder.imgGiamSoLuong.setTag(datMon);
                 Adapter_MonAn.datMonList.add(datMon);
-
+                tongtien=0;
                 for (DatMon datMon1:Adapter_MonAn.datMonList){
-                    Log.d("kiemtra",datMon1.getTenMonAn()+"-"+datMon1.getSoLuong());
+                    tongtien+=datMon1.getGiaTien();
+                    Log.d("kiemtratang",datMon1.getTenMonAn()+"-"+datMon1.getSoLuong()+"-"+datMon1.getGiaTien()+"-"+tongtien);
                 }
+                txtTongTien.setText(numberFormat.format(tongtien)+"đ");
 
             }
         });
@@ -112,7 +120,6 @@ public class Adapter_MonAn extends RecyclerView.Adapter<Adapter_MonAn.ViewHolder
                 NumberFormat numberFormat = new DecimalFormat("###,###");
                 int dem =Integer.parseInt(holder.txtSoLuong.getTag().toString());
                 int giasau = 0;
-
                 if (dem!=0){
                     dem--;
                     giasau=dem*giagoc;
@@ -120,29 +127,26 @@ public class Adapter_MonAn extends RecyclerView.Adapter<Adapter_MonAn.ViewHolder
                     DatMon datMonTag= (DatMon) holder.imgGiamSoLuong.getTag();
                     if (datMonTag!=null){
                         Adapter_MonAn.datMonList.remove(datMonTag);
-//                        if (dem==0){
-//                            DatMon datMon2 = (DatMon) holder.imgGiamSoLuong.getTag();
-//                            Adapter_MonAn.datMonList.remove(datMon2);
-//                        }
                     }
-
                     DatMon datMon=new DatMon();
                     datMon.setSoLuong(dem);
                     datMon.setTenMonAn(monanModel.getTenmon());
+                    datMon.setGiaTien(giasau);
                     holder.imgGiamSoLuong.setTag(datMon);
                     if (dem!=0){
                         Adapter_MonAn.datMonList.add(datMon);
                     }
-
-
                     Log.d("kiemtra",Adapter_MonAn.datMonList.size()+"");
+                    tongtien=0;
                     for (DatMon datMon1:Adapter_MonAn.datMonList){
-                        Log.d("kiemtra",datMon1.getTenMonAn()+"-"+datMon1.getSoLuong());
+                        tongtien+=datMon1.getGiaTien();
+                        Log.d("kiemtragiam",datMon1.getTenMonAn()+"-"+datMon1.getSoLuong()+"-"+tongtien);
                     }
                 }
                 holder.txtSoLuong.setText(dem+"");
                 holder.txtSoLuong.setTag(dem);
                 holder.txtGiatien.setText(numberFormat.format(giasau)+"đ");
+                txtTongTien.setText(numberFormat.format(tongtien)+"đ");
             }
         });
         if (isuaquan){
