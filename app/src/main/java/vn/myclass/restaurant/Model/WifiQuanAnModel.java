@@ -1,10 +1,12 @@
 package vn.myclass.restaurant.Model;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,14 +53,41 @@ public class WifiQuanAnModel {
     private DatabaseReference nodeWifiquanan;
     public void layDanhSachWifiQuanAn(String maquanan, final ChitietQuanAn_Interface chitietQuanAn_interface){
         nodeWifiquanan= FirebaseDatabase.getInstance().getReference().child("wifiquanans").child(maquanan);
-        nodeWifiquanan.addListenerForSingleValueEvent(new ValueEventListener() {
+//        nodeWifiquanan.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot valueWifi : dataSnapshot.getChildren()){
+//                    WifiQuanAnModel wifiQuanAnModel=valueWifi.getValue(WifiQuanAnModel.class);
+//                    //Interface dùng để sau khi download hết dữ liệu ms kích hiển thị lên , tránh đa tiến trình
+//                    chitietQuanAn_interface.HienThiDanhSachWifi(wifiQuanAnModel);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+        nodeWifiquanan.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot valueWifi : dataSnapshot.getChildren()){
-                    WifiQuanAnModel wifiQuanAnModel=valueWifi.getValue(WifiQuanAnModel.class);
-                    //Interface dùng để sau khi download hết dữ liệu ms kích hiển thị lên , tránh đa tiến trình
-                    chitietQuanAn_interface.HienThiDanhSachWifi(wifiQuanAnModel);
-                }
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                Log.d("kiemtra2018",dataSnapshot.getValue()+"");
+                WifiQuanAnModel wifiQuanAnModel=dataSnapshot.getValue(WifiQuanAnModel.class);
+                chitietQuanAn_interface.HienThiDanhSachWifi(wifiQuanAnModel);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
 
@@ -68,7 +97,6 @@ public class WifiQuanAnModel {
             }
         });
 
-
     }
     public void  ThemWifiQuanAn(final Context context, WifiQuanAnModel wifiQuanAnModel,String maquanan){
         DatabaseReference datanodeWifiQuanan=FirebaseDatabase.getInstance().getReference().child("wifiquanans").child(maquanan);
@@ -76,6 +104,7 @@ public class WifiQuanAnModel {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 Toast.makeText(context,context.getResources().getString(R.string.success), Toast.LENGTH_SHORT).show();
+                ((Activity)context).finish();
             }
         });
     }

@@ -55,7 +55,8 @@
         <activity android:name=".View.Binhluan_Actitivty" />
         <activity android:name=".View.ChonHinhBinhLuan_Activity" />
         <activity android:name=".View.User_Activity" />
-        <activity android:name=".View.SuaQuanAn_Activity"></activity>
+        <activity android:name=".View.SuaQuanAn_Activity" />
+        <activity android:name=".View.Timkiem_Activity"></activity>
     </application>
 
 </manifest>

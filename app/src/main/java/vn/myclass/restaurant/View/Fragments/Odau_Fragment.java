@@ -25,6 +25,7 @@ import android.widget.RadioGroup;
 
 import vn.myclass.restaurant.Controller.Odau_Controller;
 import vn.myclass.restaurant.R;
+import vn.myclass.restaurant.View.Timkiem_Activity;
 import vn.myclass.restaurant.View.Trangchu_Activity;
 
 /**
@@ -40,7 +41,7 @@ public class Odau_Fragment extends Fragment {
     LinearLayout khungdanhmuc,lnTimKiem,khunggantoi;
     RadioButton rd_DanhMuc;
     RadioGroup rdgTab;
-    Button btn10km,btnTatca,btnTimkiem;
+    Button btn10km,btnTatca,btnTimkiem,btnTimkiemtheoten;
     EditText edtTimkiem;
     double khoangcach=10000.0;
 
@@ -60,6 +61,7 @@ public class Odau_Fragment extends Fragment {
         btnTatca=view.findViewById(R.id.btnTatCa);
         btnTimkiem=view.findViewById(R.id.btnTimkiem);
         edtTimkiem=view.findViewById(R.id.edtTimkiem);
+        btnTimkiemtheoten=view.findViewById(R.id.btnTimkiemtheoten);
 
         //lấy sharepreferences từ màn hình slashscreen : tọa độ
         sharedPreferences=getContext().getSharedPreferences("toado", Context.MODE_PRIVATE);
@@ -118,11 +120,16 @@ public class Odau_Fragment extends Fragment {
                         khunggantoi.setVisibility(View.GONE);
                         break;
                     case 4: //Tìm kiếm
-                        khungdanhmuc.setVisibility(View.GONE);
-                        lnTimKiem.setVisibility(View.VISIBLE);
-                        khunggantoi.setVisibility(View.GONE);
+
                         break;
                 }
+            }
+        });
+        btnTimkiemtheoten.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iTimKiem=new Intent(getContext(), Timkiem_Activity.class);
+                startActivity(iTimKiem);
             }
         });
 

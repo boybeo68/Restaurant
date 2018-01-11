@@ -105,6 +105,8 @@
     <string name="TimKiem">Tìm kiếm</string>
     <string name="TatCa">Tất cả</string>
     <string name="TongTien">Tổng tiền</string>
+    <string name="TimKiemTenquan">Tìm kiếm tên quán ăn</string>
+    <string name="DanhSachWifi">Danh sách wifi </string>
 
 
 </resources>

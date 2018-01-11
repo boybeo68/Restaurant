@@ -58,6 +58,22 @@
                 android:textColor="@color/colorPrimaryDark" />
 
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lnkhungSua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            android:layout_marginBottom="5dp">
+            <Button
+                android:layout_marginRight="5dp"
+                android:id="@+id/btnXoaQuan"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:textColor="@color/colorAccent"
+                android:text="@string/Xoa"
+                android:background="@drawable/button_radius"/>
+        </LinearLayout>
 
     </LinearLayout>
 

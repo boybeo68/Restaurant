@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="vn.myclass.restaurant.View.CapNhatDanhSachWifi">
+    <include layout="@layout/layout_toolbar" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerDanhSachWifi"
         android:layout_width="match_parent"

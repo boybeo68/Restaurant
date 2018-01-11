@@ -1,12 +1,15 @@
 package vn.myclass.restaurant.View;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import vn.myclass.restaurant.Adapter.Adapter_DanhsachWifi;
 import vn.myclass.restaurant.Controller.CapnhatWifi_Controller;
@@ -20,7 +23,10 @@ public class CapNhatDanhSachWifi extends AppCompatActivity implements View.OnCli
     WifiQuanAnModel wifiQuanAnModel;
     CapnhatWifi_Controller capnhatWifi_controller;
     String maquanan;
+    Toolbar toolbar;
+    TextView txtTieudetoolbar;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,15 +35,20 @@ public class CapNhatDanhSachWifi extends AppCompatActivity implements View.OnCli
         recyclerDanhsachWifi= (RecyclerView) findViewById(R.id.recyclerDanhSachWifi);
         maquanan=getIntent().getStringExtra("maquanan");
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        txtTieudetoolbar = findViewById(R.id.txtTieudeToolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        txtTieudetoolbar.setText(R.string.DanhSachWifi);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         recyclerDanhsachWifi.setLayoutManager(layoutManager);
         capnhatWifi_controller=new CapnhatWifi_Controller(this);
         capnhatWifi_controller.HienThiDanhSachWifi(maquanan,recyclerDanhsachWifi);
         btnCapnhatWifi.setOnClickListener(this);
-
-
-
-
 
     }
 
@@ -50,5 +61,10 @@ public class CapNhatDanhSachWifi extends AppCompatActivity implements View.OnCli
                 intent.putExtra("maquanan",maquanan);
                 startActivity(intent);
         }
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }
