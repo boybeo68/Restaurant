@@ -76,7 +76,7 @@ public class Timkiem_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //
-                String searchText = edtTimKiem.getText().toString().trim();
+                String searchText = StringUtils.removeAccent(edtTimKiem.getText().toString().toLowerCase().trim()) ;
                 docdulieuQuanAnTimkiem(searchText);
             }
         });
@@ -226,7 +226,7 @@ public class Timkiem_Activity extends AppCompatActivity {
 //                    Adapter_Quan_Da_Dang adapter_quan_da_dang=new Adapter_Quan_Da_Dang(User_Activity.this,R.layout.custom_layout_quan_da_dang,quanAnModelList,mauser,listQuanDaDang);
 //                    recyclerViewQuandaDang.setAdapter(adapter_quan_da_dang);
 //                    adapter_quan_da_dang.notifyDataSetChanged();
-                        Adapter_TimKiem adapter_timKiem = new Adapter_TimKiem(Timkiem_Activity.this, R.layout.custom_layout_quandaluu, quanAnModelList);
+                        Adapter_TimKiem adapter_timKiem = new Adapter_TimKiem(Timkiem_Activity.this, R.layout.custom_layout_timkiem, quanAnModelList);
                         recyclerViewQuandaTim.setAdapter(adapter_timKiem);
                         adapter_timKiem.notifyDataSetChanged();
                     }

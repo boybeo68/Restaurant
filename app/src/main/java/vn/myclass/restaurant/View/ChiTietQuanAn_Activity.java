@@ -1,13 +1,13 @@
 package vn.myclass.restaurant.View;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
@@ -18,11 +18,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -40,7 +37,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.vision.Frame;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,6 +54,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import vn.myclass.restaurant.Adapter.AdapterTienich;
 import vn.myclass.restaurant.Adapter.Adapter_BinhLuan;
 import vn.myclass.restaurant.Controller.ChitietQuanAnController;
 import vn.myclass.restaurant.Controller.ThucDonController;
@@ -91,6 +88,7 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     SharedPreferences sharedPreferences;
     String mauser;
     int tongtien;
+    List<TienIchModel> tienIchModels;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -275,6 +273,26 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
         btnBinhluan.setOnClickListener(this);
         imgPlay.setOnClickListener(this);
         btnLuuLai.setOnClickListener(this);
+        lnkhungtienich.setOnClickListener(this);
+        tienIchModels = new ArrayList<>();
+        if (quanAnModel.getTienich()!=null){
+            for (String matienich : quanAnModel.getTienich()) {
+                DatabaseReference nodeTienIch = FirebaseDatabase.getInstance().getReference().child("quanlytienichs").child(matienich);
+                nodeTienIch.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        TienIchModel tienIchModel = dataSnapshot.getValue(TienIchModel.class);
+                        tienIchModels.add(tienIchModel);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        }
+
 
     }
 
@@ -405,6 +423,26 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
+            case R.id.khungtienich:
+                final Dialog dialog=new Dialog(ChiTietQuanAn_Activity.this);
+                dialog.setTitle("Tiện ích");
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.custom_layout_dialog);
+                Button btnThoattienich=dialog.findViewById(R.id.btnThoattienich);
+                final RecyclerView recyclerlisttienich=dialog.findViewById(R.id.recyclerlisttienich);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ChiTietQuanAn_Activity.this);
+                recyclerlisttienich.setLayoutManager(layoutManager);
+                AdapterTienich adapterTienich = new AdapterTienich(ChiTietQuanAn_Activity.this,R.layout.custom_layout_listienich,tienIchModels);
+                recyclerlisttienich.setAdapter(adapterTienich);
+                adapterTienich.notifyDataSetChanged();
+                btnThoattienich.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.show();
+                break;
             case R.id.khungWifi:
                 Intent iDanhSachWifi = new Intent(ChiTietQuanAn_Activity.this, CapNhatDanhSachWifi.class);
                 iDanhSachWifi.putExtra("maquanan", quanAnModel.getMaquanan());
@@ -465,4 +503,5 @@ public class ChiTietQuanAn_Activity extends AppCompatActivity implements OnMapRe
                 break;
         }
     }
+
 }

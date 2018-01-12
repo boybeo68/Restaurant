@@ -300,6 +300,13 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
+//                        FirebaseUser currentUser=mAuth.getCurrentUser();
+//                        if(currentUser.isEmailVerified()){
+//
+//                        }else {
+//                            Toast.makeText(DangNhapActivity.this, "Vui lòng kiểm tra email và xác nhận", Toast.LENGTH_SHORT).show();
+//                            progressDialog.dismiss();
+//                        }
 
 //                        ThanhVienModel thanhVienModel=new ThanhVienModel();
 //                        thanhVienModel.setHoten(email);
@@ -311,7 +318,7 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
 //                        dangki_controller.ThemThongTinThanVienController(thanhVienModel,uid);
                     }else {
                         Toast.makeText(DangNhapActivity.this,getString(R.string.TaiKhoanKhongHopLe),Toast.LENGTH_SHORT).show();
-
+                            progressDialog.dismiss();
                     }
                 }
             });
@@ -328,22 +335,22 @@ public class DangNhapActivity extends AppCompatActivity implements GoogleApiClie
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putString("mauser",user.getUid());
-            editor.putString("emailuser",user.getEmail());
-            editor.commit();
+//            if (user.isEmailVerified()){
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+                editor.putString("mauser",user.getUid());
+                editor.putString("emailuser",user.getEmail());
+                editor.commit();
 
-            ThanhVienModel thanhVienModel=new ThanhVienModel();
-                        thanhVienModel.setHoten(user.getEmail());
-                        thanhVienModel.setHinhanh("user.png");
-                        Log.d("xemhinhanh",thanhVienModel.getHinhanh());
-                        String uid=user.getUid();
-                        Dangki_Controller  dangki_controller=new Dangki_Controller();
-                        dangki_controller.ThemThongTinThanVienController(thanhVienModel,uid);
+                ThanhVienModel thanhVienModel=new ThanhVienModel();
+                thanhVienModel.setHoten(user.getEmail());
+                thanhVienModel.setHinhanh("user.png");
+                Log.d("xemhinhanh",thanhVienModel.getHinhanh());
+                String uid=user.getUid();
+                Dangki_Controller  dangki_controller=new Dangki_Controller();
+                dangki_controller.ThemThongTinThanVienController(DangNhapActivity.this,thanhVienModel,uid);
+//            }
 
-            Intent iTrangChu = new Intent(DangNhapActivity.this, Trangchu_Activity.class);
-            startActivity(iTrangChu);
-            finish();
+
 //            Toast.makeText(this,user.getEmail(),Toast.LENGTH_LONG).show();
         } else {
 

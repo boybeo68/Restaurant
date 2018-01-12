@@ -36,12 +36,21 @@ public class QuanAnModel implements Parcelable{
     private List<String> tienich;
     private List<String> hinhanhquanan;
     private List<BinhLuanModel> binhLuanModelList;
+    private List<TienIchModel>tienIchModelList;
     private List<ChiNhanhQuanAnModel>chiNhanhQuanAnModelList;
     private List<Bitmap> bitmapList;
     private List<ThucDonModel>thucDonModelList;
     private long giatoida;
     private long giatoithieu;
     private long luotthich;
+
+    public List<TienIchModel> getTienIchModelList() {
+        return tienIchModelList;
+    }
+
+    public void setTienIchModelList(List<TienIchModel> tienIchModelList) {
+        this.tienIchModelList = tienIchModelList;
+    }
 
     public List<ThucDonModel> getThucDonModelList() {
         return thucDonModelList;

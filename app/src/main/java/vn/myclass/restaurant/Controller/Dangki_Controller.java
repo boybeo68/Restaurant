@@ -1,5 +1,7 @@
 package vn.myclass.restaurant.Controller;
 
+import android.content.Context;
+
 import vn.myclass.restaurant.Model.ThanhVienModel;
 
 /**
@@ -14,7 +16,7 @@ public class Dangki_Controller {
         );
 
     }
-    public void ThemThongTinThanVienController(ThanhVienModel thanhVienModel,String uid){
-        thanhVienModel.ThemThongTinThanhVien(thanhVienModel,uid);
+    public void ThemThongTinThanVienController(Context context,ThanhVienModel thanhVienModel, String uid){
+        thanhVienModel.ThemThongTinThanhVien(context,thanhVienModel,uid);
     }
 }

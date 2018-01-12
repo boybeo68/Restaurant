@@ -1,5 +1,8 @@
 package vn.myclass.restaurant.Model;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -16,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import vn.myclass.restaurant.View.DangNhapActivity;
+import vn.myclass.restaurant.View.Trangchu_Activity;
 
 /**
  * Created by boybe on 10/31/2017.
@@ -117,7 +123,7 @@ public class ThanhVienModel implements Parcelable {
         dest.writeTypedList(quanAnModelList);
     }
 
-    public void ThemThongTinThanhVien(final ThanhVienModel thanhVienModel, final String uid) {
+    public void ThemThongTinThanhVien(final Context context, final ThanhVienModel thanhVienModel, final String uid) {
 //        DatabaseReference nodeThanhVien = FirebaseDatabase.getInstance().getReference().child("thanhviens");
 //        nodeThanhVien.child(uid).setValue(thanhVienModel).addOnCompleteListener(new OnCompleteListener<Void>() {
 //            @Override
@@ -141,9 +147,18 @@ public class ThanhVienModel implements Parcelable {
                     nodeThanhVien.child(uid).setValue(thanhVienModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+
 //                            Log.d("kiemtrathanhvien", "thanh công");
+
+                            Intent iTrangChu = new Intent(context, Trangchu_Activity.class);
+                            context.startActivity(iTrangChu);
+                            ((Activity)context).finish();
                         }
                     });
+                }else {
+                    Intent iTrangChu = new Intent(context, Trangchu_Activity.class);
+                    context.startActivity(iTrangChu);
+                    ((Activity)context).finish();
                 }
             }
 

@@ -94,7 +94,9 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
     Button btnGioMoCua, btnGioDongCua,btnThemQuanAn;
     RadioGroup rdgTrangThai,rdVideo;
     EditText edtTenQuan,edtGiaToiDa,edtGiaToiThieu;
-    String gioMoCua, gioDongCua,khuVuc;
+    String gioMoCua="";
+    String gioDongCua="";
+    String khuVuc;
     Spinner spinnerKhuVuc;
     List<ThucDonModel> thucDonModelList;
     List<String> khuVucList;
@@ -765,19 +767,46 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                 startActivityForResult(Intent.createChooser(intent,"Chọn video ..."),RESULT_VIDEO);
                 break;
             case R.id.btnThemQuanAn:
-                ProgressDialog progressDialog=ProgressDialog.show(getContext(),getString(R.string.ThongBao), getString(R.string.ThongBaoThemQA), false, true, new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                    }
-                });
-                progressDialog.show();
-                    themQuanAn();
 
+                String tenquan=edtTenQuan.getText().toString();
+                if (tenquan.trim().length()==0){
+                    Toast.makeText(getContext(), "Bạn phải nhập tên quán ăn", Toast.LENGTH_SHORT).show();
+                }
+                else   if (edtGiaToiDa.getText().toString().trim().length()==0){
+                    Toast.makeText(getContext(), "Bạn phải nhập giá tối đa", Toast.LENGTH_SHORT).show();
+                }
+               else if (edtGiaToiThieu.getText().toString().trim().length()==0){
+                    Toast.makeText(getContext(), "Bạn phải nhập giá tối thiểu", Toast.LENGTH_SHORT).show();
+                }else if (hinhQuanAnBitMap.size()==0){
+                    Toast.makeText(getContext(), "Bạn phải nhập hình cho quán ăn", Toast.LENGTH_SHORT).show();
+                }
+                else if (selecttienIchList.size()==0){
+                    Toast.makeText(getContext(), "Bạn phải thêm tiện ích cho quán ăn", Toast.LENGTH_SHORT).show();
+                }
+                else if (chinhanhList.size()==0){
+                    Toast.makeText(getContext(), "Bạn phải thêm chi nhánh cho quán ăn", Toast.LENGTH_SHORT).show();
+                }
+                else if (themThucDonModelList.size()==0){
+                    Toast.makeText(getContext(), "Bạn phải thêm thực đơn cho quán ăn", Toast.LENGTH_SHORT).show();
+                }
+                else   if (gioMoCua.trim().length()==0){
+                    Toast.makeText(getContext(), "Bạn phải thêm giờ mở cửa", Toast.LENGTH_SHORT).show();
+                }
+                else   if (gioDongCua.trim().length()==0){
+                    Toast.makeText(getContext(), "Bạn phải thêm giờ đóng cửa", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    ProgressDialog progressDialog=ProgressDialog.show(getContext(),getString(R.string.ThongBao), getString(R.string.ThongBaoThemQA), false, true, new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                        }
+                    });
+                    progressDialog.show();
+                    themQuanAn();
+                }
                 break;
         }
     }
-
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

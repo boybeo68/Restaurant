@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import vn.myclass.restaurant.Controller.Dangki_Controller;
 import vn.myclass.restaurant.Model.ThanhVienModel;
@@ -91,6 +92,10 @@ public class DangKy_Activity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     progressDialog.dismiss();
+
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                    sendVerificationEmail(currentUser);
                     Toast.makeText(DangKy_Activity.this, getString(R.string.success),
                             Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(DangKy_Activity.this,DangNhapActivity.class);
@@ -99,5 +104,21 @@ public class DangKy_Activity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void sendVerificationEmail(FirebaseUser user) {
+
+        if (user != null){
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+
+                            }else {
+                                Toast.makeText(DangKy_Activity.this,"Cannot send verifycation email",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
     }
 }
