@@ -108,4 +108,5 @@
     <string name="TimKiemTenquan">Tìm kiếm tên quán ăn</string>
     <string name="DanhSachWifi">Danh sách wifi </string>
     <string name="Thoat">Thoát</string>
+    <string name="themthucdon">Bạn phải thêm thực đơn cho quán ăn</string>
 </resources>

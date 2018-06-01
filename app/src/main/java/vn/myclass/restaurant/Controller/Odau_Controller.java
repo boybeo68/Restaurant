@@ -63,6 +63,7 @@ public class Odau_Controller {
                         @Override
                         public void onSuccess(byte[] bytes) {
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
                             bitmaps.add(bitmap);
                             quanAnModel.setBitmapList(bitmaps);
                             if (quanAnModel.getBitmapList().size() == quanAnModel.getHinhanhquanan().size()) {

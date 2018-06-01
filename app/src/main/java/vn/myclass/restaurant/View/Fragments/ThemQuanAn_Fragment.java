@@ -787,7 +787,7 @@ public class ThemQuanAn_Fragment extends Fragment implements View.OnClickListene
                     Toast.makeText(getContext(), "Bạn phải thêm chi nhánh cho quán ăn", Toast.LENGTH_SHORT).show();
                 }
                 else if (themThucDonModelList.size()==0){
-                    Toast.makeText(getContext(), "Bạn phải thêm thực đơn cho quán ăn", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.themthucdon, Toast.LENGTH_SHORT).show();
                 }
                 else   if (gioMoCua.trim().length()==0){
                     Toast.makeText(getContext(), "Bạn phải thêm giờ mở cửa", Toast.LENGTH_SHORT).show();
