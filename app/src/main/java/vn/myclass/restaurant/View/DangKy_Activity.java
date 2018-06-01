@@ -32,16 +32,15 @@ public class DangKy_Activity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     ProgressDialog progressDialog;
-    Dangki_Controller dangki_controller;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_dangki);
-        btnDangKy = (Button) findViewById(R.id.btnDangKy);
-        edEmailDK = (EditText) findViewById(R.id.edEmailDK);
-        edPassDK = (EditText) findViewById(R.id.edPassDK);
-        edNhapLaiPassDK = (EditText) findViewById(R.id.edNhapLaiPassDK);
+        btnDangKy = findViewById(R.id.btnDangKy);
+        edEmailDK = findViewById(R.id.edEmailDK);
+        edPassDK = findViewById(R.id.edPassDK);
+        edNhapLaiPassDK = findViewById(R.id.edNhapLaiPassDK);
         mAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         btnDangKy.setOnClickListener(new View.OnClickListener() {
