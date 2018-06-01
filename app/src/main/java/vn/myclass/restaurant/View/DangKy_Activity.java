@@ -68,7 +68,7 @@ public class DangKy_Activity extends AppCompatActivity {
                     Toast.makeText(DangKy_Activity.this, thongbao, Toast.LENGTH_SHORT).show();
                 } else if (pass.trim().length() < 6) {
                     progressDialog.dismiss();
-                    thongbao = "Mật khẩu không được < 6 ký tự";
+                    thongbao = getString(R.string.checkmatkhau);
                     Toast.makeText(DangKy_Activity.this, thongbao, Toast.LENGTH_SHORT).show();
                 } else if (nhapLaiPass.trim().length() == 0) {
                     progressDialog.dismiss();
@@ -115,7 +115,7 @@ public class DangKy_Activity extends AppCompatActivity {
                             if (task.isSuccessful()){
 
                             }else {
-                                Toast.makeText(DangKy_Activity.this,"Cannot send verifycation email",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DangKy_Activity.this, R.string.cannot_server,Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

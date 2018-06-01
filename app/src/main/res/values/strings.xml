@@ -109,4 +109,6 @@
     <string name="DanhSachWifi">Danh sách wifi </string>
     <string name="Thoat">Thoát</string>
     <string name="themthucdon">Bạn phải thêm thực đơn cho quán ăn</string>
+    <string name="checkmatkhau"><![CDATA[Mật khẩu không được < 6 ký]]></string>
+    <string name="cannot_server">Cannot send verifycation email</string>
 </resources>
